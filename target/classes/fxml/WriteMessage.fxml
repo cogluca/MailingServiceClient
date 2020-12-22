@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="389.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SendMessage">
+   <children>
+       <AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <TextField layoutX="36.0" layoutY="26.0" prefHeight="25.0" prefWidth="344.0" promptText="Destinatario" />
+      <TextField layoutX="36.0" layoutY="63.0" prefHeight="25.0" prefWidth="344.0" promptText="Oggetto" />
+      <TextArea layoutX="36.0" layoutY="107.0" prefHeight="234.0" prefWidth="344.0" promptText="Testo del messaggio" />
+      <Button fx:id="sendbtn" layoutX="36.0" layoutY="350.0" mnemonicParsing="false" onAction="#sendHandle" text="Invia messaggio" />
+      <Button fx:id="deletebtn" layoutX="177.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteHandle" text="Cancella messaggio" />
+       </AnchorPane>
+   </children>
+</AnchorPane>

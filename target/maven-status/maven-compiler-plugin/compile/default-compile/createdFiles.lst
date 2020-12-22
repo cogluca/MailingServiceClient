@@ -1,0 +1,9 @@
+client\model\Mail.class
+client\controller\messageListController.class
+threads\Workflow.class
+client\controller\MyCell.class
+client\controller\Controller.class
+client\Navigator.class
+threads\Work.class
+client\controller\SendMessage.class
+client\Main.class
