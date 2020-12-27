@@ -1,15 +1,28 @@
 package client.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 // Model
 public class Mail implements Serializable {
-    public String from, to;
+    private String from, to;
+    //to deve essere una lista di stringhe considerando l'invio multiplo
 
-    public String object;
-    public String message;
+    private String object;
+    private String message;
+
+    private Timestamp timestamp;
 
     public Mail() {}
+
+
+    public Mail(String from, String to, String object, String message, Timestamp timestamp) {
+        this.from = from;
+        this.to = to;
+        this.object = object;
+        this.message = message;
+        this.timestamp = timestamp;
+    }
 
     public String getFrom() {
         return from;

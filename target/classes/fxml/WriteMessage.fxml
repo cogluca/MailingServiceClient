@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="389.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.SendMessage">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.web.HTMLEditor?>
+
+<AnchorPane prefHeight="389.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.SendMessage">
    <children>
-       <AnchorPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <TextField layoutX="36.0" layoutY="26.0" prefHeight="25.0" prefWidth="344.0" promptText="Destinatario" />
-      <TextField layoutX="36.0" layoutY="63.0" prefHeight="25.0" prefWidth="344.0" promptText="Oggetto" />
-      <TextArea layoutX="36.0" layoutY="107.0" prefHeight="234.0" prefWidth="344.0" promptText="Testo del messaggio" />
-      <Button fx:id="sendbtn" layoutX="36.0" layoutY="350.0" mnemonicParsing="false" onAction="#sendHandle" text="Invia messaggio" />
-      <Button fx:id="deletebtn" layoutX="177.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteHandle" text="Cancella messaggio" />
-       </AnchorPane>
+      <TextField layoutX="30.0" layoutY="33.0" prefHeight="25.0" prefWidth="344.0" promptText="Destinatario" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+      <TextField layoutX="30.0" layoutY="70.0" prefHeight="25.0" prefWidth="344.0" promptText="Oggetto" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+      <Button fx:id="sendbtn" layoutX="30.0" layoutY="357.0" mnemonicParsing="false" onAction="#sendHandle" text="Invia messaggio" AnchorPane.bottomAnchor="6.399999999999999" />
+      <Button fx:id="deletebtn" layoutX="171.0" layoutY="357.0" mnemonicParsing="false" onAction="#deleteHandle" text="Cancella messaggio" AnchorPane.bottomAnchor="6.399999999999999" />
+      <HTMLEditor fx:id="messageEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutY="110.0" prefHeight="240.0" prefWidth="404.0" AnchorPane.bottomAnchor="39.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="110.0" />
    </children>
 </AnchorPane>

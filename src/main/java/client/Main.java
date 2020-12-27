@@ -1,24 +1,36 @@
 package client;
 
 
+import client.controller.login.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/mainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("Client");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/css/style.css");
 
+        ((LoginController)loader.getController()).initManager(new LoginManager(scene));
+
+        primaryStage.setScene(scene);
+        LoginManager loginManager = new LoginManager(scene);
+        loginManager.showLoginScreen();
         primaryStage.show();
 
-    }
 
+
+        //lancia l'applicazione
+    }
 
     public static void main(String[] args) { launch(args); }
 }

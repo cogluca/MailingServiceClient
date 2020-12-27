@@ -1,8 +1,11 @@
-C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\messageListController.java
-C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\Controller.java
-C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\threads\Workflow.java
-C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\MyCell.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\logged\MessageListController.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\model\User.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\logged\SendMessage.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\login\LoginController.java
 C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\Main.java
-C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\SendMessage.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\logged\MainController.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\logged\ReadMessage.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\LoginManager.java
 C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\Navigator.java
+C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\controller\logged\MailCell.java
 C:\Users\Alessio\IdeaProjects\esercizi_prog\src\main\java\client\model\Mail.java

@@ -1,4 +1,4 @@
-package client.controller;
+package client.controller.logged;
 
 import client.Navigator;
 import client.model.Mail;
@@ -12,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class MyCell extends ListCell<Mail> {
+public class MailCell extends ListCell<Mail> {
 
     @FXML
     private Label from;
@@ -53,9 +53,11 @@ public class MyCell extends ListCell<Mail> {
 
             this.setOnMouseClicked(event -> {
                 if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                    System.out.println(event.getTarget());
-                    if(!event.getTarget().toString().contains("null"))
-                        Navigator.navigate("/fxml/WriteMessage.fxml");
+                    System.out.println("Clickato sulla mail " + mail);
+                    if(!event.getTarget().toString().contains("null")) {
+                        Navigator.navigate(Navigator.Route.READ);
+                    }
+
                 }
 
             });
