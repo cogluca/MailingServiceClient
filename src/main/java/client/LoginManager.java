@@ -54,6 +54,7 @@ public class LoginManager {
             );
             scene.setRoot((Parent) loader.load());
             MainController controller = loader.getController();
+            controller.setUser(user);
             controller.setLoginManager(this);
             //controller.initSessionID(this, sessionID);
         } catch (IOException ex) {

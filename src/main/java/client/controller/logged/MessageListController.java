@@ -9,6 +9,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -19,6 +23,8 @@ public class MessageListController implements Initializable {
 
     @FXML
     private ListView mailList;
+
+    private static final String host = "192.168.137.1";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -31,6 +37,18 @@ public class MessageListController implements Initializable {
     private void loadMessages() {
         // Generate random values to fill listview.
         //TODO: Get data from server
+        try {
+            Socket s = new Socket(host,8189);
+            System.out.println("Connection established");
+            ObjectInputStream receiveBoxes= new ObjectInputStream(s.getInputStream());
+            ObjectOutputStream sendRequests = new ObjectOutputStream(s.getOutputStream());
+            sendRequests.write();
+        }catch(IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
 
         for(int i = 0; i < 10; i++) {
             Mail m = new Mail();

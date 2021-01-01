@@ -26,6 +26,12 @@ public class MainController implements Initializable {
     private Label outboxLabel;
 
     @FXML
+    private Label userName;
+
+    @FXML
+    private Label userEmail;
+
+    @FXML
     private BorderPane stackPane;
 
     private String user;
@@ -36,6 +42,8 @@ public class MainController implements Initializable {
 
     public void setUser(String user) {
         this.user = user;
+        userName.setText(user);
+        userEmail.setText(user+"@Parallel.com");
     }
 
 
@@ -56,6 +64,7 @@ public class MainController implements Initializable {
         Navigator.navigate(Navigator.Route.INBOX);
 
     }
+
 
     @FXML
     void handleNewMail(ActionEvent action) {

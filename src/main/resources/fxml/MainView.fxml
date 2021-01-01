@@ -18,11 +18,11 @@
              <AnchorPane prefHeight="554.0" prefWidth="164.0" BorderPane.alignment="CENTER">
                <children>
                   <AnchorPane prefHeight="655.2" prefWidth="164.0" style="-fx-background-color: linear-gradient(to top, #2ebf91, #8360c3);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label layoutX="12.0" layoutY="14.0" text="Alessio Vannella">
+                  <Label fx:id="userName" layoutX="12.0" layoutY="14.0" text="">
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label layoutX="10.0" layoutY="40.0" text="alessio.vannella@mail.com">
+                  <Label fx:id="userEmail" layoutX="10.0" layoutY="40.0" text="">
                      <font>
                         <Font size="10.0" />
                      </font></Label>
