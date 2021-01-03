@@ -1,5 +1,6 @@
 package client.controller.logged;
 
+import client.Utils;
 import client.model.Mail;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +31,7 @@ public class MessageListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadInbox(); //come carico la inbox ora che devo passare l'attributo utente ?
+        //loadInbox(); //come carico la inbox ora che devo passare l'attributo utente ?
         mailList.setItems(inboxList);
         mailList.setCellFactory((Callback<ListView<Mail>, ListCell<Mail>>) listView -> new MailCell());
 
@@ -38,12 +39,11 @@ public class MessageListController implements Initializable {
 
     private void loadInbox(String sessionId) {
         // Generate random values to fill listview.
-        //TODO: Get data from server
         ArrayList<Mail> cachedInbox = new ArrayList<>();
         ObjectInputStream receiveInbox = null;
         ObjectOutputStream sendRequests = null;
         try {
-            Socket s = new Socket(host, 8189);
+            Socket s = Utils.getSocket();
             System.out.println("Connection established");
             receiveInbox = new ObjectInputStream(s.getInputStream());
             sendRequests = new ObjectOutputStream(s.getOutputStream());
@@ -72,7 +72,6 @@ public class MessageListController implements Initializable {
     }
     private void loadOutbox(String sessionId) {
         // Generate random values to fill listview.
-        //TODO: Get data from server
         ArrayList<Mail> cachedInbox = new ArrayList<>();
         ObjectInputStream receiveOutbox = null;
         ObjectOutputStream sendRequests = null;
@@ -85,7 +84,7 @@ public class MessageListController implements Initializable {
             sendRequests.writeUTF("Outbox");
             cachedInbox = (ArrayList<Mail>) receiveOutbox.readObject();
             for (Mail mail : cachedInbox) {
-                inboxList.add(mail);
+                outboxList.add(mail);
             }
         } catch (IOException | ClassNotFoundException e) { //serve più granulare per l'aggiornamento inbox costante ? granulare = singole mail
             System.out.println("Receiving outbox failed");

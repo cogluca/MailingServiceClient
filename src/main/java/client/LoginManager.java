@@ -1,10 +1,12 @@
 package client;
 
 import client.controller.logged.MainController;
+import client.controller.login.ErrorLoginController;
 import client.controller.login.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -61,4 +63,20 @@ public class LoginManager {
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void popErrorDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/ErrorLogin.fxml"));
+
+            scene.setRoot(loader.load());
+            ErrorLoginController controller = loader.getController();
+            controller.initManager(this);
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
 }

@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -42,21 +43,38 @@ public class LoginController implements Initializable {
     public void handleLogin(ActionEvent actionEvent) {
 
         Socket serverConn;
+        ObjectOutputStream sendLoginReq = null;
+        ObjectInputStream receiveLogin = null;
 
         try {
-
+            User loggingUser = new User(username.getText());
             serverConn = Utils.getSocket();
-            ObjectOutputStream sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
-            sendLoginReq.writeUTF(username.getText());
-            ObjectInputStream receiveLogin = new ObjectInputStream(serverConn.getInputStream());
-            //se ricevo un oggetto user potrei fare get username e se è valido mostrare la Mainview
 
-        boolean authorizedUser = User.retrieveUser(user); //prendo User per poi inserire la mail nella Mainview
-        if (authorizedUser || true) {
-            loginManager.showMainView(user);
+            sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
+            sendLoginReq.writeUTF("LOGIN");
+            sendLoginReq.writeObject(loggingUser);
+
+            receiveLogin = new ObjectInputStream(serverConn.getInputStream());
+            String loginResult = receiveLogin.readUTF();
+
+            if (loginResult.equals("Login successfully")) {
+                loginManager.showMainView(username.getText());
+            }
+            else{
+                loginManager.popErrorDialog();   //qui devo far poppare un popup con login errato
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (sendLoginReq != null)
+                    sendLoginReq.close();
+                if (receiveLogin != null)
+                    receiveLogin.close();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
-
-
 
 }

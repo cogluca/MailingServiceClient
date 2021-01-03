@@ -5,7 +5,9 @@ client/LoginManager.class
 client/Navigator.class
 client/controller/logged/MainController.class
 client/model/User.class
+client/Utils.class
 client/Main.class
+client/controller/login/ErrorLoginController.class
 client/controller/logged/MailCell.class
 client/controller/logged/SendMessage.class
 client/model/Mail.class
