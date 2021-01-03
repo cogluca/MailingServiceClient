@@ -2,6 +2,7 @@ package client.controller.login;
 
 import client.LoginManager;
 import client.Navigator;
+import client.Utils;
 import client.model.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -37,10 +41,22 @@ public class LoginController implements Initializable {
 
     public void handleLogin(ActionEvent actionEvent) {
 
-        String user = username.getText();
+        Socket serverConn;
+
+        try {
+
+            serverConn = Utils.getSocket();
+            ObjectOutputStream sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
+            sendLoginReq.writeUTF(username.getText());
+            ObjectInputStream receiveLogin = new ObjectInputStream(serverConn.getInputStream());
+            //se ricevo un oggetto user potrei fare get username e se è valido mostrare la Mainview
+
         boolean authorizedUser = User.retrieveUser(user); //prendo User per poi inserire la mail nella Mainview
         if (authorizedUser || true) {
             loginManager.showMainView(user);
         }
     }
+
+
+
 }

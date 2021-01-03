@@ -36,7 +36,7 @@ public class MessageListController implements Initializable {
 
     }
 
-    private void loadInbox(String user) {
+    private void loadInbox(String sessionId) {
         // Generate random values to fill listview.
         //TODO: Get data from server
         ArrayList<Mail> cachedInbox = new ArrayList<>();
@@ -47,7 +47,7 @@ public class MessageListController implements Initializable {
             System.out.println("Connection established");
             receiveInbox = new ObjectInputStream(s.getInputStream());
             sendRequests = new ObjectOutputStream(s.getOutputStream());
-            sendRequests.writeUTF(user);
+            sendRequests.writeUTF(sessionId);
             sendRequests.writeUTF("Inbox");
             cachedInbox = (ArrayList<Mail>) receiveInbox.readObject();
             for (Mail mail : cachedInbox) {
@@ -70,7 +70,7 @@ public class MessageListController implements Initializable {
 
 
     }
-    private void loadOutbox(String user) {
+    private void loadOutbox(String sessionId) {
         // Generate random values to fill listview.
         //TODO: Get data from server
         ArrayList<Mail> cachedInbox = new ArrayList<>();
@@ -81,7 +81,7 @@ public class MessageListController implements Initializable {
             System.out.println("Connection established");
             receiveOutbox = new ObjectInputStream(s.getInputStream());
             sendRequests = new ObjectOutputStream(s.getOutputStream());
-            sendRequests.writeUTF(user);
+            sendRequests.writeUTF(sessionId);
             sendRequests.writeUTF("Outbox");
             cachedInbox = (ArrayList<Mail>) receiveOutbox.readObject();
             for (Mail mail : cachedInbox) {
