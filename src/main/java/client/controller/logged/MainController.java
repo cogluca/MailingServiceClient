@@ -55,10 +55,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Prima ci arrivo");
 
         Navigator n = Navigator.getInstance();
-        System.out.println("Dopo ci arrivo");
 
         Navigator.setContentPanel(stackPane);
         Navigator.navigate(Navigator.Route.INBOX);

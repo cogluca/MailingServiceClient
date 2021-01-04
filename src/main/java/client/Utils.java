@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Utils {
@@ -10,7 +11,8 @@ public class Utils {
 
     public static Socket getSocket () {
         try {
-            s = new Socket(address, 8189);
+            String add = InetAddress.getLocalHost().getHostName();
+            s = new Socket(add, 8189);
             return s;
         }
         catch(IOException e){

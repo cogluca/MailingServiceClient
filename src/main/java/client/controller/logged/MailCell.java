@@ -1,7 +1,7 @@
 package client.controller.logged;
 
 import client.Navigator;
-import client.model.Mail;
+import models.Mail;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -48,7 +48,7 @@ public class MailCell extends ListCell<Mail> {
 
 
 
-            from.setText(mail.getFrom());
+            from.setText(mail.getSender().getUsername());
             Testo.setText(mail.getMessage());
 
             this.setOnMouseClicked(event -> {

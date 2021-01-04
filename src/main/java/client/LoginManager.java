@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +20,8 @@ public class LoginManager {
     public LoginManager(Scene scene) {
         this.scene = scene;
     }
+
+    public static String sessionId = "";
 
     /**
      * Callback method invoked to notify that a user has been authenticated.
@@ -77,6 +80,20 @@ public class LoginManager {
         }
     }
 
+    public void generateSessionID() {
+        sessionId =  generateRandom();
+    }
 
+    private static String generateRandom() {
+        String dict = "ABCDEFGHILMNOPQRSTUVZXWKJ1234567890";
+        int strLen = 64;
+        Random rand=new Random();
+        StringBuilder res=new StringBuilder();
+        for (int i = 0; i < strLen; i++) {
+            int randIndex=rand.nextInt(dict.length());
+            res.append(dict.charAt(randIndex));
+        }
+        return res.toString();
+    }
 
 }

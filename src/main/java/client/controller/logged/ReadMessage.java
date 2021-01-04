@@ -1,7 +1,7 @@
 package client.controller.logged;
 
 import client.Navigator;
-import client.model.Mail;
+import models.Mail;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
