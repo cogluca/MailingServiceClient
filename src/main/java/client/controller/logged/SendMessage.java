@@ -7,13 +7,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.web.HTMLEditor;
+import utils.Controller;
 
 import javax.swing.text.html.HTMLEditorKit;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SendMessage implements Initializable {
+public class SendMessage extends Controller implements Initializable {
+    @Override
+    protected void dispatch() {
 
+    }
     @FXML
     private Button sendbtn;
 
@@ -45,8 +49,10 @@ public class SendMessage implements Initializable {
     public void deleteHandle(ActionEvent actionEvent) {
         System.out.println("Message deleted");
         Navigator.navigate(Navigator.Route.INBOX);
-
-
     }
 
+    @Override
+    public void init() {
+
+    }
 }

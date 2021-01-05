@@ -2,13 +2,24 @@ package client.controller.logged;
 
 import client.LoginManager;
 import client.Navigator;
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import models.ListMailModel;
+import utils.Controller;
+import utils.NetworkUtils;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -18,7 +29,7 @@ import java.util.ResourceBundle;
  * Sono presenti gli handler per gestire i click sui vari componenti
  * della GUI.
  */
-public class MainController implements Initializable {
+public class MainController extends Controller implements Initializable {
 
     @FXML
     private Label inboxLabel;
@@ -36,6 +47,9 @@ public class MainController implements Initializable {
 
     private String user;
 
+
+    private ListMailModel listMailModel;
+
     public String getUser() {
         return user;
     }
@@ -43,7 +57,7 @@ public class MainController implements Initializable {
     public void setUser(String user) {
         this.user = user;
         userName.setText(user);
-        userEmail.setText(user+"@Parallel.com");
+        userEmail.setText(user + "@Parallel.com");
     }
 
 
@@ -56,10 +70,34 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
         Navigator n = Navigator.getInstance();
 
+        listMailModel = new ListMailModel();
+
         Navigator.setContentPanel(stackPane);
-        Navigator.navigate(Navigator.Route.INBOX);
+        //Navigator.navigate(Navigator.Route.INBOX);
+
+        Timeline fiveSecondsWonder = new Timeline(
+                new KeyFrame(Duration.seconds(5),
+                        event -> {
+                            System.out.println("this is called every 5 seconds on UI thread");
+                            try {
+                                if(NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) == 0) {
+                                    System.out.println("No updates");
+                                }
+                                else {
+                                    System.out.println("There are updates!!!");
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }));
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
+
 
     }
 
@@ -73,18 +111,51 @@ public class MainController implements Initializable {
 
     @FXML
     void handleInbox(ActionEvent event) {
-        Navigator.navigate(Navigator.Route.INBOX);
+        List<Object> arguments = new ArrayList<>();
+        arguments.add("INBOX");
+        arguments.add(listMailModel);
+        Navigator.navigate(Navigator.Route.INBOX, arguments);
 
     }
 
     @FXML
     void handleOutbox(ActionEvent event) {
-        Navigator.navigate(Navigator.Route.OUTBOX);
+        List<Object> arguments = new ArrayList<>();
+        arguments.add("OUTBOX");
+        arguments.add(listMailModel);
+        Navigator.navigate(Navigator.Route.OUTBOX, arguments);
 
     }
 
     public void handleLogout(ActionEvent event) {
-        this.loginManager.showLoginScreen();
+        new Thread(() -> {
+            try {
+                NetworkUtils.logout();
+                this.loginManager.showLoginScreen();
 
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }).start();
+
+    }
+
+
+    @Override
+    protected void dispatch() {
+
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    public void handleSync(ActionEvent actionEvent) {
+        try {
+            NetworkUtils.loadInbox();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

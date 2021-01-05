@@ -8,12 +8,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.web.WebView;
+import utils.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ReadMessage implements Initializable {
+public class ReadMessage extends Controller implements Initializable {
+    @Override
+    protected void dispatch() {
 
+    }
     @FXML
     private Button sendbtn;
 
@@ -29,11 +33,15 @@ public class ReadMessage implements Initializable {
     private Navigator navigator;
 
     private Mail mail;
+
+    public void setMail(Mail mail) {
+        this.mail = mail;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("asdas");
         navigator = Navigator.getInstance();
-        //System.out.println(mail.toString());
         String html = "<html dir=\"ltr\"><head></head><body contenteditable=\"false\"><p><span style=\"font-family: &quot;&quot;;\">This</span></p><p style=\"text-align: center;\"><span style=\"font-family: &quot;&quot;;\">is</span></p><p><span style=\"font-family: &quot;&quot;; font-style: italic; font-weight: bold;\">A test message</span></p></body></html>\n";
         htmlView.getEngine().loadContent(html);
     }
@@ -49,8 +57,10 @@ public class ReadMessage implements Initializable {
     public void deleteHandle(ActionEvent actionEvent) {
         System.out.println("Message deleted");
         Navigator.navigate(Navigator.Route.INBOX);
-
-
     }
 
+    @Override
+    public void init() {
+
+    }
 }

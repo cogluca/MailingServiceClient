@@ -2,9 +2,12 @@ package client;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
+import utils.Controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,7 +17,6 @@ import java.util.Map;
 //TODO: Generalize and improve views routing
 public class Navigator {
 
-    //TODO: Vedere se implementare Routes
     public enum Route {
         MAIN,
         INBOX,
@@ -41,14 +43,26 @@ public class Navigator {
 
     public BorderPane contentPanel = null;
 
-
     public static void navigate(Route r) {
+        navigate(r, new ArrayList<>());
+    }
+
+    public static void navigate(Route r, List<Object> arguments) {
 
         if(!routes.containsKey(r)) System.out.println("ERROR: Wrong route");
         String text = routes.get(r);
         if (instance.contentPanel != null) {
             try {
-                instance.contentPanel.setCenter(FXMLLoader.load(Navigator.class.getResource(text)));
+                FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(text));
+
+                instance.contentPanel.setCenter(loader.load());
+
+
+                Controller controller = loader.getController();
+                controller.setArgumentList(arguments);
+                controller.init();
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

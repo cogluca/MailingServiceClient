@@ -1,7 +1,5 @@
 package client.controller.logged;
 
-import client.LoginManager;
-import client.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,125 +7,62 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
+import models.ListMailModel;
 import models.Mail;
+import utils.Controller;
+import utils.NetworkUtils;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MessageListController implements Initializable {
+public class MessageListController extends Controller implements Initializable {
 
 
-    private ObservableList<Mail> inboxList = FXCollections.observableArrayList();
-    private ObservableList<Mail> outboxList = FXCollections.observableArrayList();
+    private ListMailModel listMailModel;
+
+    private String messageType = "";
 
     @FXML
-    private ListView mailList;
+    private ListView mailListView;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadInbox(LoginManager.sessionId);
-        loadOutbox(LoginManager.sessionId);
-        //loadInbox(); //come carico la inbox ora che devo passare l'attributo utente ?
-        mailList.setItems(inboxList);
-        mailList.setCellFactory((Callback<ListView<Mail>, ListCell<Mail>>) listView -> new MailCell());
-
-
     }
 
-    private void loadInbox(String sessionId) {
-
-        Socket socket = Utils.getSocket();
-
-
-        ObjectInputStream inputStream = null;
-
-        ObjectOutputStream outputStream = null;
-        try {
-
-            System.out.println("Connection established");
-
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-
-            outputStream.writeUTF("READ INBOX");
-            outputStream.flush();
-
-            outputStream.writeUTF(sessionId);
-            outputStream.flush();
-
-            inputStream = new ObjectInputStream(socket.getInputStream());
-
-            List<Mail> inList = (List<Mail>) inputStream.readObject();
-
-            for (Mail ma : inList) {
-                outboxList.add(ma);
-                System.out.println(ma.toString());
+    @Override
+    public void init() {
+        dispatch();
+        List<Mail> mails = new ArrayList<>();
+        if (messageType.equals("INBOX")) {
+            try {
+                mails = NetworkUtils.loadInbox();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-
-        } catch (IOException | ClassNotFoundException se) {
-            se.printStackTrace();
-        } finally {
-
-            if (socket != null)
-                try {
-                    if (inputStream != null) inputStream.close();
-                    if (outputStream != null) outputStream.close();
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-    }
-
-
-
-    private void loadOutbox(String sessionId) {
-        Socket socket = Utils.getSocket();
-
-
-        ObjectInputStream inputStream = null;
-
-        ObjectOutputStream outputStream = null;
-        try {
-
-            System.out.println("Connection established");
-
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-
-            outputStream.writeUTF("READ OUTBOX");
-            outputStream.flush();
-
-            outputStream.writeUTF(sessionId);
-            outputStream.flush();
-
-            inputStream = new ObjectInputStream(socket.getInputStream());
-
-            List<Mail> inList = (List<Mail>) inputStream.readObject();
-
-            for (Mail ma : inList) {
-                inboxList.add(ma);
-                System.out.println(ma.toString());
+        } else {
+            try {
+                mails = NetworkUtils.loadOutbox();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-
-        } catch (IOException | ClassNotFoundException se) {
-            se.printStackTrace();
-        } finally {
-
-            if (socket != null)
-                try {
-                    if (inputStream != null) inputStream.close();
-                    if (outputStream != null) outputStream.close();
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
         }
+        listMailModel.setIncomingListMail(FXCollections.observableArrayList(mails));
+
+
+        mailListView.setItems(listMailModel.getIncomingListMail());
+        mailListView.setCellFactory((Callback<ListView<Mail>, ListCell<Mail>>) listView -> new MailCell());
     }
+
+
+    @Override
+    public void dispatch() {
+        List<Object> arguments = getArgumentList();
+        if (arguments == null || arguments.size() <= 1) return;
+        messageType = (String) arguments.get(0);
+        listMailModel = (ListMailModel) arguments.get(1);
+    }
+
 }

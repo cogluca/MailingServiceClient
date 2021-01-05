@@ -4,12 +4,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="655.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.MainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.MainController">
    <children>
       <BorderPane fx:id="stackPane" prefHeight="655.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -17,7 +19,18 @@
 
              <AnchorPane prefHeight="554.0" prefWidth="164.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane prefHeight="655.2" prefWidth="164.0" style="-fx-background-color: linear-gradient(to top, #2ebf91, #8360c3);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane prefHeight="655.2" prefWidth="164.0" style="-fx-background-color: linear-gradient(to top, #2ebf91, #8360c3);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button layoutX="62.0" layoutY="402.0" mnemonicParsing="false" onAction="#handleSync" prefHeight="21.0" prefWidth="26.0">
+                           <graphic>
+                              <ImageView fitHeight="31.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="li">
+                                 <image>
+                                    <Image url="@../images/sync.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children></AnchorPane>
                   <Label fx:id="userName" layoutX="12.0" layoutY="14.0" text="">
                      <font>
                         <Font size="16.0" />

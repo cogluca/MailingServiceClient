@@ -2,12 +2,14 @@ C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\logged\ReadM
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\models\User.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\logged\MessageListController.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\login\ErrorLoginController.java
-C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\Utils.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\logged\MailCell.java
+C:\Users\Alessio\IdeaProjects\prog3\src\main\java\models\ListMailModel.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\login\LoginController.java
+C:\Users\Alessio\IdeaProjects\prog3\src\main\java\utils\Controller.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\Main.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\models\Mail.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\logged\SendMessage.java
+C:\Users\Alessio\IdeaProjects\prog3\src\main\java\utils\NetworkUtils.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\controller\logged\MainController.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\Navigator.java
 C:\Users\Alessio\IdeaProjects\prog3\src\main\java\client\LoginManager.java

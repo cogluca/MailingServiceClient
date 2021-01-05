@@ -1,6 +1,5 @@
 .li {
-    base-color: transparency;
-    -fx-background-color: base-color;
+    -fx-background-color: transparent;
     -fx-border-color: none;
 
 }
