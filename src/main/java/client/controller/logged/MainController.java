@@ -3,9 +3,14 @@ package client.controller.logged;
 import client.LoginManager;
 import client.Navigator;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import models.ListMailModel;
 import utils.Controller;
+import utils.JavaFXUtil;
 import utils.NetworkUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,9 +37,7 @@ import java.util.ResourceBundle;
 public class MainController extends Controller implements Initializable {
 
     @FXML
-    private Label inboxLabel;
-    @FXML
-    private Label outboxLabel;
+    private ToggleGroup menu;
 
     @FXML
     private Label userName;
@@ -70,6 +73,9 @@ public class MainController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        JavaFXUtil.get().addAlwaysOneSelectedSupport(menu);
+
+
 
         Navigator n = Navigator.getInstance();
 
@@ -81,7 +87,6 @@ public class MainController extends Controller implements Initializable {
         Timeline fiveSecondsWonder = new Timeline(
                 new KeyFrame(Duration.seconds(5),
                         event -> {
-                            System.out.println("this is called every 5 seconds on UI thread");
                             try {
                                 if(NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) == 0) {
                                     System.out.println("No updates");
@@ -153,7 +158,8 @@ public class MainController extends Controller implements Initializable {
 
     public void handleSync(ActionEvent actionEvent) {
         try {
-            NetworkUtils.loadInbox();
+            listMailModel.setIncomingListMail((NetworkUtils.loadInbox()));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

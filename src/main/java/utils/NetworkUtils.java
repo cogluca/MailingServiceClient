@@ -14,7 +14,6 @@ import java.util.List;
 public class NetworkUtils {
 
     private static final int port = 8189;
-    private static final String addresss = "";
 
     /**
      * @return socket object
@@ -139,5 +138,32 @@ public class NetworkUtils {
         return val;
 
     }
+
+    public static int deleteMessage(Mail m) throws Exception {
+        Socket socket = NetworkUtils.getSocket();
+
+        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+        outputStream.writeUTF("DELETE");
+        outputStream.flush();
+
+        outputStream.writeUTF(LoginManager.sessionId);
+        outputStream.flush();
+
+        System.out.println("il messaggio è " + m);
+        outputStream.writeObject(m);
+        outputStream.flush();
+
+        int status = inputStream.readInt();
+
+        inputStream.close();
+        outputStream.close();
+        socket.close();
+        return status;
+
+
+    }
+
 
 }

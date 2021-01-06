@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import utils.NetworkUtils;
 
 import java.io.IOException;
 
@@ -31,7 +32,17 @@ public class Main extends Application {
         primaryStage.show();
 
 
-
+        primaryStage.setOnHiding(event -> Platform.runLater(() -> {
+            if(!LoginManager.sessionId.equals("")) {
+                try {
+                    NetworkUtils.logout();
+                } catch (IOException exception) {
+                    exception.printStackTrace();
+                }
+            }
+            System.out.println("Application Closed by click to Close Button(X)");
+            System.exit(0);
+        }));
 
 
 

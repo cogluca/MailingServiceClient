@@ -17,7 +17,7 @@
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Button fx:id="Delete1" layoutX="556.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" AnchorPane.rightAnchor="72.79999999999995">
+      <Button fx:id="delete" layoutX="556.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" AnchorPane.rightAnchor="72.79999999999995">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,7 +26,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="Delete" layoutX="614.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" AnchorPane.rightAnchor="14.799999999999955">
+      <Button fx:id="update" layoutX="614.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" AnchorPane.rightAnchor="14.799999999999955">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                <image>

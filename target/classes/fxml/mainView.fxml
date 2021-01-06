@@ -23,7 +23,7 @@
                      <children>
                         <Button layoutX="62.0" layoutY="402.0" mnemonicParsing="false" onAction="#handleSync" prefHeight="21.0" prefWidth="26.0">
                            <graphic>
-                              <ImageView fitHeight="31.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="li">
+                              <ImageView fitHeight="31.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass=".li">
                                  <image>
                                     <Image url="@../images/sync.png" />
                                  </image>
@@ -50,7 +50,7 @@
                      <font>
                         <Font size="18.0" />
                      </font></ToggleButton>
-                   <ToggleButton fx:id="newMail111" layoutY="223.0" mnemonicParsing="false" onAction="#handleOutbox" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="Inviata" toggleGroup="$menu">
+                   <ToggleButton fx:id="readOutbox" layoutY="223.0" mnemonicParsing="false" onAction="#handleOutbox" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="Inviata" toggleGroup="$menu">
                      <font>
                         <Font size="18.0" />
                      </font></ToggleButton>

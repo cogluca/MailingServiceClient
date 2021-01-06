@@ -23,16 +23,6 @@ public class LoginManager {
 
     public static String sessionId = "";
 
-    /**
-     * Callback method invoked to notify that a user has been authenticated.
-     * Will show the main application screen.
-     */
-    //public void authenticated(String sessionID) { showMainView(sessionID); }
-
-    /**
-     * Callback method invoked to notify that a user has logged out of the main application.
-     * Will show the login application screen.
-     */
 
     public void logout() {
         showLoginScreen();

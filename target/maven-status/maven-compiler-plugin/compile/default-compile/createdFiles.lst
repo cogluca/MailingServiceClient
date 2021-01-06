@@ -5,6 +5,7 @@ client\Navigator$Route.class
 client\LoginManager.class
 models\ListMailModel.class
 models\Mail.class
+utils\JavaFXUtil.class
 client\controller\logged\MainController.class
 client\controller\logged\MessageListController.class
 client\controller\login\ErrorLoginController.class

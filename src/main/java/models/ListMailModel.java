@@ -3,26 +3,30 @@ package models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 public class ListMailModel {
 
-    private ObservableList incomingListMail = FXCollections.observableArrayList();
+    private ObservableList<Mail> incomingListMail = FXCollections.observableArrayList();
 
-    private ObservableList upcomingListMail = FXCollections.observableArrayList();
+    private ObservableList<Mail> upcomingListMail = FXCollections.observableArrayList();
 
 
-    public ObservableList getIncomingListMail() {
+    public ObservableList<Mail> getIncomingListMail() {
         return incomingListMail;
     }
 
-    public void setIncomingListMail(ObservableList incomingListMail) {
-        this.incomingListMail = incomingListMail;
+    public void setIncomingListMail(List<Mail> incomingListMail) {
+        this.incomingListMail.clear();
+        this.incomingListMail.addAll(incomingListMail);
     }
 
-    public ObservableList getUpcomingListMail() {
+    public ObservableList<Mail> getUpcomingListMail() {
         return upcomingListMail;
     }
 
-    public void setUpcomingListMail(ObservableList upcomingListMail) {
-        this.upcomingListMail = upcomingListMail;
+    public void setUpcomingListMail(List<Mail> upcomingListMail) {
+        this.incomingListMail.clear();
+        this.incomingListMail.addAll(upcomingListMail);
     }
 }
