@@ -10,6 +10,7 @@ import models.Mail;
 import utils.Controller;
 import utils.NetworkUtils;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +25,6 @@ public class MessageListController extends Controller {
 
     @FXML
     private ListView<Mail> mailListView;
-
-    String workaround;
-
-
 
     @Override
     public void init() {
@@ -68,5 +65,17 @@ public class MessageListController extends Controller {
         messageType = (String) arguments.get(0);
         listMailModel = (ListMailModel) arguments.get(1);
     }
+
+
+    @FXML
+    public void handleFwd(ActionEvent event) {
+
+
+
+
+    }
+
+
+
 
 }

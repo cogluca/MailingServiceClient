@@ -7,13 +7,14 @@
 
 <AnchorPane prefHeight="389.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.ReadMessage">
    <children>
-      <Button fx:id="sendbtn" layoutX="46.0" layoutY="360.0" mnemonicParsing="false" onAction="#sendHandle" text="Inoltra" AnchorPane.bottomAnchor="3.3999999999999986" />
-      <Button fx:id="sendbtn2" layoutX="116.0" layoutY="360.0" mnemonicParsing="false" onAction="#sendHandle" text="Cancella" AnchorPane.bottomAnchor="3.3999999999999986" />
-      <Button fx:id="sendbtn1" layoutX="202.0" layoutY="360.0" mnemonicParsing="false" onAction="#sendHandle" text="Rispondi" AnchorPane.bottomAnchor="3.3999999999999986" />
+      <Button fx:id="forwardBtn" layoutX="22.0" layoutY="359.0" mnemonicParsing="false" onAction="#forwardHandle" text="Inoltra" AnchorPane.bottomAnchor="3.0" />
+      <Button fx:id="backBtn" layoutX="108.0" layoutY="359.0" mnemonicParsing="false" onAction="#deleteHandle" text="Cancella" AnchorPane.bottomAnchor="3.0" />
+      <Button fx:id="answerBtn" layoutX="196.0" layoutY="359.0" mnemonicParsing="false" onAction="#answerHandle" text="Rispondi" AnchorPane.bottomAnchor="3.0" />
       <WebView fx:id="htmlView" layoutX="16.0" layoutY="95.0" prefHeight="250.0" prefWidth="374.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="95.0" />
-      <Label layoutX="22.0" layoutY="20.0" text="Oggetto" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="295.6" />
-      <Label layoutX="22.0" layoutY="41.0" text="Alessio Vannella" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="295.6" />
-      <Label layoutX="22.0" layoutY="68.0" prefHeight="18.0" prefWidth="111.0" text="a Lista destinatari, " AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="271.0" />
+      <Label fx:id="oggetto" layoutX="22.0" layoutY="20.0" text="Oggetto" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="295.6" />
+      <Label fx:id="sender" layoutX="22.0" layoutY="41.0" text="Alessio Vannella" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="295.6" />
+      <Label fx:id="receivers" layoutX="22.0" layoutY="68.0" prefHeight="18.0" prefWidth="111.0" text="a Lista destinatari, " AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="271.0" />
       <Label layoutX="279.0" layoutY="41.0" text="Data e ora di invio" AnchorPane.rightAnchor="28.200000000000003" />
+      <Button fx:id="answerAllBtn" layoutX="291.0" layoutY="359.0" mnemonicParsing="false" onAction="#answerAllHandle" text="Rispondi a tutti" />
    </children>
 </AnchorPane>

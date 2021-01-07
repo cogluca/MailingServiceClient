@@ -1,6 +1,7 @@
 package client.controller.logged;
 
 import client.Navigator;
+import javafx.scene.control.Label;
 import models.Mail;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,9 +9,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.web.WebView;
+import models.User;
 import utils.Controller;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReadMessage extends Controller implements Initializable {
@@ -19,10 +23,25 @@ public class ReadMessage extends Controller implements Initializable {
 
     }
     @FXML
-    private Button sendbtn;
+    private Button answerBtn;
+
+    @FXML
+    private Button forwardBtn;
+
+    @FXML
+    private Label oggetto;
+
+    @FXML
+    private Label receivers;
+
+    @FXML
+    private Label sender;
 
     @FXML
     private Button deletebtn;
+
+    @FXML
+    private Button answerAllBtn;
 
     @FXML
     private SplitPane dividerPanel;
@@ -47,10 +66,56 @@ public class ReadMessage extends Controller implements Initializable {
     }
 
     @FXML
-    public void sendHandle(ActionEvent actionEvent) {
-        System.out.println("Message sent");
-        Navigator.navigate(Navigator.Route.INBOX);
+    public void forwardHandle(ActionEvent actionEvent) {
+        List<Object> arguments = new ArrayList<>();
 
+        User mandante = new User(sender.getText());
+
+        arguments.add("SEND");
+        arguments.add(mandante);
+        arguments.add("FWD");
+        arguments.add(oggetto.getText());
+        arguments.add(htmlView.getAccessibleText());
+
+        System.out.println("Forwarding message");
+        Navigator.navigate(Navigator.Route.SEND, arguments);
+
+    }
+
+    @FXML
+    public void answerHandle(ActionEvent actionEvent) {
+        List<Object> arguments = new ArrayList<>();
+
+        User mandante = new User(receivers.getText());
+
+        arguments.add("SEND");
+        arguments.add(mandante);
+        arguments.add("ANSWER");
+        arguments.add(oggetto.getText());
+        arguments.add(sender);
+
+        System.out.println("Answering message");
+        Navigator.navigate(Navigator.Route.SEND, arguments);
+
+    }
+
+    @FXML
+    public void answerAllHandle(ActionEvent actionEvent) {
+
+        List<Object> arguments = new ArrayList<>();
+
+        String everyReceiver = sender.getText() + ";" + receivers.getText();
+
+        User mandante = new User(sender.getText());
+
+        arguments.add("SEND");
+        arguments.add(mandante);
+        arguments.add("ANSWERALL");
+        arguments.add(oggetto.getText());
+        arguments.add(everyReceiver);
+
+        System.out.println("Answering all");
+        Navigator.navigate(Navigator.Route.SEND, arguments);
     }
 
     @FXML

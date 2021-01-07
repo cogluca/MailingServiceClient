@@ -50,15 +50,21 @@ public class SendMessage extends Controller implements Initializable {
 
     private Navigator navigator;
 
-    String messageType = "";
+    private String messageType = "";
 
     private User sender;
 
     private ListMailModel listMailModel;
 
+    private String oggettoPassato = "";
+    private String msgView = "";
+    private String receivers = "";
+    private String singleReceiver = "";
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         navigator = Navigator.getInstance();
+        init();
     }
 
     @FXML
@@ -81,7 +87,7 @@ public class SendMessage extends Controller implements Initializable {
 
             receiveState = new ObjectInputStream(serverConn.getInputStream());
 
-            sendMsg.writeUTF("SEND");
+            sendMsg.writeUTF(messageType);
             sendMsg.flush();
 
             sendMsg.writeUTF(LoginManager.sessionId);
@@ -128,15 +134,40 @@ public class SendMessage extends Controller implements Initializable {
     @Override
     public void init() {
 
+        List<Object> arguments = getArgumentList();
+        String function = (String) arguments.get(2);
+
+        if(function.equals("FWD")) {
+            oggettoPassato = (String) arguments.get(3);
+            msgView = (String) arguments.get(4);
+            oggetto.setText(oggettoPassato);
+            messageEditor.setHtmlText(msgView);
+        }
+        else if(function.equals("ANSWER")) {
+            oggettoPassato = (String) arguments.get(3);
+            singleReceiver = (String) arguments.get(4);
+            oggetto.setText(oggettoPassato);
+            destinatario.setText(singleReceiver);
+        }
+        else if(function.equals("ANSWERALL")) {
+            oggettoPassato = (String) arguments.get(3);
+            receivers = (String) arguments.get(4);
+            oggetto.setText(oggettoPassato);
+            destinatario.setText(receivers);
+        }
     }
 
     @Override
     public void dispatch() {
+
         List<Object> arguments = getArgumentList();
+
+
         if (arguments == null || arguments.size() <= 1) return;
         messageType = (String) arguments.get(0);
         String senderId = (String) arguments.get(1);
         sender = new User(senderId);
+
         //listMailModel = (ListMailModel) arguments.get(2);
     }
 }
