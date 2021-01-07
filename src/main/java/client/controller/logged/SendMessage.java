@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
+import jdk.jshell.execution.Util;
 import models.ListMailModel;
 import models.Mail;
 import models.User;
@@ -67,8 +68,6 @@ public class SendMessage extends Controller implements Initializable {
         Mail toSend;
         List<User> receiver = new ArrayList<>();
 
-        Alert issuesReceivers;
-
         long timeStamp = System.currentTimeMillis();
 
         dispatch();
@@ -89,9 +88,8 @@ public class SendMessage extends Controller implements Initializable {
             receiver = Utils.identifyReceivers(destinatario.getText());
 
             if(receiver == null) {
-                issuesReceivers = Utils.getAlert();
-                issuesReceivers.setContentText("One or more receivers do not exist");
-                Utils.sendAlert(issuesReceivers);
+                String issuesReceivers = "One or more receivers do not exist";
+                Utils.getAlert(issuesReceivers);
             }
             else {
                 toSend = new Mail(timeStamp, sender, receiver, oggetto.getText(), messageEditor.getHtmlText());
@@ -103,12 +101,7 @@ public class SendMessage extends Controller implements Initializable {
             String receipt = receiveState.readUTF();
             System.out.println(receipt);
 
-            Alert result = Utils.getAlert();
-            result.setContentText(receipt);
-            Utils.sendAlert(result);
-
-
-
+            Utils.getAlert(receipt);
 
         }catch(IOException e){
             System.out.println(e.getMessage());

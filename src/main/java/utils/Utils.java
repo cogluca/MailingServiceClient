@@ -44,26 +44,25 @@ public class Utils {
     }
 
 
-    public static Alert getAlert() {
+    public static void getAlert(String message) {
         ButtonType confirm = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         Alert a = new Alert(Alert.AlertType.NONE, "Promote pawn to:", confirm);
         a.setTitle("Error");
         a.setResizable(true);
+        a.setContentText(message);
 
-        return a;
-    }
-
-
-    public static void sendAlert(Alert a) {
-
-        //a.setContentText("One or more receivers do not exist");
         a.showAndWait().ifPresent(response -> {
-            if (response == a.confirm) {
+            if (response == confirm) {
                 a.close();
             }
         });
 
     }
+
+
+
+
+        //a.setContentText("One or more receivers do not exis
 
 /*
         List<User> sender = null;
