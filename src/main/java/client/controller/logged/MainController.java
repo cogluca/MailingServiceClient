@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
  * Sono presenti gli handler per gestire i click sui vari componenti
  * della GUI.
  */
-public class MainController extends Controller implements Initializable {
+public class  MainController extends Controller implements Initializable {
 
     @FXML
     private ToggleGroup menu;
@@ -100,8 +100,8 @@ public class MainController extends Controller implements Initializable {
                             }
 
                         }));
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
+        //fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        //fiveSecondsWonder.play();
 
 
     }
@@ -109,8 +109,11 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     void handleNewMail(ActionEvent action) {
+        List<Object> arguments = new ArrayList<>();
+        arguments.add("SEND");
+        arguments.add(getUser());
         System.out.println("writing new message");
-        Navigator.navigate(Navigator.Route.SEND);
+        Navigator.navigate(Navigator.Route.SEND, arguments);
     }
 
 
