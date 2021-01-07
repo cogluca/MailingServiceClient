@@ -25,6 +25,8 @@ public class MessageListController extends Controller {
     @FXML
     private ListView<Mail> mailListView;
 
+    String workaround;
+
 
 
     @Override

@@ -50,9 +50,11 @@ public class SendMessage extends Controller implements Initializable {
 
     private Navigator navigator;
 
-    private String messageType = "";
+    String messageType = "";
 
     private User sender;
+
+    private ListMailModel listMailModel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -108,7 +110,11 @@ public class SendMessage extends Controller implements Initializable {
         }
 
         System.out.println("Message sent");
-        Navigator.navigate(Navigator.Route.INBOX);
+        List<Object> arguments = new ArrayList<>();
+        arguments.add("INBOX");
+        listMailModel = new ListMailModel();
+        arguments.add(listMailModel);
+        Navigator.navigate(Navigator.Route.INBOX, arguments);
         System.out.println(messageEditor.getHtmlText());
 
     }
@@ -131,5 +137,6 @@ public class SendMessage extends Controller implements Initializable {
         messageType = (String) arguments.get(0);
         String senderId = (String) arguments.get(1);
         sender = new User(senderId);
+        //listMailModel = (ListMailModel) arguments.get(2);
     }
 }
