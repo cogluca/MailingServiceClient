@@ -3,6 +3,8 @@ package models;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // Model
 public class Mail implements Serializable {
@@ -22,14 +24,6 @@ public class Mail implements Serializable {
         this.receiver = receiver;
         this.object = object;
         this.message = message;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public User getSender() {
@@ -71,6 +65,19 @@ public class Mail implements Serializable {
                 ", receiver=" + receiver +
                 ", object='" + object + '\'' +
                 ", message='" + message + '\'' +
+                ", timestamp=" + id +
                 '}';
     }
+
+    public List<User> trimUsername() {
+        String toTrim = "";
+        for( User toTrimReceiver : receiver ) {
+            toTrim = toTrimReceiver.getUsername();
+            Matcher m = Pattern.compile("^[A-Za-z0-9._%+-]+@Parallel.com").matcher(toTrim);
+            if (m.find())
+                toTrim.replace("@Parallel.com", "");
+        }
+        return receiver;
+    }
+
 }

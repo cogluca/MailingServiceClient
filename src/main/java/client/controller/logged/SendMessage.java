@@ -63,8 +63,8 @@ public class SendMessage extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         navigator = Navigator.getInstance();
-        init();
     }
 
     @FXML
@@ -116,10 +116,13 @@ public class SendMessage extends Controller implements Initializable {
         }
 
         System.out.println("Message sent");
+
         List<Object> arguments = new ArrayList<>();
-        arguments.add("INBOX");
         listMailModel = new ListMailModel();
+
+        arguments.add("INBOX");
         arguments.add(listMailModel);
+
         Navigator.navigate(Navigator.Route.INBOX, arguments);
         System.out.println(messageEditor.getHtmlText());
 
@@ -127,33 +130,46 @@ public class SendMessage extends Controller implements Initializable {
 
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
+
+        List<Object> arguments = new ArrayList<>();
+        listMailModel = new ListMailModel();
+
+        arguments.add("INBOX");
+        arguments.add(listMailModel);
+
         System.out.println("Message deleted");
-        Navigator.navigate(Navigator.Route.INBOX);
+        Navigator.navigate(Navigator.Route.INBOX, arguments);
     }
 
     @Override
     public void init() {
 
         List<Object> arguments = getArgumentList();
-        String function = (String) arguments.get(2);
+        if( arguments.size() > 2) {
+            String function = (String) arguments.get(2);
 
-        if(function.equals("FWD")) {
-            oggettoPassato = (String) arguments.get(3);
-            msgView = (String) arguments.get(4);
-            oggetto.setText(oggettoPassato);
-            messageEditor.setHtmlText(msgView);
-        }
-        else if(function.equals("ANSWER")) {
-            oggettoPassato = (String) arguments.get(3);
-            singleReceiver = (String) arguments.get(4);
-            oggetto.setText(oggettoPassato);
-            destinatario.setText(singleReceiver);
-        }
-        else if(function.equals("ANSWERALL")) {
-            oggettoPassato = (String) arguments.get(3);
-            receivers = (String) arguments.get(4);
-            oggetto.setText(oggettoPassato);
-            destinatario.setText(receivers);
+            if (function.equals("FWD")) {
+
+                oggettoPassato = (String) arguments.get(3);
+                msgView = (String) arguments.get(4);
+
+                oggetto.setText(oggettoPassato);
+                messageEditor.setHtmlText(msgView);
+            } else if (function.equals("ANSWER")) {
+
+                oggettoPassato = (String) arguments.get(3);
+                singleReceiver = (String) arguments.get(4);
+
+                oggetto.setText(oggettoPassato);
+                destinatario.setText(singleReceiver);
+            } else if (function.equals("ANSWERALL")) {
+
+                oggettoPassato = (String) arguments.get(3);
+                receivers = (String) arguments.get(4);
+
+                oggetto.setText(oggettoPassato);
+                destinatario.setText(receivers);
+            }
         }
     }
 
@@ -162,10 +178,11 @@ public class SendMessage extends Controller implements Initializable {
 
         List<Object> arguments = getArgumentList();
 
-
         if (arguments == null || arguments.size() <= 1) return;
+
         messageType = (String) arguments.get(0);
         String senderId = (String) arguments.get(1);
+
         sender = new User(senderId);
 
         //listMailModel = (ListMailModel) arguments.get(2);

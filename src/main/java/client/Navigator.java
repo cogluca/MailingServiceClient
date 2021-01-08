@@ -1,5 +1,6 @@
 package client;
 
+import client.controller.logged.SendMessage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import utils.Controller;
@@ -59,6 +60,7 @@ public class Navigator {
 
 
                 Controller controller = loader.getController();
+
                 controller.setArgumentList(arguments);
                 controller.init();
 
