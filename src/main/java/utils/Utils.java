@@ -27,18 +27,16 @@ public class Utils {
         for(int i = 0; i < addresses.length; i++){
             String addr = addresses[i];
             Matcher m = Pattern.compile("^[A-Za-z0-9._%+-]+@Parallel.com").matcher(addr);
-            if(m.find())
+            if(m.find()) {
                 System.out.println(m.group());
                 s = m.group();
+                s = s.replace("@Parallel.com", "");
+                System.out.println(s);
                 sender = new User(s);
 
                 receivingUsers.add(sender);
-
-
-
+            }
         }
-
-
         return receivingUsers;
 
     }

@@ -100,8 +100,8 @@ public class  MainController extends Controller implements Initializable {
                             }
 
                         }));
-        //fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        //fiveSecondsWonder.play();
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
 
 
     }

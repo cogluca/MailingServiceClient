@@ -75,6 +75,7 @@ public class ReadMessage extends Controller implements Initializable {
         arguments.add(mandante);
         arguments.add("FWD");
         arguments.add(oggetto.getText());
+        //TODO : Commentare con lista argomenti
         arguments.add(htmlView.getAccessibleText());
 
         System.out.println("Forwarding message");
