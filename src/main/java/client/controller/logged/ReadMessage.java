@@ -1,7 +1,9 @@
 package client.controller.logged;
 
+import client.LoginManager;
 import client.Navigator;
 import javafx.scene.control.Label;
+import models.ListMailModel;
 import models.Mail;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +13,13 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.web.WebView;
 import models.User;
 import utils.Controller;
+import utils.NetworkUtils;
+import utils.Utils;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +61,10 @@ public class ReadMessage extends Controller implements Initializable {
 
     private Mail mail;
 
+    private String messageType = "";
+
+    private Mail fromMailCell;
+
     public void setMail(Mail mail) {
         this.mail = mail;
     }
@@ -61,8 +73,7 @@ public class ReadMessage extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Initializing messageRead view");
         navigator = Navigator.getInstance();
-        String html = "<html dir=\"ltr\"><head></head><body contenteditable=\"false\"><p><span style=\"font-family: &quot;&quot;;\">This</span></p><p style=\"text-align: center;\"><span style=\"font-family: &quot;&quot;;\">is</span></p><p><span style=\"font-family: &quot;&quot;; font-style: italic; font-weight: bold;\">A test message</span></p></body></html>\n";
-        htmlView.getEngine().loadContent(html);
+
     }
 
     @FXML
@@ -72,7 +83,7 @@ public class ReadMessage extends Controller implements Initializable {
         User mandante = new User(sender.getText());
 
         arguments.add("SEND");
-        arguments.add(mandante);
+        arguments.add(mandante.getUsername());
         arguments.add("FWD");
         arguments.add(oggetto.getText());
         //TODO : Commentare con lista argomenti
@@ -110,7 +121,7 @@ public class ReadMessage extends Controller implements Initializable {
         User mandante = new User(sender.getText());
 
         arguments.add("SEND");
-        arguments.add(mandante);
+        arguments.add(mandante.getUsername());
         arguments.add("ANSWERALL");
         arguments.add(oggetto.getText());
         arguments.add(everyReceiver);
@@ -121,12 +132,58 @@ public class ReadMessage extends Controller implements Initializable {
 
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
+
+        List<Object> arguments = new ArrayList<>();
+
+        Socket serverConn = null;
+        ObjectOutputStream sendMsg = null;
+        ObjectInputStream receiveState = null;
+        Mail toDelete;
+        List<User> receiver = new ArrayList<>();
+        String serverResponse = "";
+
+        try {
+            serverConn = NetworkUtils.getSocket();
+
+            sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
+
+            receiveState = new ObjectInputStream(serverConn.getInputStream());
+
+            sendMsg.writeUTF("DELETE");
+            sendMsg.flush();
+
+            sendMsg.writeUTF(LoginManager.sessionId);
+            sendMsg.flush();
+
+            //toDelete = new Mail();
+
+            //sendMsg.writeObject(toDelete);
+            sendMsg.flush();
+
+            serverResponse = receiveState.readUTF();
+
+            Utils.getAlert(serverResponse);
+
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+
+        ListMailModel listMailModel = new ListMailModel();
+        messageType = "INBOX";
+
+        arguments.add(messageType);
+        arguments.add(listMailModel);
+
         System.out.println("Message deleted");
-        Navigator.navigate(Navigator.Route.INBOX);
+        Navigator.navigate(Navigator.Route.INBOX, arguments);
     }
 
     @Override
     public void init() {
-
+        List<Object> arguments = new ArrayList<>();
+        fromMailCell = (Mail) arguments.get(0);
+        oggetto.setText(fromMailCell.getObject());
+        htmlView.getEngine().loadContent(fromMailCell.getMessage());
+        sender.setText(fromMailCell.getSender().getUsername());
     }
 }
