@@ -1,6 +1,5 @@
 package client.controller.login;
 import client.LoginManager;
-import client.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -23,7 +23,11 @@ public abstract class Controller {
         this.argumentList = argumentList;
     }
 
-    public abstract void init();
+    public void init() {
+        dispatch();
+    }
 
-    protected abstract void dispatch();
+    protected void dispatch() {
+
+    }
 }

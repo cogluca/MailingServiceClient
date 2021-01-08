@@ -73,7 +73,7 @@ public class Navigator {
             System.out.println("ERROR:Can't load panel");
     }
 
-    public static void setContentPanel(BorderPane contentPanel) {
+    public void setContentPanel(BorderPane contentPanel) {
         if(instance == null) getInstance();
         instance.contentPanel = contentPanel;
     }

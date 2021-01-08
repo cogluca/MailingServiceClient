@@ -13,6 +13,7 @@ import java.util.List;
 
 public class NetworkUtils {
 
+
     private static final int port = 8189;
 
     /**
@@ -27,7 +28,6 @@ public class NetworkUtils {
             return null;
         }
     }
-
 
     public static String login(User user) throws IOException {
         Socket serverConn = getSocket();
