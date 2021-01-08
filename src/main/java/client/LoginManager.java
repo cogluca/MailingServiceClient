@@ -6,7 +6,7 @@ import client.controller.login.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import utils.NetworkUtils;
 
 import java.io.IOException;
 import java.util.Random;
@@ -25,6 +25,15 @@ public class LoginManager {
 
 
     public void logout() {
+
+        try {
+            NetworkUtils.logout();
+
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        destroySession();
         showLoginScreen();
     }
 
@@ -48,7 +57,7 @@ public class LoginManager {
                     getClass().getResource("/fxml/MainView.fxml")//need to replace with the main view
             );
             scene.setRoot((Parent) loader.load());
-            MainController controller = loader.getController();
+            MainController controller = (MainController)loader.getController();
             controller.setUser(user);
             controller.setLoginManager(this);
             //controller.initSessionID(this, sessionID);
@@ -65,22 +74,26 @@ public class LoginManager {
             scene.setRoot(loader.load());
             ErrorLoginController controller = loader.getController();
             controller.initManager(this);
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void generateSessionID() {
-        sessionId =  generateRandom();
+        sessionId = generateRandom();
+    }
+
+    public void destroySession() {
+        sessionId = "";
     }
 
     private static String generateRandom() {
-        String dict = "ABCDEFGHILMNOPQRSTUVZXWKJ1234567890";
+        String dict = "abcdefghijklmnopqrstuvwxyz1234567890";
         int strLen = 64;
-        Random rand=new Random();
-        StringBuilder res=new StringBuilder();
+        Random rand = new Random();
+        StringBuilder res = new StringBuilder();
         for (int i = 0; i < strLen; i++) {
-            int randIndex=rand.nextInt(dict.length());
+            int randIndex = rand.nextInt(dict.length());
             res.append(dict.charAt(randIndex));
         }
         return res.toString();

@@ -26,7 +26,7 @@ public class ListMailModel {
     }
 
     public void setUpcomingListMail(List<Mail> upcomingListMail) {
-        this.incomingListMail.clear();
-        this.incomingListMail.addAll(upcomingListMail);
+        this.upcomingListMail.clear();
+        this.upcomingListMail.addAll(upcomingListMail);
     }
 }

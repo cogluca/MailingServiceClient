@@ -30,7 +30,6 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     private WebView htmlView;
 
-    private Navigator navigator;
 
     private Mail mail;
 
@@ -40,8 +39,6 @@ public class ReadMessage extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("asdas");
-        navigator = Navigator.getInstance();
         String html = "<html dir=\"ltr\"><head></head><body contenteditable=\"false\"><p><span style=\"font-family: &quot;&quot;;\">This</span></p><p style=\"text-align: center;\"><span style=\"font-family: &quot;&quot;;\">is</span></p><p><span style=\"font-family: &quot;&quot;; font-style: italic; font-weight: bold;\">A test message</span></p></body></html>\n";
         htmlView.getEngine().loadContent(html);
     }
