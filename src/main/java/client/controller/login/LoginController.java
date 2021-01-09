@@ -40,7 +40,6 @@ public class LoginController implements Initializable {
         String loginResult = "";
 
         loginManager.generateSessionID();
-
         try {
             loginResult = NetworkUtils.login(new User(username.getText()));
         }
