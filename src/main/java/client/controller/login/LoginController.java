@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import models.User;
+import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +53,7 @@ public class LoginController implements Initializable {
         }
 
         if (loginResult.equals("Login successfully")) loginManager.showMainView(username.getText());
-        else loginManager.popErrorDialog();   //qui devo far poppare un popup con login errato
+        else Utils.getAlert(loginResult);   //qui devo far poppare un popup con login errato
 
     }
 

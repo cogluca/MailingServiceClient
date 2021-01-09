@@ -118,9 +118,13 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void answerAllHandle(ActionEvent actionEvent) {
 
+        String everyReceiver = "";
         List<Object> arguments = new ArrayList<>();
 
-        String everyReceiver = sender.getText() + ";" + receivers.getText();
+        if(receivers.getText().contains(sender.getText()))
+            everyReceiver = receivers.getText().replace("To: ","");
+        else
+            everyReceiver = sender.getText() + "@Parallel.com; " + receivers.getText().replace("To: ","");
 
         User mandante = new User(sender.getText());
 
@@ -168,10 +172,13 @@ public class ReadMessage extends Controller implements Initializable {
         List<Object> arguments = getArgumentList();
         fromMailCell = (Mail) arguments.get(0);
 
+        if(fromMailCell.getReceiver().size()<2)
+            answerAllBtn.setVisible(false);
+
         oggetto.setText("Oggetto: " + fromMailCell.getObject());
         htmlView.getEngine().loadContent(fromMailCell.getMessage());
         sender.setText(fromMailCell.getSender().getUsername());
-        receivers.setText(fromMailCell.getReceiver().toString());
+        receivers.setText("To: " + fromMailCell.listAddresses());
 
         Date dateSent = new Date(fromMailCell.getId());
         dataOraInvio.setText(dateSent.toString());

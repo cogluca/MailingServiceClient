@@ -48,25 +48,15 @@ public class LoginManager {
                     getClass().getResource("/fxml/MainView.fxml")//need to replace with the main view
             );
             scene.setRoot((Parent) loader.load());
+            //Stage mainView = new Stage()
+            scene.getWindow().setHeight(600);
+            scene.getWindow().setWidth(1000);
             MainController controller = loader.getController();
             controller.setUser(user);
             controller.setLoginManager(this);
             //controller.initSessionID(this, sessionID);
         } catch (IOException ex) {
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void popErrorDialog() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/ErrorLogin.fxml"));
-
-            scene.setRoot(loader.load());
-            ErrorLoginController controller = loader.getController();
-            controller.initManager(this);
-        }catch(IOException e){
-            System.out.println(e.getMessage());
         }
     }
 

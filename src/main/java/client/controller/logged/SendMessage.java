@@ -155,13 +155,14 @@ public class SendMessage extends Controller implements Initializable {
 
                 oggetto.setText(oggettoPassato);
                 messageEditor.setHtmlText(msgView);
+
             } else if (function.equals("ANSWER")) {
 
                 oggettoPassato = (String) arguments.get(3);
                 singleReceiver = (String) arguments.get(4);
 
                 oggetto.setText(oggettoPassato);
-                destinatario.setText(singleReceiver);
+                destinatario.setText(singleReceiver + "@Parallel.com");
             } else if (function.equals("ANSWERALL")) {
 
                 oggettoPassato = (String) arguments.get(3);
