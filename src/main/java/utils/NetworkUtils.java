@@ -13,11 +13,23 @@ import java.util.List;
 
 public class NetworkUtils {
 
+
     private static final int port = 8189;
 
     /**
      * @return socket object
      */
+
+    private static boolean online;
+
+    public static boolean isOnline() {
+        return online;
+    }
+
+    public static void setOnline(boolean online) {
+        NetworkUtils.online = online;
+    }
+
     public static Socket getSocket() {
         try {
             String address = InetAddress.getLocalHost().getHostName();
@@ -27,7 +39,6 @@ public class NetworkUtils {
             return null;
         }
     }
-
 
     public static String login(User user) throws IOException {
         Socket serverConn = getSocket();
@@ -54,6 +65,7 @@ public class NetworkUtils {
     }
 
     public static void logout() throws IOException {
+
         Socket serverConn = getSocket();
         ObjectOutputStream outputStream = new ObjectOutputStream(serverConn.getOutputStream());
         ObjectInputStream inputStream = new ObjectInputStream(serverConn.getInputStream());
@@ -71,6 +83,8 @@ public class NetworkUtils {
     }
 
     public static List<Mail> loadInbox() throws Exception {
+
+        if(!isOnline()) return null;
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -94,6 +108,8 @@ public class NetworkUtils {
 
     public static List<Mail> loadOutbox() throws Exception {
 
+        if(!isOnline()) return null;
+
         Socket socket = NetworkUtils.getSocket();
 
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -115,6 +131,8 @@ public class NetworkUtils {
     }
 
     public static int checkUpdates(int clientNumber) throws Exception {
+
+        if(!isOnline()) return -1;
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -140,6 +158,9 @@ public class NetworkUtils {
     }
 
     public static int deleteMessage(Mail m) throws Exception {
+
+        if(!isOnline()) return -1;
+
         Socket socket = NetworkUtils.getSocket();
 
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());

@@ -13,6 +13,7 @@ import javafx.scene.web.HTMLEditor;
 import jdk.jshell.execution.Util;
 import models.ListMailModel;
 import models.Mail;
+import models.Response;
 import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
@@ -105,13 +106,14 @@ public class SendMessage extends Controller implements Initializable {
                 sendMsg.writeObject(toSend);
                 sendMsg.flush();
             }
-
-            String receipt = receiveState.readUTF();
+            Response r = (Response)receiveState.readObject();
+            String receipt = r.getResponseText();
+            //String receipt = receiveState.readUTF();
             System.out.println(receipt);
 
             Utils.getAlert(receipt);
 
-        }catch(IOException e){
+        }catch(IOException | ClassNotFoundException e){
             System.out.println(e.getMessage());
         }
 

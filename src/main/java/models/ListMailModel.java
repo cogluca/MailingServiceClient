@@ -17,8 +17,10 @@ public class ListMailModel {
     }
 
     public void setIncomingListMail(List<Mail> incomingListMail) {
-        this.incomingListMail.clear();
-        this.incomingListMail.addAll(incomingListMail);
+        if(incomingListMail!=null) {
+            this.incomingListMail.clear();
+            this.incomingListMail.addAll(incomingListMail);
+        }
     }
 
     public ObservableList<Mail> getUpcomingListMail() {
@@ -26,7 +28,9 @@ public class ListMailModel {
     }
 
     public void setUpcomingListMail(List<Mail> upcomingListMail) {
-        this.incomingListMail.clear();
-        this.incomingListMail.addAll(upcomingListMail);
+        if(upcomingListMail!=null) {
+            this.upcomingListMail.clear();
+            this.upcomingListMail.addAll(upcomingListMail);
+        }
     }
 }
