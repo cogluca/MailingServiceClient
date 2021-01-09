@@ -38,8 +38,6 @@ public class MailCell extends ListCell<Mail> {
     @FXML
     private Button forward;
 
-    @FXML
-    private Button inoltro;
 
     @FXML
     private AnchorPane pane;
@@ -69,8 +67,8 @@ public class MailCell extends ListCell<Mail> {
             from.setText("From: " + mail.getSender().getUsername());
             oggetto.setText(mail.getObject());
             //data ed ora invio
-            //Date date = new Date(mail.getId());
-            //datainvio.setText("ABBA");
+            Date date = new Date(mail.getId());
+            datainvio.setText(date.toString());
 
             List<Object> arguments = new ArrayList<>();
 
@@ -92,15 +90,21 @@ public class MailCell extends ListCell<Mail> {
                 getListView().getItems().remove(getItem());
 
             });
-            /*
-            update.setOnAction(actionEvent -> {
+
+            forward.setOnAction(actionEvent -> {
                 Mail m = getItem();
                 List<Object> argumentsToSend = new ArrayList<>();
-                //argumentsToSend.add(m);
-                Navigator.navigate(Navigator.Route.SEND);
+
+                argumentsToSend.add("SEND");
+                argumentsToSend.add(mail.getSender().getUsername());
+                argumentsToSend.add("FWD");
+                argumentsToSend.add(m.getObject());
+                argumentsToSend.add(m.getMessage());
+
+                Navigator.navigate(Navigator.Route.SEND, argumentsToSend);
 
             });
-*/
+
 
             setText(null);
             setGraphic(pane);

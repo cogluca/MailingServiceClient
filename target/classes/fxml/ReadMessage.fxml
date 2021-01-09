@@ -23,10 +23,10 @@
          <top>
             <Pane prefHeight="80.0" prefWidth="404.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="247.0" layoutY="41.0" text="Data e ora di invio" />
-                  <Label fx:id="receivers" layoutX="22.0" layoutY="49.0" prefHeight="18.0" prefWidth="111.0" text="a Lista destinatari, " />
-                  <Label fx:id="sender" layoutX="21.0" layoutY="14.0" text="Alessio Vannella" />
-                  <Label fx:id="oggetto" layoutX="250.0" layoutY="14.0" text="Oggetto" />
+                  <Label fx:id="dataOraInvio" layoutX="211.0" layoutY="33.0" prefHeight="17.0" prefWidth="174.0" text="Data e ora di invio" />
+                  <Label fx:id="receivers" layoutX="22.0" layoutY="57.0" prefHeight="18.0" prefWidth="354.0" text="a Lista destinatari, " />
+                  <Label fx:id="sender" layoutX="22.0" layoutY="14.0" text="Alessio Vannella" />
+                  <Label fx:id="oggetto" layoutX="22.0" layoutY="33.0" text="Oggetto" />
                </children>
             </Pane>
          </top>

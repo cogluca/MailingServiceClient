@@ -9,11 +9,11 @@
 
 <AnchorPane fx:id="pane" prefHeight="56.0" prefWidth="668.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="from" layoutX="14.0" layoutY="17.0" prefHeight="22.0" prefWidth="110.0" text="alessio.vannella">
+      <Label fx:id="from" layoutX="14.0" layoutY="17.0" prefHeight="22.0" prefWidth="136.0" text="alessio.vannella">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="oggetto" layoutX="142.0" layoutY="17.0" minWidth="-Infinity" prefHeight="22.0" prefWidth="192.0" text="Questo è un oggetto di prova" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="334.0">
+      <Label fx:id="oggetto" layoutX="169.0" layoutY="18.0" minWidth="-Infinity" prefHeight="22.0" prefWidth="151.0" text="Questo è un oggetto di prova" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="348.0">
          <font>
             <Font size="15.0" />
          </font></Label>
@@ -35,9 +35,9 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="datainvio" layoutX="348.0" layoutY="20.0" prefHeight="17.0" prefWidth="149.0" text="Data invio">
+      <Label fx:id="datainvio" layoutX="368.0" layoutY="20.0" prefHeight="18.0" prefWidth="175.0" text="Data invio">
          <font>
-            <Font size="9.0" />
+            <Font size="14.0" />
          </font>
       </Label>
    </children>

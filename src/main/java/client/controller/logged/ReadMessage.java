@@ -22,6 +22,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,6 +54,9 @@ public class ReadMessage extends Controller implements Initializable {
 
     @FXML
     private SplitPane dividerPanel;
+
+    @FXML
+    private Label dataOraInvio;
 
     @FXML
     private WebView htmlView;
@@ -104,7 +108,7 @@ public class ReadMessage extends Controller implements Initializable {
         arguments.add(mandante);
         arguments.add("ANSWER");
         arguments.add(oggetto.getText());
-        arguments.add(sender);
+        arguments.add(sender.getText());
 
         System.out.println("Answering message");
         Navigator.navigate(Navigator.Route.SEND, arguments);
@@ -135,36 +139,16 @@ public class ReadMessage extends Controller implements Initializable {
 
         List<Object> arguments = new ArrayList<>();
 
-        Socket serverConn = null;
-        ObjectOutputStream sendMsg = null;
-        ObjectInputStream receiveState = null;
-        Mail toDelete;
-        List<User> receiver = new ArrayList<>();
-        String serverResponse = "";
-
         try {
-            serverConn = NetworkUtils.getSocket();
 
-            sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
+            int serverResponse = NetworkUtils.deleteMessage(fromMailCell);
 
-            receiveState = new ObjectInputStream(serverConn.getInputStream());
+            if (serverResponse == 1)
+                Utils.getAlert("Successfully deleted mail");
+            else
+                Utils.getAlert("An error occurred deleting the mail");
 
-            sendMsg.writeUTF("DELETE");
-            sendMsg.flush();
-
-            sendMsg.writeUTF(LoginManager.sessionId);
-            sendMsg.flush();
-
-            //toDelete = new Mail();
-
-            //sendMsg.writeObject(toDelete);
-            sendMsg.flush();
-
-            serverResponse = receiveState.readUTF();
-
-            Utils.getAlert(serverResponse);
-
-        }catch(IOException e){
+        }catch(Exception e){
             System.out.println(e.getMessage());
         }
 
@@ -180,10 +164,16 @@ public class ReadMessage extends Controller implements Initializable {
 
     @Override
     public void init() {
-        List<Object> arguments = new ArrayList<>();
+
+        List<Object> arguments = getArgumentList();
         fromMailCell = (Mail) arguments.get(0);
-        oggetto.setText(fromMailCell.getObject());
+
+        oggetto.setText("Oggetto: " + fromMailCell.getObject());
         htmlView.getEngine().loadContent(fromMailCell.getMessage());
         sender.setText(fromMailCell.getSender().getUsername());
+        receivers.setText(fromMailCell.getReceiver().toString());
+
+        Date dateSent = new Date(fromMailCell.getId());
+        dataOraInvio.setText(dateSent.toString());
     }
 }
