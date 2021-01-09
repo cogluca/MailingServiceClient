@@ -4,7 +4,6 @@ client\controller\login\LoginController.class
 client\Navigator$Route.class
 client\LoginManager.class
 models\ListMailModel.class
-client\controller\login\LoginController$1.class
 models\Mail.class
 utils\JavaFXUtil.class
 utils\Utils.class
