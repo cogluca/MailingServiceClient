@@ -13,6 +13,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import models.ListMailModel;
+import models.Response;
 import models.User;
 import utils.Controller;
 import utils.JavaFXUtil;
@@ -84,10 +85,10 @@ public class MainController extends Controller implements Initializable {
 
         autoReconnectWorker = new Timeline(new KeyFrame(Duration.seconds(5), actionEvent -> {
         try {
-            String response = NetworkUtils.login(new User(user));
+            Response response = NetworkUtils.login(new User(user));
             System.out.println(response);
             // TODO: Fix with Response object instead
-            if(response.equals("Login successfully")) {
+            if(response.getResponseText().equals("Login successfully")) {
                 NetworkUtils.setOnline(true);
                 syncWorker.play();
 

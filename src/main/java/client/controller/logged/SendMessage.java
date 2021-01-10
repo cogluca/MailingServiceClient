@@ -64,58 +64,33 @@ public class SendMessage extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         navigator = Navigator.getInstance();
     }
 
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
 
-        Socket serverConn = null;
-        ObjectOutputStream sendMsg = null;
-        ObjectInputStream receiveState = null;
         Mail toSend;
         List<User> receiver = new ArrayList<>();
-
         long timeStamp = System.currentTimeMillis();
 
         dispatch();
+        System.out.println("Pre invio network util");
+        receiver = Utils.identifyReceivers(destinatario.getText());
+        System.out.println("Print destinatari in sendHandle "+ destinatario.getText());
 
-        try {
-            serverConn = NetworkUtils.getSocket();
 
-            sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
-
-            receiveState = new ObjectInputStream(serverConn.getInputStream());
-
-            sendMsg.writeUTF(messageType);
-            sendMsg.flush();
-
-            sendMsg.writeUTF(LoginManager.sessionId);
-            sendMsg.flush();
-
-            receiver = Utils.identifyReceivers(destinatario.getText());
-
-            if(receiver == null) {
-                String issuesReceivers = "One or more receivers do not exist";
-                Utils.getAlert(issuesReceivers);
-            }
-            else {
-                toSend = new Mail(timeStamp, sender, receiver, oggetto.getText(), messageEditor.getHtmlText());
-
-                sendMsg.writeObject(toSend);
-                sendMsg.flush();
-            }
-            Response r = (Response)receiveState.readObject();
-            String receipt = r.getResponseText();
-            //String receipt = receiveState.readUTF();
-            System.out.println(receipt);
-
-            Utils.getAlert(receipt);
-
-        }catch(IOException | ClassNotFoundException e){
-            System.out.println(e.getMessage());
+        System.out.println("SendHandle reiceiver" + receiver.size() );
+        if (receiver.size() < 1) {
+            String issuesReceivers = "One or more receivers do not exist";
+            Utils.getAlert(issuesReceivers);
         }
+
+        toSend = new Mail(timeStamp, sender, receiver, oggetto.getText(), messageEditor.getHtmlText());
+        Response serverResponse = NetworkUtils.sendMessage(toSend);
+        System.out.println("Post invio network util");
+        System.out.println(serverResponse.getResponseText());
+        Utils.getAlert(serverResponse.getResponseText());
 
         System.out.println("Message sent");
 
@@ -147,7 +122,7 @@ public class SendMessage extends Controller implements Initializable {
     public void init() {
 
         List<Object> arguments = getArgumentList();
-        if( arguments.size() > 2) {
+        if (arguments.size() > 2) {
             String function = (String) arguments.get(2);
 
             if (function.equals("FWD")) {
@@ -183,9 +158,10 @@ public class SendMessage extends Controller implements Initializable {
 
         if (arguments == null || arguments.size() <= 1) return;
 
-        messageType = (String) arguments.get(0);
+        messageType = (String) arguments.get(0); //adesso è ridondante
         String senderId = (String) arguments.get(1);
 
+        System.out.println("I'm in dispatchSendMessage" + senderId);
         sender = new User(senderId);
 
         //listMailModel = (ListMailModel) arguments.get(2);

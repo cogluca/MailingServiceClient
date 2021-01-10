@@ -2,6 +2,7 @@ package client.controller.login;
 
 import client.LoginManager;
 import client.Navigator;
+import models.Response;
 import utils.NetworkUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,21 +39,22 @@ public class LoginController implements Initializable {
 
     public void handleLogin(ActionEvent actionEvent) {
 
-        String loginResult = "";
+        Response loginResult = new Response();
 
         loginManager.generateSessionID();
+
         try {
             loginResult = NetworkUtils.login(new User(username.getText()));
         }
-        catch (IOException exception) {
-            loginResult = "An error occurred during login";
+        catch (IOException | ClassNotFoundException e) {
+            loginResult.setResponseText("An error occurred during login");
         }
         catch (NullPointerException exception) {
-            loginResult = "Server is offline";
+            loginResult.setResponseText("Server is offline");
         }
 
-        if (loginResult.equals("Login successfully")) loginManager.showMainView(username.getText());
-        else Utils.getAlert(loginResult);   //qui devo far poppare un popup con login errato
+        if (loginResult.getResponseText().equals("Login successfully")) loginManager.showMainView(username.getText());
+        else Utils.getAlert(loginResult.getResponseText());   //qui devo far poppare un popup con login errato
 
     }
 

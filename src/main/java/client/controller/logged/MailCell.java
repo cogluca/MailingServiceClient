@@ -8,9 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import jdk.jshell.execution.Util;
 import models.Mail;
+import models.Response;
 import utils.Controller;
 import utils.NetworkUtils;
+import utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,12 +84,15 @@ public class MailCell extends ListCell<Mail> {
             });
 
             delete.setOnAction(actionEvent -> {
+                Response deletionRes = null;
                 System.out.println(getItem() + "  " + getIndex());
                 try {
-                    NetworkUtils.deleteMessage(getItem());
+                    deletionRes = NetworkUtils.deleteMessage(getItem());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    deletionRes.setResponseText("Something went extremely wrong");
                 }
+                Utils.getAlert(deletionRes.getResponseText());
                 getListView().getItems().remove(getItem());
 
             });

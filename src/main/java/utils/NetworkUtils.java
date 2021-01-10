@@ -2,6 +2,7 @@ package utils;
 
 import client.LoginManager;
 import models.Mail;
+import models.Response;
 import models.User;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkUtils {
@@ -40,11 +42,11 @@ public class NetworkUtils {
         }
     }
 
-    public static String login(User user) throws IOException {
+    public static Response login(User user) throws IOException,ClassNotFoundException {
         Socket serverConn = getSocket();
         ObjectOutputStream sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
         ObjectInputStream receiveLogin = new ObjectInputStream(serverConn.getInputStream());
-        String loginResult = "";
+        Response loginResult = null;
 
         sendLoginReq.writeUTF("LOGIN");
         sendLoginReq.flush();
@@ -55,7 +57,8 @@ public class NetworkUtils {
         sendLoginReq.writeObject(user);
         sendLoginReq.flush();
 
-        loginResult = receiveLogin.readUTF();
+        loginResult = (Response) receiveLogin.readObject();
+
 
         sendLoginReq.close();
         receiveLogin.close();
@@ -84,7 +87,7 @@ public class NetworkUtils {
 
     public static List<Mail> loadInbox() throws Exception {
 
-        if(!isOnline()) return null;
+        if (!isOnline()) return null;
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -108,7 +111,7 @@ public class NetworkUtils {
 
     public static List<Mail> loadOutbox() throws Exception {
 
-        if(!isOnline()) return null;
+        if (!isOnline()) return null;
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -132,7 +135,7 @@ public class NetworkUtils {
 
     public static int checkUpdates(int clientNumber) throws Exception {
 
-        if(!isOnline()) return -1;
+        if (!isOnline()) return -1;
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -157,9 +160,9 @@ public class NetworkUtils {
 
     }
 
-    public static int deleteMessage(Mail m) throws Exception {
+    public static Response deleteMessage(Mail m) throws Exception {
 
-        if(!isOnline()) return -1;
+        if (!isOnline()) return new Response(-1 , "Server currently offline");
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -176,7 +179,7 @@ public class NetworkUtils {
         outputStream.writeObject(m);
         outputStream.flush();
 
-        int status = inputStream.readInt();
+        Response status = (Response) inputStream.readObject();
 
         inputStream.close();
         outputStream.close();
@@ -184,6 +187,41 @@ public class NetworkUtils {
         return status;
 
 
+    }
+
+    public static Response sendMessage (Mail mailToSend) {
+
+        Socket serverConn = null;
+        ObjectOutputStream sendMsg = null;
+        ObjectInputStream receiveState = null;
+        List<User> receiver = new ArrayList<>();
+
+        Response serverResponse = null;
+
+        try {
+            serverConn = NetworkUtils.getSocket();
+
+            sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
+
+            receiveState = new ObjectInputStream(serverConn.getInputStream());
+
+            sendMsg.writeUTF("SEND");
+            sendMsg.flush();
+
+            sendMsg.writeUTF(LoginManager.sessionId);
+            sendMsg.flush();
+
+            sendMsg.writeObject(mailToSend);
+            sendMsg.flush();
+
+
+            serverResponse = (Response) receiveState.readObject();
+
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return serverResponse;
     }
 
 }

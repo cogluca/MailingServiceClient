@@ -28,15 +28,14 @@ public class Utils {
             String addr = addresses[i];
             Matcher m = Pattern.compile("^[A-Za-z0-9._%+-]+@Parallel.com").matcher(addr);
             if(m.find()) {
-                System.out.println(m.group());
                 s = m.group();
                 s = s.replace("@Parallel.com", "");
-                System.out.println(s);
                 sender = new User(s);
 
                 receivingUsers.add(sender);
             }
         }
+        System.out.println("In utils" + receivingUsers.size() );
         return receivingUsers;
 
     }
@@ -57,7 +56,18 @@ public class Utils {
 
     }
 
-
+    public static String trimUsers(String compositeLabel) {
+        if(compositeLabel.contains("To: "))
+            System.out.println("I'm in trimUsers");
+            compositeLabel = compositeLabel.replace("To: ", "");
+        if(compositeLabel.contains("@Parallel.com"))
+            compositeLabel = compositeLabel.replace("@Parallel.com","");
+        if(compositeLabel.contains(";"))
+            compositeLabel = compositeLabel.replace(";","");
+        if(compositeLabel.contains(" "))
+            compositeLabel = compositeLabel.replace(" ", "");
+        return compositeLabel;
+    }
 
 
         //a.setContentText("One or more receivers do not exis

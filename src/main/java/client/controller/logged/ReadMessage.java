@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.web.WebView;
+import models.Response;
 import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
@@ -102,10 +103,12 @@ public class ReadMessage extends Controller implements Initializable {
     public void answerHandle(ActionEvent actionEvent) {
         List<Object> arguments = new ArrayList<>();
 
-        User mandante = new User(receivers.getText());
+        System.out.println("I'm in answerHandleReadMessage");
+        String trimmedNewSender = Utils.trimUsers(receivers.getText());
+        System.out.println(trimmedNewSender);
 
         arguments.add("SEND");
-        arguments.add(mandante);
+        arguments.add(trimmedNewSender);
         arguments.add("ANSWER");
         arguments.add(oggetto.getText());
         arguments.add(sender.getText());
@@ -145,9 +148,9 @@ public class ReadMessage extends Controller implements Initializable {
 
         try {
 
-            int serverResponse = NetworkUtils.deleteMessage(fromMailCell);
+            Response serverResponse = NetworkUtils.deleteMessage(fromMailCell);
 
-            if (serverResponse == 1)
+            if (serverResponse.getResponseCode() == 0)
                 Utils.getAlert("Successfully deleted mail");
             else
                 Utils.getAlert("An error occurred deleting the mail");
