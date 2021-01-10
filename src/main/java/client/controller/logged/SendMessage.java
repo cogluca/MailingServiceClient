@@ -65,7 +65,7 @@ public class SendMessage extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        navigator = Navigator.getInstance();
+        //navigator = Navigator.getInstance();
     }
 
     @FXML

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.MainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="896.0" styleClass="frost" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.MainController">
    <children>
       <BorderPane fx:id="stackPane" prefHeight="655.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -19,38 +19,26 @@
 
              <AnchorPane prefHeight="554.0" prefWidth="164.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane prefHeight="655.2" prefWidth="164.0" style="-fx-background-color: linear-gradient(to top, #2ebf91, #8360c3);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Button layoutX="62.0" layoutY="402.0" mnemonicParsing="false" onAction="#handleSync" prefHeight="21.0" prefWidth="26.0">
-                           <graphic>
-                              <ImageView fitHeight="31.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass=".li">
-                                 <image>
-                                    <Image url="@../images/sync.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                     </children></AnchorPane>
-                  <Label fx:id="userName" layoutX="12.0" layoutY="14.0" text="">
+                  <Label fx:id="userName" layoutX="12.0" layoutY="14.0" text="" textFill="WHITE">
                      <font>
                         <Font size="16.0" />
                      </font></Label>
-                  <Label fx:id="userEmail" layoutX="10.0" layoutY="40.0" text="">
+                  <Label fx:id="userEmail" layoutX="10.0" layoutY="40.0" text="" textFill="WHITE">
                      <font>
                         <Font size="10.0" />
                      </font></Label>
-                   <ToggleButton fx:id="newMail1" layoutY="83.0" mnemonicParsing="false" onAction="#handleNewMail" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="Nuova mail">
+                   <ToggleButton fx:id="newMail1" layoutY="83.0" mnemonicParsing="false" onAction="#handleNewMail" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="New mail">
                      <toggleGroup>
                         <ToggleGroup fx:id="menu" />
                      </toggleGroup>
                      <font>
                         <Font size="18.0" />
                      </font></ToggleButton>
-                  <ToggleButton fx:id="readInbox" layoutY="153.0" mnemonicParsing="false" onAction="#handleInbox" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="In arrivo" toggleGroup="$menu">
+                  <ToggleButton fx:id="readInbox" layoutY="153.0" mnemonicParsing="false" onAction="#handleInbox" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="Inbox" toggleGroup="$menu">
                      <font>
                         <Font size="18.0" />
                      </font></ToggleButton>
-                   <ToggleButton fx:id="readOutbox" layoutY="223.0" mnemonicParsing="false" onAction="#handleOutbox" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="Inviata" toggleGroup="$menu">
+                   <ToggleButton fx:id="readOutbox" layoutY="223.0" mnemonicParsing="false" onAction="#handleOutbox" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="Sent" toggleGroup="$menu">
                      <font>
                         <Font size="18.0" />
                      </font></ToggleButton>
@@ -58,11 +46,25 @@
                      <font>
                         <Font size="18.0" />
                      </font></Button>
+                  <Button fx:id="syncButton" layoutX="62.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleSync" prefHeight="21.0" prefWidth="26.0" styleClass="li" AnchorPane.bottomAnchor="153.0">
+                     <graphic>
+                        <ImageView fitHeight="31.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" styleClass="li">
+                           <image>
+                              <Image url="@../images/sync.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label fx:id="syncLabel" layoutX="12.0" layoutY="503.0" style="-fx-font-weight: bold;" text="There may be updates" visible="false" AnchorPane.bottomAnchor="132.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </left>
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparency;" BorderPane.alignment="CENTER">
                <children>
                   <Pane fx:id="contentPane" prefHeight="655.2" prefWidth="732.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>

@@ -7,26 +7,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" prefHeight="56.0" prefWidth="668.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="pane" prefHeight="56.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="from" layoutX="14.0" layoutY="17.0" prefHeight="22.0" prefWidth="136.0" text="alessio.vannella">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Label fx:id="oggetto" layoutX="169.0" layoutY="18.0" minWidth="-Infinity" prefHeight="22.0" prefWidth="151.0" text="Questo è un oggetto di prova" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="348.0">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <Button fx:id="delete" layoutX="556.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" AnchorPane.rightAnchor="72.79999999999995">
-         <graphic>
-            <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/del.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="forward" layoutX="614.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" AnchorPane.rightAnchor="14.799999999999955">
+      <Button fx:id="forward" layoutX="614.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="14.799999999999955">
          <graphic>
             <ImageView fx:id="inoltro" fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -35,7 +18,24 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="datainvio" layoutX="368.0" layoutY="20.0" prefHeight="18.0" prefWidth="175.0" text="Data invio">
+      <Label fx:id="from" layoutX="14.0" layoutY="17.0" prefHeight="22.0" prefWidth="131.0" text="nome.utente" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="606.0">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="oggetto" alignment="TOP_LEFT" layoutX="169.0" layoutY="18.0" minWidth="-Infinity" prefHeight="22.0" prefWidth="253.0" text="Questo è un oggetto di prova" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="329.0">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Button fx:id="delete" layoutX="556.0" layoutY="11.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="34.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="72.79999999999995">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/del.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label fx:id="datainvio" alignment="BASELINE_RIGHT" layoutX="448.0" layoutY="19.0" prefHeight="20.0" prefWidth="175.0" text="Data invio" AnchorPane.leftAnchor="448.0" AnchorPane.rightAnchor="128.0">
          <font>
             <Font size="14.0" />
          </font>

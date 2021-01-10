@@ -38,13 +38,12 @@ public class Main extends Application {
                     exception.printStackTrace();
                 }
             }
-            System.out.println("Application Closed by click to Close Button(X)");
             System.exit(0);
         }));
+    }
 
+    private void initHandler() {
 
-
-        //lancia l'applicazione
     }
 
     public static void main(String[] args) { launch(args); }

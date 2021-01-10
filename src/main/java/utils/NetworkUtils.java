@@ -66,6 +66,8 @@ public class NetworkUtils {
 
     public static void logout() throws IOException {
 
+        if(!isOnline()) return;
+
         Socket serverConn = getSocket();
         ObjectOutputStream outputStream = new ObjectOutputStream(serverConn.getOutputStream());
         ObjectInputStream inputStream = new ObjectInputStream(serverConn.getInputStream());

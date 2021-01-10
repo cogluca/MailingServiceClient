@@ -4,15 +4,21 @@ import client.LoginManager;
 import client.Navigator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import models.ListMailModel;
+import models.Mail;
 import models.User;
 import utils.Controller;
 import utils.JavaFXUtil;
@@ -22,6 +28,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 //TODO: Add thread for Network request
 
@@ -43,7 +52,16 @@ public class MainController extends Controller implements Initializable {
     private Label userEmail;
 
     @FXML
+    private Label syncLabel;
+
+    @FXML
+    private Button syncButton;
+
+    @FXML
     private BorderPane stackPane;
+
+    @FXML
+    private ToggleButton readInbox;
 
     private String user;
 
@@ -73,7 +91,6 @@ public class MainController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
         JavaFXUtil.get().addAlwaysOneSelectedSupport(menu);
         listMailModel = new ListMailModel();
         NetworkUtils.setOnline(true);
@@ -82,22 +99,24 @@ public class MainController extends Controller implements Initializable {
 
         //Navigator.navigate(Navigator.Route.INBOX);
 
-        autoReconnectWorker = new Timeline(new KeyFrame(Duration.seconds(5), actionEvent -> {
-        try {
-            String response = NetworkUtils.login(new User(user));
-            System.out.println(response);
-            // TODO: Fix with Response object instead
-            if(response.equals("Login successfully")) {
-                NetworkUtils.setOnline(true);
-                syncWorker.play();
 
-                autoReconnectWorker.stop();
+        autoReconnectWorker = new Timeline(new KeyFrame(Duration.seconds(5), actionEvent -> {
+            try {
+                String response = NetworkUtils.login(new User(user));
+                System.out.println(response);
+                // TODO: Fix with Response object instead
+                if (response.equals("Login successfully")) {
+                    NetworkUtils.setOnline(true);
+                    syncWorker.play();
+
+                    autoReconnectWorker.stop();
+                }
+            } catch (Exception ignored) {
             }
-        }
-        catch (Exception ignored) {}
 
         }));
         autoReconnectWorker.setCycleCount(Timeline.INDEFINITE);
+
 
 
         syncWorker = new Timeline(
@@ -105,26 +124,33 @@ public class MainController extends Controller implements Initializable {
                         event -> {
                             try {
                                 if (NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) != 0) {
-                                    System.out.println("There are updates!!!" + listMailModel.getIncomingListMail());
-                                    System.out.println(listMailModel.getUpcomingListMail());
+                                    // Update view
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            syncButton.setStyle("-fx-border-color: white; -fx-border-width: 3; -fx-border-radius:10; -fx-background-radius: 10");
+                                            syncLabel.setVisible(true);
+
+                                        }
+                                    });
+
                                 }
                             } catch (Exception e) {
                                 NetworkUtils.setOnline(false);
-
                                 autoReconnectWorker.play();
                                 syncWorker.stop();
-                                // Server crashed / disconnected. Stop syncWorker and start autoReconnectWorker
-                                /*TODO: In autoReconnectWorker, try to connect to the server AND if success,
-                                   stop itself and restart syncWorker
-                                */
-
-
                             }
-
                         }));
         syncWorker.setCycleCount(Timeline.INDEFINITE);
         syncWorker.play();
 
+
+        readInbox.fire();
+        try {
+            listMailModel.setUpcomingListMail(NetworkUtils.loadOutbox());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -166,13 +192,14 @@ public class MainController extends Controller implements Initializable {
 
     }
 
-
     public void handleSync(ActionEvent actionEvent) {
-        try {
-            listMailModel.setIncomingListMail((NetworkUtils.loadInbox()));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        readInbox.fire();
+        if (!readInbox.isSelected()) readInbox.setSelected(true);
+
+        syncLabel.setVisible(false);
+        syncButton.setStyle("");
+
+
     }
 }

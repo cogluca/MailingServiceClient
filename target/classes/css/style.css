@@ -4,6 +4,14 @@
 
 }
 
+.li.toggle-button {
+    -fx-text-fill: white;
+}
+
+.li.button {
+    -fx-text-fill: white;
+}
+
 .li.toggle-button:selected {
     -fx-font-size: 18;
     -fx-font-weight: bold;
@@ -12,8 +20,20 @@
 
 }
 
+Label{
+    -fx-text-fill: white;
+}
+
 .li:hover {
     -fx-background-color: rgba(173, 173, 173, 0.24);
     -fx-text-fill: #e29051;
 
+}
+
+#syncButtonUpdate {
+    -fx-border-color: #e29051;
+}
+
+.frost {
+    -fx-background-image: url("../../../src/main/resources/images/bck.jpg");
 }

@@ -1,25 +1,20 @@
 package client.controller.logged;
 
-import client.LoginManager;
 import client.Navigator;
-import javafx.scene.control.Label;
-import models.ListMailModel;
-import models.Mail;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.web.WebView;
+import models.ListMailModel;
+import models.Mail;
 import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
 import utils.Utils;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,8 +70,7 @@ public class ReadMessage extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initializing messageRead view");
-        navigator = Navigator.getInstance();
+        //navigator = Navigator.getInstance();
 
     }
 
@@ -175,12 +169,12 @@ public class ReadMessage extends Controller implements Initializable {
         if(fromMailCell.getReceiver().size()<2)
             answerAllBtn.setVisible(false);
 
-        oggetto.setText("Oggetto: " + fromMailCell.getObject());
-        htmlView.getEngine().loadContent(fromMailCell.getMessage());
+        oggetto.setText("Object: " + fromMailCell.getObject());
+        htmlView.getEngine().loadContent("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>" + fromMailCell.getMessage() + "</body>");
         sender.setText(fromMailCell.getSender().getUsername());
         receivers.setText("To: " + fromMailCell.listAddresses());
 
-        Date dateSent = new Date(fromMailCell.getId());
-        dataOraInvio.setText(dateSent.toString());
+        String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getId()));
+        dataOraInvio.setText(dateSent);
     }
 }
