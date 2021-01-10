@@ -3,7 +3,7 @@ package models;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 
-import java.io.Serializable;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // Model
-public class Mail implements Serializable {
+public class Mail implements Externalizable {
 
+    private static final long serialVersionUID = -4034326865454415426L;
     private transient LongProperty id;
 
     private transient User sender;
@@ -22,13 +23,7 @@ public class Mail implements Serializable {
     private transient StringProperty message;
     private transient BooleanProperty sent;
 
-    public boolean isSent() {
-        return sent.get();
-    }
 
-    public void setSent(boolean sent) {
-        this.sent.set(sent);
-    }
 
     public Mail(long id, User sender, List<User> receiver, String object, String message) {
         this.id = new SimpleLongProperty(id);
@@ -37,7 +32,13 @@ public class Mail implements Serializable {
         if (receiver != null) setReceiver(receiver);
         this.object = new SimpleStringProperty(object);
         this.message = new SimpleStringProperty(message);
+        this.sent = new SimpleBooleanProperty();
     }
+
+    public Mail() {
+        init();
+    }
+
 
     public long getId() {
         return id.get();
@@ -47,7 +48,14 @@ public class Mail implements Serializable {
         this.id.set(id);
     }
 
-
+    public void init() {
+        this.id = new SimpleLongProperty();
+        this.sender = new User();
+        this.receiver = new SimpleListProperty<>();
+        this.object = new SimpleStringProperty();
+        this.message = new SimpleStringProperty();
+        this.sent = new SimpleBooleanProperty();
+    }
 
     public User getSender() {
         return sender;
@@ -63,8 +71,8 @@ public class Mail implements Serializable {
     }
 
     public void setReceiver(List<User> receiver) {
-        this.receiver.clear();
-        this.receiver.addAll(receiver);
+        //this.receiver.clear();
+        this.receiver.set(FXCollections.observableList(receiver));
     }
 
     public String getObject() {
@@ -81,6 +89,14 @@ public class Mail implements Serializable {
 
     public void setMessage(String message) {
         this.message.set(message);
+    }
+
+    public boolean isSent() {
+        return sent.get();
+    }
+
+    public void setSent(boolean sent) {
+        this.sent.set(sent);
     }
 
     @Override
@@ -102,4 +118,28 @@ public class Mail implements Serializable {
     }
 
 
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeLong(getId());
+        out.writeUTF(getMessage());
+        out.writeUTF(getObject());
+        //out.writeObject(getReceiver());
+        out.writeObject(getSender());
+        out.writeBoolean(isSent());
+
+
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        init();
+        setId(in.readLong());
+        setMessage(in.readUTF());
+        setObject(in.readUTF());
+        List<User> asd = new ArrayList<>();
+        asd.add(new User("luca.cognigni"));
+        setReceiver(asd);
+        setSender((User) in.readObject());
+        setSent(in.readBoolean());
+    }
 }

@@ -3,18 +3,20 @@ package models;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
-public class User implements Serializable {
+public class User implements Externalizable {
+
+    private static final long serialVersionUID = -3579562875503665712L;
     private transient StringProperty username;
 
     public User(String username) {
         this.username = new SimpleStringProperty(username);
     }
 
+    public User() {
+        init();
+    }
 
     public String getUsername() {
         return username.get();
@@ -28,15 +30,15 @@ public class User implements Serializable {
         this.username = new SimpleStringProperty();
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
 
         out.writeUTF(getUsername());
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         init();
         setUsername(in.readUTF());
     }
-
-
 }
