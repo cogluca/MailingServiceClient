@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
 
 
-<ListView fx:id="mailListView" prefHeight="566.0" prefWidth="753.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.MessageListController" />
+<AnchorPane style="-fx-background-color: rgb(47,47,47);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.MessageListController">
+   <children>
+      <ListView fx:id="mailListView" layoutY="43.0" prefHeight="523.0" prefWidth="753.0" style="-fx-control-inner-background: rgb(47,47,47); -fx-control-inner-background-alt: rgb(47,47,47);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0" />
+      <Label layoutX="60.0" layoutY="14.0" prefHeight="17.0" prefWidth="39.0" text="From" textFill="WHITE" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="654.0" />
+      <Label layoutX="292.0" layoutY="14.0" prefHeight="17.0" prefWidth="98.0" text="Object - Message" textFill="WHITE" AnchorPane.leftAnchor="292.0" AnchorPane.rightAnchor="363.0" />
+      <Separator layoutX="-1.0" layoutY="42.0" prefHeight="3.0" prefWidth="753.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="42.0" />
+      <Label layoutX="545.0" layoutY="14.0" text="Date" textFill="WHITE" AnchorPane.rightAnchor="183.0" />
+   </children>
+</AnchorPane>

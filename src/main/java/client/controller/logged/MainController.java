@@ -8,12 +8,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import models.ListMailModel;
-import models.Response;
 import models.User;
 import utils.Controller;
 import utils.JavaFXUtil;
@@ -44,7 +45,16 @@ public class MainController extends Controller implements Initializable {
     private Label userEmail;
 
     @FXML
+    private Label syncLabel;
+
+    @FXML
+    private Button syncButton;
+
+    @FXML
     private BorderPane stackPane;
+
+    @FXML
+    private ToggleButton readInbox;
 
     private String user;
 
@@ -85,10 +95,10 @@ public class MainController extends Controller implements Initializable {
 
         autoReconnectWorker = new Timeline(new KeyFrame(Duration.seconds(5), actionEvent -> {
         try {
-            Response response = NetworkUtils.login(new User(user));
+            String response = NetworkUtils.login(new User(user));
             System.out.println(response);
             // TODO: Fix with Response object instead
-            if(response.getResponseText().equals("Login successfully")) {
+            if(response.equals("Login successfully")) {
                 NetworkUtils.setOnline(true);
                 syncWorker.play();
 
@@ -126,6 +136,13 @@ public class MainController extends Controller implements Initializable {
         syncWorker.setCycleCount(Timeline.INDEFINITE);
         syncWorker.play();
 
+
+        readInbox.fire();
+        try {
+            listMailModel.setUpcomingListMail(NetworkUtils.loadOutbox());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -169,11 +186,13 @@ public class MainController extends Controller implements Initializable {
 
 
     public void handleSync(ActionEvent actionEvent) {
-        try {
-            listMailModel.setIncomingListMail((NetworkUtils.loadInbox()));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        readInbox.fire();
+        if (!readInbox.isSelected()) readInbox.setSelected(true);
+
+        syncLabel.setVisible(false);
+        syncButton.setStyle("");
+
+
     }
 }

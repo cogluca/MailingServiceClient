@@ -1,6 +1,5 @@
 package client;
 
-import client.controller.logged.SendMessage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import utils.Controller;
@@ -11,13 +10,15 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+//TODO: Save controllers OR save MainController at least
 /**
- * Singleton Class for Navigation
+ * Singleton Class for Navigation across fxml
  */
-//TODO: Better error Handling
-//TODO: Generalize and improve views routing
 public class Navigator {
 
+    /**
+     * Possible routes
+     */
     public enum Route {
         MAIN,
         INBOX,
@@ -25,9 +26,17 @@ public class Navigator {
         SEND,
         READ
     }
-    private static Map<Route, String> routes;
-    private Route r = Route.MAIN;
 
+    /**
+     * Here is stored the association Route -> ResourcePath (fxml)
+     */
+    private Map<Route, String> routes;
+    private static Navigator instance = null;
+    private BorderPane contentPanel = null;
+
+    /**
+     * Initialize the routes Map
+     */
     private void initRoutes() {
         routes = new EnumMap<>(Route.class);
         routes.put(Route.MAIN, "/fxml/MainView.fxml");
@@ -38,48 +47,55 @@ public class Navigator {
     }
 
 
-
-
-    private static Navigator instance = null;
-
-    public BorderPane contentPanel = null;
-
+    /**
+     * Load a route inside the contentPanel. navigate across fxml
+     * @param r the route element where should navigate
+     */
     public static void navigate(Route r) {
         navigate(r, new ArrayList<>());
     }
 
+    /**
+     * Load a route inside the contentPanel. navigate across fxml
+     * @param r the route element where should navigate
+     * @param arguments a list of arguments that should be passed to the new controller
+     */
     public static void navigate(Route r, List<Object> arguments) {
 
-        if(!routes.containsKey(r)) System.out.println("ERROR: Wrong route");
-        String text = routes.get(r);
+        if (!instance.routes.containsKey(r)) {
+            System.out.println("ERROR: Wrong route");
+            return;
+        }
+
+        String routeResource = instance.routes.get(r);
         if (instance.contentPanel != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(text));
+                FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(routeResource));
 
                 instance.contentPanel.setCenter(loader.load());
 
-
                 Controller controller = loader.getController();
-
                 controller.setArgumentList(arguments);
                 controller.init();
-
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else
+        } else
             System.out.println("ERROR:Can't load panel");
     }
 
+    /**
+     * Setter for contentPanel
+     */
     public void setContentPanel(BorderPane contentPanel) {
-        if(instance == null) getInstance();
+        if (instance == null) getInstance();
         instance.contentPanel = contentPanel;
     }
 
     /**
      * Creates or retrieve a Singleton Navigator instance
+     *
      * @return the singleton instance
      */
     public static Navigator getInstance() {
@@ -89,9 +105,6 @@ public class Navigator {
         }
         return instance;
     }
-
-
-
 
 
 }

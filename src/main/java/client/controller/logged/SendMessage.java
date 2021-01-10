@@ -64,14 +64,19 @@ public class SendMessage extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        navigator = Navigator.getInstance();
+
+        //navigator = Navigator.getInstance();
     }
 
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
 
+        Socket serverConn = null;
+        ObjectOutputStream sendMsg = null;
+        ObjectInputStream receiveState = null;
         Mail toSend;
         List<User> receiver = new ArrayList<>();
+
         long timeStamp = System.currentTimeMillis();
 
         dispatch();
@@ -122,7 +127,7 @@ public class SendMessage extends Controller implements Initializable {
     public void init() {
 
         List<Object> arguments = getArgumentList();
-        if (arguments.size() > 2) {
+        if( arguments.size() > 2) {
             String function = (String) arguments.get(2);
 
             if (function.equals("FWD")) {
@@ -158,10 +163,9 @@ public class SendMessage extends Controller implements Initializable {
 
         if (arguments == null || arguments.size() <= 1) return;
 
-        messageType = (String) arguments.get(0); //adesso è ridondante
+        messageType = (String) arguments.get(0);
         String senderId = (String) arguments.get(1);
 
-        System.out.println("I'm in dispatchSendMessage" + senderId);
         sender = new User(senderId);
 
         //listMailModel = (ListMailModel) arguments.get(2);

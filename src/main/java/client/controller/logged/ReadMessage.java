@@ -76,8 +76,7 @@ public class ReadMessage extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initializing messageRead view");
-        navigator = Navigator.getInstance();
+        //navigator = Navigator.getInstance();
 
     }
 
@@ -178,12 +177,12 @@ public class ReadMessage extends Controller implements Initializable {
         if(fromMailCell.getReceiver().size()<2)
             answerAllBtn.setVisible(false);
 
-        oggetto.setText("Oggetto: " + fromMailCell.getObject());
-        htmlView.getEngine().loadContent(fromMailCell.getMessage());
+        oggetto.setText("Object: " + fromMailCell.getObject());
+        htmlView.getEngine().loadContent("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>" + fromMailCell.getMessage() + "</body>");
         sender.setText(fromMailCell.getSender().getUsername());
         receivers.setText("To: " + fromMailCell.listAddresses());
 
-        Date dateSent = new Date(fromMailCell.getId());
-        dataOraInvio.setText(dateSent.toString());
+        String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getId()));
+        dataOraInvio.setText(dateSent);
     }
 }

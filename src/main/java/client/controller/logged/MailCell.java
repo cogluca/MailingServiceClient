@@ -16,9 +16,14 @@ import utils.NetworkUtils;
 import utils.Utils;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MailCell extends ListCell<Mail> {
 
@@ -50,34 +55,32 @@ public class MailCell extends ListCell<Mail> {
     protected void updateItem(Mail mail, boolean empty) {
         super.updateItem(mail, empty);
 
-        if(empty || mail == null) {
+        if (empty || mail == null) {
 
             setText(null);
             setGraphic(null);
 
         } else {
-                FXMLLoader mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
-                mLLoader.setController(this);
+            FXMLLoader mLLoader = new FXMLLoader(getClass().getResource("/fxml/ListCell.fxml"));
+            mLLoader.setController(this);
 
-                try {
-                    mLLoader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                mLLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
+            from.setText(mail.getSender().getUsername());
+            oggetto.setText(mail.getObject() + " - " + getText(mail.getMessage()));
+            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (mail.getId()));
+            datainvio.setText(date);
 
-            from.setText("From: " + mail.getSender().getUsername());
-            oggetto.setText(mail.getObject());
-            //data ed ora invio
-            Date date = new Date(mail.getId());
-            datainvio.setText(date.toString());
 
             List<Object> arguments = new ArrayList<>();
 
             this.setOnMouseClicked(event -> {
-                if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                    System.out.println("Clickato sulla mail " + mail);
+                if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     arguments.add(mail);
                     Navigator.navigate(Navigator.Route.READ, arguments);
                 }
@@ -117,5 +120,26 @@ public class MailCell extends ListCell<Mail> {
         }
 
     }
+    public static String getText(String htmlText) {
+
+        String result = "";
+
+        Pattern pattern = Pattern.compile("<[^>]*>");
+        Matcher matcher = pattern.matcher(htmlText);
+        final StringBuffer text = new StringBuffer(htmlText.length());
+
+        while (matcher.find()) {
+            matcher.appendReplacement(
+                    text,
+                    " ");
+        }
+
+        matcher.appendTail(text);
+
+        result = text.toString().trim();
+
+        return result;
+    }
+
 
 }
