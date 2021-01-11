@@ -22,6 +22,8 @@ public class User implements Externalizable {
         return username.get();
     }
 
+    public StringProperty userProperty () {return username;}
+
     public void setUsername(String username) {
         this.username.set(username);
     }

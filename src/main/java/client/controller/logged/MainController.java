@@ -57,7 +57,7 @@ public class MainController extends Controller implements Initializable {
     @FXML
     private ToggleButton readInbox;
 
-    private String user;
+    private User userToBind = new User();
 
     private Timeline syncWorker;
     private Timeline autoReconnectWorker;
@@ -65,13 +65,10 @@ public class MainController extends Controller implements Initializable {
 
     private ListMailModel listMailModel;
 
-    public String getUser() {
-        return user;
-    }
 
     public void setUser(String user) {
-        this.user = user;
-        userName.setText(user);
+        this.userToBind.setUsername(user);
+        userName.textProperty().bind(userToBind.userProperty());
         userEmail.setText(user + "@Parallel.com");
     }
 
@@ -96,9 +93,11 @@ public class MainController extends Controller implements Initializable {
 
         autoReconnectWorker = new Timeline(new KeyFrame(Duration.seconds(5), actionEvent -> {
         try {
-            Response response = NetworkUtils.login(new User(user));
+            User toLog = new User();
+            toLog.setUsername(userToBind.getUsername());
+            Response response = NetworkUtils.login(toLog);
             System.out.println(response);
-            // TODO: Fix with Response object instead
+
             if(response.getResponseText().equals("Login successfully")) {
                 NetworkUtils.setOnline(true);
                 syncWorker.play();
@@ -151,8 +150,8 @@ public class MainController extends Controller implements Initializable {
     @FXML
     void handleNewMail(ActionEvent action) {
         List<Object> arguments = new ArrayList<>();
-        arguments.add("SEND");
-        arguments.add(getUser());
+        //arguments.add("SEND");
+        arguments.add(userToBind.getUsername());
         System.out.println("writing new message");
         Navigator.navigate(Navigator.Route.SEND, arguments);
     }

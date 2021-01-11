@@ -1,5 +1,7 @@
 package models;
 
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 
@@ -26,6 +28,7 @@ public class Mail implements Externalizable {
 
 
     public Mail(long id, User sender, List<User> receiver, String object, String message) {
+
         this.id = new SimpleLongProperty(id);
         this.sender = sender;
         this.receiver = new SimpleListProperty<User>();
@@ -99,6 +102,18 @@ public class Mail implements Externalizable {
         this.sent.set(sent);
     }
 
+    //Pacchetto getProperty e non campi
+
+    public SimpleLongProperty idProperty() {return (SimpleLongProperty) id;}
+
+    public SimpleListProperty<User> receiverProperty() {return (SimpleListProperty<User>) receiver;}
+
+    public SimpleStringProperty objectProperty() {return (SimpleStringProperty) object;}
+
+    public SimpleStringProperty messageProperty() {return (SimpleStringProperty) message;}
+
+    public SimpleBooleanProperty isSentProperty() {return (SimpleBooleanProperty) sent;}
+
     @Override
     public String toString() {
         return "Mail{" +
@@ -109,10 +124,15 @@ public class Mail implements Externalizable {
                 '}';
     }
 
-    public String listAddresses() {
-        String addresses = "";
+    public SimpleStringProperty listAddresses() {
+        String mails = "";
+        SimpleStringProperty addresses = new SimpleStringProperty();
         for(User receivingAddress: receiver) {
-            addresses += receivingAddress.getUsername() + "@Parallel.com; ";
+            mails += receivingAddress.getUsername() + "@Parallel.com; ";
+            //addresses.concat(receivingAddress.userProperty()).concat("@Parallel.com; ");
+            //(Bindings.concat(receivingAddress.getUsername(),"@Parallel.com"));
+            System.out.println(addresses.toString());
+            addresses.setValue(mails);
         }
         return addresses;
     }
@@ -121,10 +141,10 @@ public class Mail implements Externalizable {
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(getId());
-        out.writeUTF(getMessage());
-        out.writeUTF(getObject());
-        //out.writeObject(getReceiver());
         out.writeObject(getSender());
+        out.writeObject(getReceiver());
+        out.writeUTF(getObject());
+        out.writeUTF(getMessage());
         out.writeBoolean(isSent());
 
 
@@ -134,12 +154,10 @@ public class Mail implements Externalizable {
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         init();
         setId(in.readLong());
-        setMessage(in.readUTF());
-        setObject(in.readUTF());
-        List<User> asd = new ArrayList<>();
-        asd.add(new User("luca.cognigni"));
-        setReceiver(asd);
         setSender((User) in.readObject());
+        setReceiver((List<User>) in.readObject());
+        setObject(in.readUTF());
+        setMessage(in.readUTF());
         setSent(in.readBoolean());
     }
 }

@@ -2,6 +2,10 @@ package client.controller.login;
 
 import client.LoginManager;
 import client.Navigator;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import models.Response;
 import utils.NetworkUtils;
 import javafx.event.ActionEvent;
@@ -40,11 +44,33 @@ public class LoginController implements Initializable {
     public void handleLogin(ActionEvent actionEvent) {
 
         Response loginResult = new Response();
+        User loggingUser = new User();
 
         loginManager.generateSessionID();
 
         try {
-            loginResult = NetworkUtils.login(new User(username.getText()));
+            /*loggingUser.userProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+
+                }
+            });
+             */
+
+            //loginButton.defaultButtonProperty().bind(loggingUser.userProperty());
+            /*loginButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    String user = username.getText();
+                    loggingUser.setUsername(user);
+                }
+            });
+
+             */
+
+            loggingUser.userProperty().bind(username.textProperty());
+            System.out.println(loggingUser.getUsername());
+            loginResult = NetworkUtils.login(loggingUser);
         }
         catch (IOException | ClassNotFoundException e) {
             loginResult.setResponseText("An error occurred during login");
