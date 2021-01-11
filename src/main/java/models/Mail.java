@@ -125,12 +125,12 @@ public class Mail implements Externalizable {
     }
 
     public SimpleStringProperty listAddresses() {
+
         String mails = "";
         SimpleStringProperty addresses = new SimpleStringProperty();
+
         for(User receivingAddress: receiver) {
             mails += receivingAddress.getUsername() + "@Parallel.com; ";
-            //addresses.concat(receivingAddress.userProperty()).concat("@Parallel.com; ");
-            //(Bindings.concat(receivingAddress.getUsername(),"@Parallel.com"));
             System.out.println(addresses.toString());
             addresses.setValue(mails);
         }

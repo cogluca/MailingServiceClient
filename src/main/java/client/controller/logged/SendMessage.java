@@ -69,7 +69,6 @@ public class SendMessage extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //navigator = Navigator.getInstance();
     }
 
     @FXML
@@ -91,9 +90,6 @@ public class SendMessage extends Controller implements Initializable {
         receiver = Utils.identifyReceivers(destinatario.getText());
         System.out.println(receiver);
 
-
-
-        System.out.println("SendHandle reiceiver" + receiver.size() );
         if (receiver.size() < 1) {
             String issuesReceivers = "One or more receivers do not exist";
             Utils.getAlert(issuesReceivers);
@@ -146,7 +142,6 @@ public class SendMessage extends Controller implements Initializable {
 
         List<Object> arguments = getArgumentList();
 
-
         if( arguments.size() > 1) {
 
             Mail fromReadMessage = (Mail) arguments.get(1);
@@ -154,32 +149,21 @@ public class SendMessage extends Controller implements Initializable {
 
             if (function.equals("FWD")) {
 
-                //oggettoPassato = (String) arguments.get(3);
-                //msgView = (String) arguments.get(4);
                 oggetto.textProperty().bind(fromReadMessage.objectProperty());
                 messageEditor.accessibleTextProperty().bind(fromReadMessage.messageProperty());
-                //oggetto.setText(oggettoPassato);
-                //messageEditor.setHtmlText(msgView);
 
             } else if (function.equals("ANSWER")) {
 
-                //oggettoPassato = (String) arguments.get(3);
-                //singleReceiver = (String) arguments.get(4);
                 oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                //SimpleObjectProperty<User> user = fromReadMessage.getSender();
                 destinatario.textProperty().bind(Bindings.concat(fromReadMessage.getSender().userProperty(),"@Parallel.com"));
-                //oggetto.setText(oggettoPassato);
-                //destinatario.setText(singleReceiver + "@Parallel.com");
+
             } else if (function.equals("ANSWERALL")) {
 
-                //oggettoPassato = (String) arguments.get(3);
-                //receivers = (String) arguments.get(4);
                 oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                //oggetto.setText(oggettoPassato);
                 destinatario.textProperty().bind(fromReadMessage.listAddresses());
-                //destinatario.setText(receivers);
+
             }
-        } //passo direttamente un oggetto mail ed effettuo i binding sulle componenti dell'oggetto mail
+        }
     }
 
     @Override
@@ -190,7 +174,6 @@ public class SendMessage extends Controller implements Initializable {
         if (arguments == null || arguments.size() <= 1) return;
 
         sender = (User) arguments.get(0);
-
 
         //listMailModel = (ListMailModel) arguments.get(2);
     }
