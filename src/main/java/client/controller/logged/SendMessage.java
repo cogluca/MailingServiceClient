@@ -64,9 +64,7 @@ public class SendMessage extends Controller implements Initializable {
 
         dispatch();
 
-        System.out.println("Questo è il destinatario" + destinatario.getText());
         receiver = Utils.identifyReceivers(destinatario.getText());
-        System.out.println(receiver);
 
         if (receiver.size() < 1) {
             String issuesReceivers = "One or more receivers do not exist";
