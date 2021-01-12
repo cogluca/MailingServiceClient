@@ -150,7 +150,7 @@ public class MainController extends Controller implements Initializable {
     @FXML
     void handleNewMail(ActionEvent action) {
         List<Object> arguments = new ArrayList<>();
-        arguments.add(userToBind.getUsername());
+        arguments.add(userToBind);
         System.out.println("writing new message");
         Navigator.navigate(Navigator.Route.SEND, arguments);
     }

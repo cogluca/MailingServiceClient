@@ -9,6 +9,7 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ public class Mail implements Externalizable {
 
     private static final long serialVersionUID = -4034326865454415426L;
     private transient LongProperty id;
+    private transient LongProperty timeSent;
 
     private transient User sender;
     private transient ListProperty<User> receiver;
@@ -27,7 +29,7 @@ public class Mail implements Externalizable {
 
 
 
-    public Mail(long id, User sender, List<User> receiver, String object, String message) {
+    public Mail(long id, User sender, List<User> receiver, String object, String message, long setTime ) {
 
         this.id = new SimpleLongProperty(id);
         this.sender = sender;
@@ -36,6 +38,7 @@ public class Mail implements Externalizable {
         this.object = new SimpleStringProperty(object);
         this.message = new SimpleStringProperty(message);
         this.sent = new SimpleBooleanProperty();
+        this.timeSent = new SimpleLongProperty(setTime);
     }
 
     public Mail() {
@@ -46,6 +49,9 @@ public class Mail implements Externalizable {
     public long getId() {
         return id.get();
     }
+
+    public long getTimeSent(){return timeSent.get();}
+    public void setTimeSent(long timestampToSet){this.timeSent.set(timestampToSet);}
 
     public void setId(long id) {
         this.id.set(id);
@@ -58,6 +64,7 @@ public class Mail implements Externalizable {
         this.object = new SimpleStringProperty();
         this.message = new SimpleStringProperty();
         this.sent = new SimpleBooleanProperty();
+        this.timeSent = new SimpleLongProperty();
     }
 
     public User getSender() {
@@ -137,15 +144,25 @@ public class Mail implements Externalizable {
         return addresses;
     }
 
+    public void generateUUID() {
+
+        UUID identification = UUID.randomUUID();
+        long id = identification.getMostSignificantBits() & Long.MAX_VALUE;
+        this.id.set(id);
+
+    }
+
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(getId());
         out.writeObject(getSender());
-        out.writeObject(getReceiver());
-        out.writeUTF(getObject());
-        out.writeUTF(getMessage());
+        List<User> receiver = new ArrayList<User>(getReceiver());
+        out.writeObject(receiver);
+        out.writeUTF(getObject()); // object to send
+        out.writeUTF(getMessage()); //message to send
         out.writeBoolean(isSent());
+        out.writeLong(getTimeSent());
 
 
     }
@@ -155,9 +172,12 @@ public class Mail implements Externalizable {
         init();
         setId(in.readLong());
         setSender((User) in.readObject());
-        setReceiver((List<User>) in.readObject());
+        List<User> toSet =(List<User>) in.readObject();
+        System.out.println(toSet.size());
+        setReceiver(toSet);
         setObject(in.readUTF());
         setMessage(in.readUTF());
         setSent(in.readBoolean());
+        setTimeSent(in.readLong());
     }
 }

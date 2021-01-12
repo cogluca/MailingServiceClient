@@ -21,9 +21,6 @@ public class Utils {
         List<User> receivingUsers = new ArrayList<>();
         String s = "";
 
-        //Matcher m = Pattern.compile("^[A-Za-z0-9._%+-]+@Parallel.com").matcher(franco);
-        //Matcher m = p.matcher(franco);
-
         for(int i = 0; i < addresses.length; i++){
             String addr = addresses[i];
             Matcher m = Pattern.compile("^[A-Za-z0-9._%+-]+@Parallel.com").matcher(addr);
@@ -35,7 +32,7 @@ public class Utils {
                 receivingUsers.add(sender);
             }
         }
-        System.out.println("In utils" + receivingUsers.size() );
+
         return receivingUsers;
 
     }
@@ -84,7 +81,26 @@ public class Utils {
         return sender;
 
  */
+    public static String getText(String htmlText) {
 
+        String result = "";
+
+        Pattern pattern = Pattern.compile("<[^>]*>");
+        Matcher matcher = pattern.matcher(htmlText);
+        final StringBuffer text = new StringBuffer(htmlText.length());
+
+        while (matcher.find()) {
+            matcher.appendReplacement(
+                    text,
+                    " ");
+        }
+
+        matcher.appendTail(text);
+
+        result = text.toString().trim();
+
+        return result;
+    }
 
 
 }

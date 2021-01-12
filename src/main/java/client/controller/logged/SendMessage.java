@@ -74,19 +74,12 @@ public class SendMessage extends Controller implements Initializable {
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
 
-        SimpleLongProperty idToSend = new SimpleLongProperty();
-        ListProperty<User> receiversToSend = new SimpleListProperty<>();
-        SimpleStringProperty objectToSend = new SimpleStringProperty();
-        SimpleStringProperty messageTosend = new SimpleStringProperty();
-
         Mail toSend = new Mail();
-
-        List<User> receiver;
-
-        long timeStamp = System.currentTimeMillis();
+        List<User> receiver = new ArrayList<>();
 
         dispatch();
 
+        System.out.println("Questo è il destinatario" + destinatario.getText());
         receiver = Utils.identifyReceivers(destinatario.getText());
         System.out.println(receiver);
 
@@ -95,23 +88,25 @@ public class SendMessage extends Controller implements Initializable {
             Utils.getAlert(issuesReceivers);
         }
 
-
-        idToSend.setValue(timeStamp);
-        objectToSend.bind(oggetto.textProperty());
-        messageTosend.bind(messageEditor.accessibleTextProperty());
-
         //QUESTO DOVREBBE ESSERE IL PROBLEMA DELLA SERIALIZZAZIONE LATO SERVER MANCATA
-        ObservableList<User> observableList = FXCollections.observableList(receiver);
-        receiversToSend = new SimpleListProperty<User>(observableList);
+
+        //ObservableList<User> observableList = FXCollections.observableList(receiver);
+        //receiversToSend = new SimpleListProperty<User>(observableList);
         //receiversToSend.setAll(receiver); //deve fare una semplice cosa, settare in questa observable list
-        toSend = new Mail(timeStamp, sender, receiversToSend, oggetto.getText(), messageEditor.getHtmlText());
+        long timeStamp = System.currentTimeMillis();
+
+        toSend.setReceiver(receiver);
+        toSend.setSender(sender);
+        toSend.setSent(false);
+        toSend.setId(-1);
+        toSend.setTimeSent(timeStamp);
+        toSend.setObject(oggetto.getText());
+        toSend.setMessage(messageEditor.getHtmlText());
 
         Response serverResponse = NetworkUtils.sendMessage(toSend);
 
         System.out.println(serverResponse.getResponseText());
         Utils.getAlert(serverResponse.getResponseText());
-
-        System.out.println("Message sent");
 
         List<Object> arguments = new ArrayList<>();
         listMailModel = new ListMailModel();
@@ -141,6 +136,7 @@ public class SendMessage extends Controller implements Initializable {
     public void init() {
 
         List<Object> arguments = getArgumentList();
+        sender = (User) arguments.get(0);
 
         if( arguments.size() > 1) {
 
@@ -149,18 +145,28 @@ public class SendMessage extends Controller implements Initializable {
 
             if (function.equals("FWD")) {
 
-                oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                messageEditor.accessibleTextProperty().bind(fromReadMessage.messageProperty());
+                oggetto.setText(fromReadMessage.getObject());
+                messageEditor.setHtmlText(fromReadMessage.getMessage());
+
+                //oggetto.textProperty().bind(fromReadMessage.objectProperty());
+                //messageEditor.accessibleTextProperty().bind(fromReadMessage.messageProperty());
 
             } else if (function.equals("ANSWER")) {
 
-                oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                destinatario.textProperty().bind(Bindings.concat(fromReadMessage.getSender().userProperty(),"@Parallel.com"));
+                oggetto.setText(fromReadMessage.getObject());
+                destinatario.setText(fromReadMessage.getSender().getUsername() + "@Parallel.com");
+
+                //oggetto.textProperty().bind(fromReadMessage.objectProperty());
+                //destinatario.textProperty().bind(Bindings.concat(fromReadMessage.getSender().userProperty(),"@Parallel.com"));
 
             } else if (function.equals("ANSWERALL")) {
 
-                oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                destinatario.textProperty().bind(fromReadMessage.listAddresses());
+                oggetto.setText("To: " + fromReadMessage.getObject());
+                destinatario.setText(fromReadMessage.listAddresses().getValue());
+                System.out.println("readMessage AnswerAll "+fromReadMessage.listAddresses().getValue());
+
+                //oggetto.textProperty().bind(fromReadMessage.objectProperty());
+                //destinatario.textProperty().bind(fromReadMessage.listAddresses());
 
             }
         }
@@ -173,7 +179,7 @@ public class SendMessage extends Controller implements Initializable {
 
         if (arguments == null || arguments.size() <= 1) return;
 
-        sender = (User) arguments.get(0);
+        //sender = (User) arguments.get(0);
 
         //listMailModel = (ListMailModel) arguments.get(2);
     }

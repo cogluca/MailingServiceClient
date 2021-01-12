@@ -72,8 +72,8 @@ public class MailCell extends ListCell<Mail> {
 
 
             from.setText(mail.getSender().getUsername());
-            oggetto.setText(mail.getObject() + " - " + getText(mail.getMessage()));
-            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (mail.getId()));
+            oggetto.setText(mail.getObject() + " - " + Utils.getText(mail.getMessage()));
+            String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (mail.getTimeSent()));
             datainvio.setText(date);
 
 
@@ -104,11 +104,9 @@ public class MailCell extends ListCell<Mail> {
                 Mail m = getItem();
                 List<Object> argumentsToSend = new ArrayList<>();
 
-                argumentsToSend.add("SEND");
-                argumentsToSend.add(mail.getSender().getUsername());
+                //argumentsToSend.add(sen)
+                argumentsToSend.add(m);
                 argumentsToSend.add("FWD");
-                argumentsToSend.add(m.getObject());
-                argumentsToSend.add(m.getMessage());
 
                 Navigator.navigate(Navigator.Route.SEND, argumentsToSend);
 
@@ -120,26 +118,8 @@ public class MailCell extends ListCell<Mail> {
         }
 
     }
-    public static String getText(String htmlText) {
 
-        String result = "";
 
-        Pattern pattern = Pattern.compile("<[^>]*>");
-        Matcher matcher = pattern.matcher(htmlText);
-        final StringBuffer text = new StringBuffer(htmlText.length());
-
-        while (matcher.find()) {
-            matcher.appendReplacement(
-                    text,
-                    " ");
-        }
-
-        matcher.appendTail(text);
-
-        result = text.toString().trim();
-
-        return result;
-    }
 
 
 }

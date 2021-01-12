@@ -125,6 +125,7 @@ public class ReadMessage extends Controller implements Initializable {
 
         if(!fromMailCell.getReceiver().contains(mandante))
             fromMailCell.getReceiver().add(mandante);
+        System.out.println("Sono inreadmessage answerallhandle" + fromMailCell.listAddresses());
 
         arguments.add(mandante);
         arguments.add(fromMailCell);
@@ -174,7 +175,10 @@ public class ReadMessage extends Controller implements Initializable {
             answerAllBtn.setVisible(false);
 
         oggetto.textProperty().bind(Bindings.concat("Oggetto :", fromMailCell.objectProperty()));
-        htmlView.accessibleTextProperty().bind(fromMailCell.messageProperty());
+        //System.out.println("SONO IN READ MESSAGE " + fromMailCell.getMessage());
+        //htmlView.accessibleTextProperty().bind(Bindings.concat("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>"
+          //      , fromMailCell.messageProperty(), "</body>"));
+        htmlView.getEngine().loadContent("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>" + fromMailCell.getMessage() + "</body>");
         sender.textProperty().bind(Bindings.concat("From: ", fromMailCell.getSender().userProperty()));
         receivers.textProperty().bind(Bindings.concat("To: ", fromMailCell.listAddresses()));
         //receivers.textProperty().bind(fromMailCell.listAddresses())
@@ -187,10 +191,13 @@ public class ReadMessage extends Controller implements Initializable {
 
 
         mandante = new User();
-        mandante.userProperty().bind(sender.textProperty());
+        mandante.setUsername(sender.getText());
+        if(mandante.getUsername().contains("From: "))
+            mandante.getUsername().replace("From: ","");
+        System.out.println("READMESSAGE INIT"+mandante.getUsername());
 
 
-        String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getId()));
+        String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getTimeSent()));
         SimpleStringProperty sentDate = new SimpleStringProperty(dateSent);
 
         dataOraInvio.textProperty().bind(sentDate);
