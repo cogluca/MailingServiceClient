@@ -9,8 +9,6 @@ import utils.NetworkUtils;
 
 import java.util.List;
 
-// TODO: Better error handling
-
 /**
  * Choose which list display on ListView (INBOX or OUTBOX) depending
  * on the parameter passed

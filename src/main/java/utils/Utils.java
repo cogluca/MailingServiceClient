@@ -67,20 +67,6 @@ public class Utils {
     }
 
 
-        //a.setContentText("One or more receivers do not exis
-
-/*
-        List<User> sender = null;
-        Scanner reader = new Scanner(senders).useDelimiter("@Parallel.com\\s*");
-
-        while (reader.hasNext()) {
-            User userToAdd = new User(reader.next());
-            sender.add(userToAdd);
-        }
-
-        return sender;
-
- */
     public static String getText(String htmlText) {
 
         String result = "";

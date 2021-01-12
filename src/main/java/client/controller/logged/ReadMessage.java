@@ -1,6 +1,5 @@
 package client.controller.logged;
 
-import client.LoginManager;
 import client.Navigator;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,21 +10,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
 import javafx.scene.web.WebView;
 import models.Response;
 import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
 import utils.Utils;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -56,17 +48,10 @@ public class ReadMessage extends Controller implements Initializable {
     private Button answerAllBtn;
 
     @FXML
-    private SplitPane dividerPanel;
-
-    @FXML
     private Label dataOraInvio;
 
     @FXML
     private WebView htmlView;
-
-    private Navigator navigator;
-
-    private Mail mail;
 
     private String messageType = "";
 
@@ -74,17 +59,10 @@ public class ReadMessage extends Controller implements Initializable {
 
     private User mandante;
 
-    public void setMail(Mail mail) {
-        this.mail = mail;
-    }
-
     List<Object> arguments = new ArrayList<>();
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        //navigator = Navigator.getInstance();
-
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) { }
 
     @FXML
     public void forwardHandle(ActionEvent actionEvent) {
@@ -92,9 +70,6 @@ public class ReadMessage extends Controller implements Initializable {
         arguments.add(mandante);
         arguments.add(fromMailCell);
         arguments.add("FWD");
-
-        //TODO : Commentare con lista argomenti
-        //arguments.add(htmlView.getAccessibleText());
 
         System.out.println("Forwarding message");
         Navigator.navigate(Navigator.Route.SEND, arguments);
@@ -104,16 +79,9 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void answerHandle(ActionEvent actionEvent) {
 
-        //String trimmedNewSender = Utils.trimUsers(receivers.getText());
-        //System.out.println(trimmedNewSender);
-        //Sto spostando la creazione del nuovo sender in avanti alla sendmessage
-        //Perchè non passo più il parametro trimmedSender
-
         arguments.add(mandante);
         arguments.add(fromMailCell);
         arguments.add("ANSWER");
-
-        //arguments.add(sender.getText());
 
         System.out.println("Answering message");
         Navigator.navigate(Navigator.Route.SEND, arguments);
@@ -123,15 +91,15 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void answerAllHandle(ActionEvent actionEvent) {
 
+        if(mandante.getUsername().contains("From: "))
+            mandante.setUsername(mandante.getUsername().replace("From: ",""));
+
         if(!fromMailCell.getReceiver().contains(mandante))
             fromMailCell.getReceiver().add(mandante);
-        System.out.println("Sono inreadmessage answerallhandle" + fromMailCell.listAddresses());
 
         arguments.add(mandante);
         arguments.add(fromMailCell);
         arguments.add("ANSWERALL");
-
-        //arguments.add(everyReceiver);
 
         System.out.println("Answering all");
         Navigator.navigate(Navigator.Route.SEND, arguments);
@@ -175,27 +143,12 @@ public class ReadMessage extends Controller implements Initializable {
             answerAllBtn.setVisible(false);
 
         oggetto.textProperty().bind(Bindings.concat("Oggetto :", fromMailCell.objectProperty()));
-        //System.out.println("SONO IN READ MESSAGE " + fromMailCell.getMessage());
-        //htmlView.accessibleTextProperty().bind(Bindings.concat("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>"
-          //      , fromMailCell.messageProperty(), "</body>"));
         htmlView.getEngine().loadContent("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>" + fromMailCell.getMessage() + "</body>");
         sender.textProperty().bind(Bindings.concat("From: ", fromMailCell.getSender().userProperty()));
         receivers.textProperty().bind(Bindings.concat("To: ", fromMailCell.listAddresses()));
-        //receivers.textProperty().bind(fromMailCell.listAddresses())
-
-
-        //oggetto.setText("Object: " + fromMailCell.getObject());
-        //htmlView.getEngine().loadContent("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>" + fromMailCell.getMessage() + "</body>");
-        //sender.setText(fromMailCell.getSender().getUsername());
-        //receivers.setText("To: " + fromMailCell.listAddresses().getValue());
-
 
         mandante = new User();
         mandante.setUsername(sender.getText());
-        if(mandante.getUsername().contains("From: "))
-            mandante.getUsername().replace("From: ","");
-        System.out.println("READMESSAGE INIT"+mandante.getUsername());
-
 
         String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getTimeSent()));
         SimpleStringProperty sentDate = new SimpleStringProperty(dateSent);

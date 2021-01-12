@@ -1,20 +1,13 @@
 package client.controller.logged;
 
-import client.LoginManager;
 import client.Navigator;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
-import jdk.jshell.execution.Util;
 import models.ListMailModel;
 import models.Mail;
 import models.Response;
@@ -22,12 +15,6 @@ import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
 import utils.Utils;
-
-import javax.swing.text.html.HTMLEditorKit;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +54,7 @@ public class SendMessage extends Controller implements Initializable {
     private String singleReceiver = "";
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) { }
 
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
@@ -88,11 +73,6 @@ public class SendMessage extends Controller implements Initializable {
             Utils.getAlert(issuesReceivers);
         }
 
-        //QUESTO DOVREBBE ESSERE IL PROBLEMA DELLA SERIALIZZAZIONE LATO SERVER MANCATA
-
-        //ObservableList<User> observableList = FXCollections.observableList(receiver);
-        //receiversToSend = new SimpleListProperty<User>(observableList);
-        //receiversToSend.setAll(receiver); //deve fare una semplice cosa, settare in questa observable list
         long timeStamp = System.currentTimeMillis();
 
         toSend.setReceiver(receiver);
@@ -148,25 +128,15 @@ public class SendMessage extends Controller implements Initializable {
                 oggetto.setText(fromReadMessage.getObject());
                 messageEditor.setHtmlText(fromReadMessage.getMessage());
 
-                //oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                //messageEditor.accessibleTextProperty().bind(fromReadMessage.messageProperty());
-
             } else if (function.equals("ANSWER")) {
 
                 oggetto.setText(fromReadMessage.getObject());
                 destinatario.setText(fromReadMessage.getSender().getUsername() + "@Parallel.com");
 
-                //oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                //destinatario.textProperty().bind(Bindings.concat(fromReadMessage.getSender().userProperty(),"@Parallel.com"));
-
             } else if (function.equals("ANSWERALL")) {
 
-                oggetto.setText("To: " + fromReadMessage.getObject());
+                oggetto.setText(fromReadMessage.getObject());
                 destinatario.setText(fromReadMessage.listAddresses().getValue());
-                System.out.println("readMessage AnswerAll "+fromReadMessage.listAddresses().getValue());
-
-                //oggetto.textProperty().bind(fromReadMessage.objectProperty());
-                //destinatario.textProperty().bind(fromReadMessage.listAddresses());
 
             }
         }
@@ -179,8 +149,5 @@ public class SendMessage extends Controller implements Initializable {
 
         if (arguments == null || arguments.size() <= 1) return;
 
-        //sender = (User) arguments.get(0);
-
-        //listMailModel = (ListMailModel) arguments.get(2);
     }
 }
