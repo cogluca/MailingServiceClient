@@ -7,6 +7,7 @@ import models.User;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -16,7 +17,8 @@ public class Utils {
 
     public static List<User> identifyReceivers (String receivers) {
 
-        String addresses[] = receivers.split(";\\s*");
+        String[] addresses = receivers.split(";\\s*");
+        System.out.println(Arrays.toString(addresses));
         User sender;
         List<User> receivingUsers = new ArrayList<>();
         String s = "";
@@ -30,6 +32,9 @@ public class Utils {
                 sender = new User(s);
 
                 receivingUsers.add(sender);
+            }
+            else {
+                return new ArrayList<>();
             }
         }
 
