@@ -2,10 +2,7 @@ package client.controller.logged;
 
 import client.LoginManager;
 import client.Navigator;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Duration;
 import models.ListMailModel;
 import models.Response;
 import models.User;
@@ -22,9 +18,7 @@ import utils.JavaFXUtil;
 import utils.NetworkUtils;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 //TODO: Add thread for Network request
 
@@ -59,12 +53,18 @@ public class MainController extends Controller implements Initializable {
 
     private User userToBind = new User();
 
-    private Timeline syncWorker;
-    private Timeline autoReconnectWorker;
 
+    private Timer t1;
 
     private ListMailModel listMailModel;
 
+    public ListMailModel getListMailModel() {
+        return listMailModel;
+    }
+
+    public User getUserToBind() {
+        return userToBind;
+    }
 
     public void setUser(String user) {
         this.userToBind.setUsername(user);
@@ -88,54 +88,39 @@ public class MainController extends Controller implements Initializable {
         NetworkUtils.setOnline(true);
 
         Navigator.getInstance().setContentPanel(stackPane);
+        Navigator.getInstance().setMainController(this);
+        t1 = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if(NetworkUtils.isOnline()) {
+                    try {
+                        if (NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) != 0) {
+                            syncButton.setStyle("-fx-border-color: white; -fx-border-width: 3; -fx-border-radius:10; -fx-background-radius: 10");
+                        }
+                    }
+                    catch (Exception e) {
+                        NetworkUtils.setOnline(false);
+                    }
+                }
+                else {
+                    try {
+                        User toLog = new User();
+                        toLog.setUsername(userToBind.getUsername());
+                        Response response = NetworkUtils.login(toLog);
 
-        //Navigator.navigate(Navigator.Route.INBOX);
+                        if(response.getResponseText().equals("Login successfully")) {
+                            NetworkUtils.setOnline(true);
 
-        autoReconnectWorker = new Timeline(new KeyFrame(Duration.seconds(5), actionEvent -> {
-        try {
-            User toLog = new User();
-            toLog.setUsername(userToBind.getUsername());
-            Response response = NetworkUtils.login(toLog);
-            System.out.println(response);
+                        }
+                    }
+                    catch (Exception ignored) {}
+                }
 
-            if(response.getResponseText().equals("Login successfully")) {
-                NetworkUtils.setOnline(true);
-                syncWorker.play();
-
-                autoReconnectWorker.stop();
             }
-        }
-        catch (Exception ignored) {}
+        };
 
-        }));
-        autoReconnectWorker.setCycleCount(Timeline.INDEFINITE);
-
-
-        syncWorker = new Timeline(
-                new KeyFrame(Duration.seconds(5),
-                        event -> {
-                            try {
-                                if (NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) != 0) {
-                                    System.out.println("There are updates!!!" + listMailModel.getIncomingListMail());
-                                    System.out.println(listMailModel.getUpcomingListMail());
-                                }
-                            } catch (Exception e) {
-                                NetworkUtils.setOnline(false);
-
-                                autoReconnectWorker.play();
-                                syncWorker.stop();
-                                // Server crashed / disconnected. Stop syncWorker and start autoReconnectWorker
-                                /*TODO: In autoReconnectWorker, try to connect to the server AND if success,
-                                   stop itself and restart syncWorker
-                                */
-
-
-                            }
-
-                        }));
-        syncWorker.setCycleCount(Timeline.INDEFINITE);
-        syncWorker.play();
-
+        t1.schedule(task, 3000,5000);
 
         readInbox.fire();
         try {
@@ -175,7 +160,7 @@ public class MainController extends Controller implements Initializable {
     }
 
     public void handleLogout(ActionEvent event) {
-        syncWorker.stop();
+        t1.cancel();
         new Thread(() -> {
 
             loginManager.logout();

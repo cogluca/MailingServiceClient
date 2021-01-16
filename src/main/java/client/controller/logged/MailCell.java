@@ -71,7 +71,10 @@ public class MailCell extends ListCell<Mail> {
             }
 
 
-            from.setText(mail.getSender().getUsername());
+
+            from.setText(mail.isSent()? mail.getReceiver().toString() : mail.getSender().getUsername() );
+
+
             oggetto.setText(mail.getObject() + " - " + Utils.getText(mail.getMessage()));
             String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (mail.getTimeSent()));
             datainvio.setText(date);

@@ -42,7 +42,7 @@ public class NetworkUtils {
         }
     }
 
-    public static Response login(User user) throws IOException,ClassNotFoundException {
+    public static Response login(User user) throws IOException, ClassNotFoundException {
         Socket serverConn = getSocket();
         ObjectOutputStream sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
         ObjectInputStream receiveLogin = new ObjectInputStream(serverConn.getInputStream());
@@ -69,7 +69,7 @@ public class NetworkUtils {
 
     public static void logout() throws IOException {
 
-        if(!isOnline()) return;
+        if (!isOnline()) return;
 
         Socket serverConn = getSocket();
         ObjectOutputStream outputStream = new ObjectOutputStream(serverConn.getOutputStream());
@@ -164,7 +164,7 @@ public class NetworkUtils {
 
     public static Response deleteMessage(Mail m) throws Exception {
 
-        if (!isOnline()) return new Response(-1 , "Server currently offline");
+        if (!isOnline()) return new Response(-1, "Server currently offline");
 
         Socket socket = NetworkUtils.getSocket();
 
@@ -191,7 +191,7 @@ public class NetworkUtils {
 
     }
 
-    public static Response sendMessage (Mail mailToSend) {
+    public static Response sendMessage(Mail mailToSend) throws Exception {
 
         Socket serverConn = null;
         ObjectOutputStream sendMsg = null;
@@ -200,29 +200,25 @@ public class NetworkUtils {
 
         Response serverResponse = null;
 
-        try {
-            serverConn = NetworkUtils.getSocket();
+        serverConn = NetworkUtils.getSocket();
 
-            sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
+        sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
 
-            receiveState = new ObjectInputStream(serverConn.getInputStream());
+        receiveState = new ObjectInputStream(serverConn.getInputStream());
 
-            sendMsg.writeUTF("SEND");
-            sendMsg.flush();
+        sendMsg.writeUTF("SEND");
+        sendMsg.flush();
 
-            sendMsg.writeUTF(LoginManager.sessionId);
-            sendMsg.flush();
+        sendMsg.writeUTF(LoginManager.sessionId);
+        sendMsg.flush();
 
-            sendMsg.writeObject(mailToSend);
-            sendMsg.flush();
-
-
-            serverResponse = (Response) receiveState.readObject();
+        sendMsg.writeObject(mailToSend);
+        sendMsg.flush();
 
 
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+        serverResponse = (Response) receiveState.readObject();
+
+
         return serverResponse;
     }
 

@@ -43,4 +43,15 @@ public class User implements Externalizable {
         init();
         setUsername(in.readUTF());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        User u = (User)obj;
+        return u.getUsername().equals(this.getUsername());
+    }
+
+    @Override
+    public String toString() {
+        return username.getValue();
+    }
 }

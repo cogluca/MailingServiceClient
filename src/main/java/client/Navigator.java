@@ -1,5 +1,6 @@
 package client;
 
+import client.controller.logged.MainController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import utils.Controller;
@@ -32,6 +33,7 @@ public class Navigator {
      */
     private Map<Route, String> routes;
     private static Navigator instance = null;
+    private MainController mainController = null;
     private BorderPane contentPanel = null;
 
     /**
@@ -91,6 +93,14 @@ public class Navigator {
     public void setContentPanel(BorderPane contentPanel) {
         if (instance == null) getInstance();
         instance.contentPanel = contentPanel;
+    }
+
+    public MainController getMainController() {
+        return mainController;
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     /**

@@ -40,13 +40,17 @@ public class SendMessage extends Controller implements Initializable {
     @FXML
     private TextField oggetto;
 
+    //Non serve, è un singleton
     private Navigator navigator;
 
-    private String messageType = "";
+    // Rimosso perché ho aggiunto al MessageListController come campo di default "INBOX", così non c'è bisogno di passarlo ogni volta
+    //private String messageType = "";
 
     private User sender;
 
-    private ListMailModel listMailModel;
+    // Rimosso, ho salvato l'unica istanza che ci serve sul Navigator (guarda Navigator.getInstance().getListMailModel();)
+    //private ListMailModel listMailModel;
+
 
     private String oggettoPassato = "";
     private String msgView = "";
@@ -60,7 +64,7 @@ public class SendMessage extends Controller implements Initializable {
     public void sendHandle(ActionEvent actionEvent) {
 
         Mail toSend = new Mail();
-        List<User> receiver = new ArrayList<>();
+        List<User> receiver;
 
         dispatch();
 
@@ -81,45 +85,53 @@ public class SendMessage extends Controller implements Initializable {
         toSend.setObject(oggetto.getText());
         toSend.setMessage(messageEditor.getHtmlText());
 
-        Response serverResponse = NetworkUtils.sendMessage(toSend);
+        Response serverResponse;
+
+        try {
+            serverResponse = NetworkUtils.sendMessage(toSend);
+        } catch (Exception e) {
+            serverResponse = new Response(-2, "Error while sending a mail");
+            e.printStackTrace();
+        }
 
         System.out.println(serverResponse.getResponseText());
         Utils.getAlert(serverResponse.getResponseText());
 
-        List<Object> arguments = new ArrayList<>();
-        listMailModel = new ListMailModel();
+        if(serverResponse.getResponseCode()==0)
+            Navigator.navigate(Navigator.Route.INBOX);
 
-        arguments.add("INBOX");
-        arguments.add(listMailModel);
+        //List<Object> arguments = new ArrayList<>();
+        //listMailModel = new ListMailModel();
 
-        Navigator.navigate(Navigator.Route.INBOX, arguments);
-        System.out.println(messageEditor.getHtmlText());
+        //arguments.add("INBOX");
+        //arguments.add(listMailModel);
 
     }
 
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
 
-        List<Object> arguments = new ArrayList<>();
-        listMailModel = new ListMailModel();
+        // Guarda sopra
+        //List<Object> arguments = new ArrayList<>();
+        //listMailModel = new ListMailModel();
+        //arguments.add("INBOX");
+        //arguments.add(listMailModel);
 
-        arguments.add("INBOX");
-        arguments.add(listMailModel);
-
-        System.out.println("Message deleted");
-        Navigator.navigate(Navigator.Route.INBOX, arguments);
+        //System.out.println("Message deleted");
+        Navigator.navigate(Navigator.Route.INBOX);
     }
+
 
     @Override
     public void init() {
 
         List<Object> arguments = getArgumentList();
-        sender = (User) arguments.get(0);
+        sender = Navigator.getInstance().getMainController().getUserToBind(); //(User) arguments.get(0);
 
         if( arguments.size() > 1) {
 
-            Mail fromReadMessage = (Mail) arguments.get(1);
-            String function = (String) arguments.get(2);
+            Mail fromReadMessage = (Mail) arguments.get(0);
+            String function = (String) arguments.get(1);
 
             if (function.equals("FWD")) {
 
@@ -139,9 +151,11 @@ public class SendMessage extends Controller implements Initializable {
             }
         }
     }
-
+//TODO: remove
     @Override
     public void dispatch() {
+        // Il dispatch è utilizzato per salvare gli argomenti passati nella lista
+        // in una serie di parametri che verranno utilizzati in giro per la classe
 
         List<Object> arguments = getArgumentList();
 

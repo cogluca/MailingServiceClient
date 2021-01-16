@@ -16,7 +16,7 @@ public class Utils {
 
     public static List<User> identifyReceivers (String receivers) {
 
-        String addresses[] = receivers.split(";");
+        String addresses[] = receivers.split(";\\s*");
         User sender;
         List<User> receivingUsers = new ArrayList<>();
         String s = "";

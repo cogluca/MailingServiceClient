@@ -53,13 +53,15 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     private WebView htmlView;
 
-    private String messageType = "";
+    // Rimosso perché ho aggiunto al MessageListController come campo di default "INBOX", così non c'è bisogno di passarlo ogni volta
+    //private String messageType = "";
+
 
     private Mail fromMailCell;
 
-    private User mandante;
+    //private User mandante;
 
-    List<Object> arguments = new ArrayList<>();
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
@@ -67,7 +69,8 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void forwardHandle(ActionEvent actionEvent) {
 
-        arguments.add(mandante);
+        List<Object> arguments = new ArrayList<>();
+        //arguments.add(mandante);
         arguments.add(fromMailCell);
         arguments.add("FWD");
 
@@ -79,7 +82,9 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void answerHandle(ActionEvent actionEvent) {
 
-        arguments.add(mandante);
+        List<Object> arguments = new ArrayList<>();
+
+        //arguments.add(mandante);
         arguments.add(fromMailCell);
         arguments.add("ANSWER");
 
@@ -91,13 +96,17 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void answerAllHandle(ActionEvent actionEvent) {
 
-        if(mandante.getUsername().contains("From: "))
+        List<Object> arguments = new ArrayList<>();
+
+        /*if(mandante.getUsername().contains("From: "))
             mandante.setUsername(mandante.getUsername().replace("From: ",""));
+        */
+        User senderUser = Navigator.getInstance().getMainController().getUserToBind();
+        if(!fromMailCell.getReceiver().contains(senderUser))
+            fromMailCell.getReceiver().add(senderUser);
 
-        if(!fromMailCell.getReceiver().contains(mandante))
-            fromMailCell.getReceiver().add(mandante);
+        //arguments.add(mandante);
 
-        arguments.add(mandante);
         arguments.add(fromMailCell);
         arguments.add("ANSWERALL");
 
@@ -108,29 +117,32 @@ public class ReadMessage extends Controller implements Initializable {
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
 
-        List<Object> arguments = new ArrayList<>();
-
         try {
-
             Response serverResponse = NetworkUtils.deleteMessage(fromMailCell);
 
+            // Stampa lo status a prescindere dal fail o dal success
+            Utils.getAlert(serverResponse.getResponseText());
+
             if (serverResponse.getResponseCode() == 0)
-                Utils.getAlert("Successfully deleted mail");
-            else
-                Utils.getAlert("An error occurred deleting the mail");
+            // hai salvato già la stringa di errore all'interno della response
+            //Utils.getAlert("Successfully deleted mail");
+            //else
+            //    Utils.getAlert("An error occurred deleting the mail");
+                // Naviga solo se hai uno success
+                Navigator.navigate(Navigator.Route.INBOX);
+
 
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
 
-        ListMailModel listMailModel = new ListMailModel();
-        messageType = "INBOX";
+        // Rimosso, guarda sendmessage
+        // ListMailModel listMailModel = new ListMailModel();
+        // messageType = "INBOX";
 
-        arguments.add(messageType);
-        arguments.add(listMailModel);
+        // arguments.add(messageType);
+        // arguments.add(listMailModel);
 
-        System.out.println("Message deleted");
-        Navigator.navigate(Navigator.Route.INBOX, arguments);
     }
 
     @Override
@@ -147,8 +159,10 @@ public class ReadMessage extends Controller implements Initializable {
         sender.textProperty().bind(Bindings.concat("From: ", fromMailCell.getSender().userProperty()));
         receivers.textProperty().bind(Bindings.concat("To: ", fromMailCell.listAddresses()));
 
-        mandante = new User();
-        mandante.setUsername(sender.getText());
+        // mandante = new User();
+        // mandante.setUsername(sender.getText());
+
+        //mandante = Navigator.getInstance().getMainController().getUserToBind();
 
         String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getTimeSent()));
         SimpleStringProperty sentDate = new SimpleStringProperty(dateSent);

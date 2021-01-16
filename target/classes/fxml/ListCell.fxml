@@ -18,11 +18,11 @@
             </ImageView>
          </graphic>
       </Button>
-      <Label fx:id="from" layoutX="14.0" layoutY="17.0" prefHeight="22.0" prefWidth="131.0" text="nome.utente" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="606.0">
+      <Label fx:id="from" layoutX="14.0" layoutY="17.0" prefHeight="22.0" prefWidth="98.0" text="nome.utente" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="639.0">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="oggetto" alignment="TOP_LEFT" layoutX="169.0" layoutY="18.0" minWidth="-Infinity" prefHeight="22.0" prefWidth="253.0" text="Questo è un oggetto di prova" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="329.0">
+      <Label fx:id="oggetto" alignment="TOP_LEFT" layoutX="186.0" layoutY="18.0" minWidth="-Infinity" prefHeight="22.0" prefWidth="253.0" text="Questo è un oggetto di prova" AnchorPane.leftAnchor="186.0" AnchorPane.rightAnchor="312.0">
          <font>
             <Font size="15.0" />
          </font></Label>

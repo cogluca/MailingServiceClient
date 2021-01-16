@@ -1,6 +1,8 @@
 package client.controller.logged;
 
+import client.Navigator;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import models.ListMailModel;
 import models.Mail;
@@ -17,15 +19,20 @@ public class MessageListController extends Controller {
 
 
     private ListMailModel listMailModel;
-    private String readType = "";
+    private String readType = "INBOX";
 
     @FXML
     private ListView<Mail> mailListView;
 
 
+    @FXML
+    private Label fromLabel;
+
+
     @Override
     public void init() {
         super.init();
+        listMailModel = Navigator.getInstance().getMainController().getListMailModel();
 
         if (readType.equals("INBOX")) {
             try {
@@ -38,6 +45,7 @@ public class MessageListController extends Controller {
             try {
                 listMailModel.setUpcomingListMail(NetworkUtils.loadOutbox());
                 mailListView.setItems(listMailModel.getUpcomingListMail());
+                fromLabel.setText("To");
 
             } catch (Exception e) {e.printStackTrace();}
         }
@@ -52,9 +60,8 @@ public class MessageListController extends Controller {
     @Override
     public void dispatch() {
         List<Object> arguments = getArgumentList();
-        if (arguments == null || arguments.size() <= 1) return;
+        if (arguments == null || arguments.size() <= 0) return;
         readType = (String) arguments.get(0);
-        listMailModel = (ListMailModel) arguments.get(1);
     }
 
 }
