@@ -22,11 +22,9 @@ import java.util.*;
 
 //TODO: Add thread for Network request
 
-/*
- * Controller principale della GUI. Prima di essere utilizzata deve essere
- * settato l'user loggato tramite il metodo setUser(String).
- * Sono presenti gli handler per gestire i click sui vari componenti
- * della GUI.
+/**
+ * Main GUi Controller, before starting off logged user gets set on screen with external call through setUser, contains side
+ * bar navigation handles
  */
 public class MainController extends Controller implements Initializable {
 
@@ -87,6 +85,11 @@ public class MainController extends Controller implements Initializable {
         this.loginManager = loginManager;
     }
 
+    /**
+     * Contains synchronization with servers that gets triggered every 5 seconds
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -132,6 +135,10 @@ public class MainController extends Controller implements Initializable {
 
     }
 
+    /**
+     * Sets navbar buttons as pressed when on those screens
+     * @param r Routing parameter
+     */
     public void setFire(Navigator.Route r) {
         if(r.equals(Navigator.Route.INBOX))
             readInbox.setSelected(true);
@@ -140,14 +147,20 @@ public class MainController extends Controller implements Initializable {
 
     }
 
-
+    /**
+     * Routes on Send Message screen
+     * @param action
+     */
     @FXML
     void handleNewMail(ActionEvent action) {
         System.out.println("writing new message");
         Navigator.navigate(Navigator.Route.SEND);
     }
 
-
+    /**
+     * Routes to Inbox screen with message list model as argument
+     * @param event
+     */
     @FXML
     void handleInbox(ActionEvent event) {
         List<Object> arguments = new ArrayList<>();
@@ -156,7 +169,10 @@ public class MainController extends Controller implements Initializable {
         Navigator.navigate(Navigator.Route.INBOX, arguments);
 
     }
-
+    /**
+     * Routes to Outbox screen with message list model as argument
+     * @param event
+     */
     @FXML
     void handleOutbox(ActionEvent event) {
         List<Object> arguments = new ArrayList<>();
@@ -166,6 +182,10 @@ public class MainController extends Controller implements Initializable {
 
     }
 
+    /**
+     * Handles logout button on screen by stopping threads and going back to login screen
+     * @param event
+     */
     public void handleLogout(ActionEvent event) {
 
         t1.cancel();
@@ -174,7 +194,10 @@ public class MainController extends Controller implements Initializable {
 
     }
 
-
+    /**
+     * Handles synch button
+     * @param actionEvent
+     */
     public void handleSync(ActionEvent actionEvent) {
 
         readInbox.fire();

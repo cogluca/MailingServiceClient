@@ -13,7 +13,10 @@ import utils.NetworkUtils;
 import java.io.IOException;
 
 public class Main extends Application {
-
+    /**
+     * Method used to start graphically the interface, communicate with LoginManager and implement the login phase
+     *
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));

@@ -29,6 +29,9 @@ public class MessageListController extends Controller {
     private Label fromLabel;
     private boolean first = false;
 
+    /**
+     * Initializes the message list controller associated with Inbox and Outbox screens, requests server user's mails
+     */
     @Override
     public void init() {
         List<Object> arguments = getArgumentList();

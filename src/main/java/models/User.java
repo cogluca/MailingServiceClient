@@ -5,6 +5,11 @@ import javafx.beans.property.StringProperty;
 
 import java.io.*;
 
+/**
+ * User model implemented using the Java Beans and Properties standard, implements Externalizable in order to be
+ * transmitted correctly to the server and back through sockets
+ *
+ */
 public class User implements Externalizable {
 
     private static final long serialVersionUID = -3579562875503665712L;

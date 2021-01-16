@@ -18,9 +18,7 @@ public class NetworkUtils {
 
     private static final int port = 8189;
 
-    /**
-     * @return socket object
-     */
+
 
     private static boolean online;
 
@@ -32,6 +30,10 @@ public class NetworkUtils {
         NetworkUtils.online = online;
     }
 
+    /**
+     *@return socket object
+     */
+
     public static Socket getSocket() {
         try {
             String address = InetAddress.getLocalHost().getHostName();
@@ -42,7 +44,11 @@ public class NetworkUtils {
             return null;
         }
     }
-
+    /**
+     * Tries to log the user in through server communication
+     * @param user input the user to check if has an account
+     *@return Response obj forwarded from server
+     */
     public static Response login(User user) throws IOException, ClassNotFoundException {
         Socket serverConn = getSocket();
         ObjectOutputStream sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
@@ -67,7 +73,11 @@ public class NetworkUtils {
 
         return loginResult;
     }
-
+    /**
+     *Tries to logout the current user by communicating it to the server
+     *
+     *@return void
+     */
     public static void logout() throws IOException {
 
         if (!isOnline()) return;
@@ -87,7 +97,11 @@ public class NetworkUtils {
         serverConn.close();
 
     }
-
+    /**
+     * Tries to load inbox by requesting current user inbox to the server
+     *
+     *@return List<Mail> obj
+     */
     public static List<Mail> loadInbox() throws Exception {
 
         if (!isOnline()) return null;
@@ -112,6 +126,11 @@ public class NetworkUtils {
 
     }
 
+    /**
+     * Tries to load outbox by requesting current user inbox to the server
+     *
+     *@return List<Mail> obj
+     */
     public static List<Mail> loadOutbox() throws Exception {
 
         if (!isOnline()) return null;
@@ -136,6 +155,11 @@ public class NetworkUtils {
 
     }
 
+    /**
+     * Tries to load inbox by requesting current user inbox to the server
+     * @param clientNumber
+     *@return List<Mail> obj
+     */
     public static int checkUpdates(int clientNumber) throws Exception {
 
         if (!isOnline()) return -1;
@@ -162,8 +186,13 @@ public class NetworkUtils {
         return val;
 
     }
+    /**
+     * Tries to delete chosen mail by requesting deletion to the server that in turn responds with a Response obj
+     * @param mailToDelete
+     *@return Response obj
+     */
 
-    public static Response deleteMessage(Mail m) throws Exception {
+    public static Response deleteMessage(Mail mailToDelete) throws Exception {
 
         if (!isOnline()) return new Response(-1, "Server currently offline");
 
@@ -178,8 +207,8 @@ public class NetworkUtils {
         outputStream.writeUTF(LoginManager.sessionId);
         outputStream.flush();
 
-        System.out.println("il messaggio è " + m);
-        outputStream.writeObject(m);
+        System.out.println("il messaggio è " + mailToDelete);
+        outputStream.writeObject(mailToDelete);
         outputStream.flush();
 
         Response status = (Response) inputStream.readObject();
@@ -192,6 +221,11 @@ public class NetworkUtils {
 
     }
 
+    /**
+     * Tries to send a message by communicating to server the mail taken in input, in turn server responds with a Response obj
+     * @param mailToSend
+     *@return Response obj
+     */
     public static Response sendMessage(Mail mailToSend) throws Exception {
 
         Socket serverConn;

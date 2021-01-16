@@ -14,6 +14,12 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    /**
+     * Takes in input a String of receivers and checks if they match the mail service and canonical mail communication protocols.
+     * After that returns a list with found mails
+     * @param receivers receivs a String of receivers communicated by the interface receivers field
+     *@return List<User> obj
+     */
     public static List<User> identifyReceivers (String receivers) {
 
         String addresses[] = receivers.split(";\\s*");
@@ -37,7 +43,12 @@ public class Utils {
 
     }
 
-
+    /**
+     * Takes in input a String of receivers and checks if they match the mail service and canonical mail communication protocols.
+     * After that returns a list with found mails
+     * @param message takes a message param to set displayed message by popup
+     *@return void
+     */
     public static void getAlert(String message) {
         ButtonType confirm = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         Alert a = new Alert(Alert.AlertType.NONE, "Promote pawn to:", confirm);
@@ -52,7 +63,11 @@ public class Utils {
         });
 
     }
-
+    /**
+     *Take a String of html like formatted text and returns plain text inside of html structure
+     * @param htmlText html formatted text
+     *@return String
+     */
     public static String getTextFromHtml(String htmlText) {
 
         String result = "";

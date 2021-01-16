@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Read Message screen's controller contains 4 button handlers and an initialization
+ */
+
 public class ReadMessage extends Controller {
 
     @FXML
@@ -51,6 +55,12 @@ public class ReadMessage extends Controller {
 
     private Mail fromMailCell;
 
+    /**
+     * Handles the forward function bound to forward button on screen, communicates to subsequent screen (Write Message)
+     * read message and function requested
+     * @param actionEvent
+     */
+
     @FXML
     public void forwardHandle(ActionEvent actionEvent) {
 
@@ -62,6 +72,11 @@ public class ReadMessage extends Controller {
         Navigator.navigate(Navigator.Route.SEND, arguments);
 
     }
+    /**
+     * Handles the answer function bound to answer button on screen, communicates to subsequent screen (Write Message)
+     * read message and function requested
+     * @param actionEvent
+     */
 
     @FXML
     public void answerHandle(ActionEvent actionEvent) {
@@ -75,7 +90,11 @@ public class ReadMessage extends Controller {
         Navigator.navigate(Navigator.Route.SEND, arguments);
 
     }
-
+    /**
+     * Handles the answer all function bound to answer button on screen, communicates to subsequent screen (Write Message)
+     * read message and function requested
+     * @param actionEvent
+     */
     @FXML
     public void answerAllHandle(ActionEvent actionEvent) {
 
@@ -92,6 +111,10 @@ public class ReadMessage extends Controller {
         Navigator.navigate(Navigator.Route.SEND, arguments);
     }
 
+    /**
+     * Handles the delete button on screen, requests email deletion to server and if successful routes to inbox screen and controller
+     * @param actionEvent
+     */
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
 
@@ -107,6 +130,9 @@ public class ReadMessage extends Controller {
         }
     }
 
+    /**
+     * Initializes Read Message screen with parameters communicated from Mail Cell on double click, displays the requested message
+     */
     @Override
     public void init() {
 

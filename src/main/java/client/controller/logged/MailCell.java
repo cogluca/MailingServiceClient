@@ -42,7 +42,11 @@ public class MailCell extends ListCell<Mail> {
     @FXML
     private AnchorPane pane;
 
-
+    /**
+     * Matches one mail to one row of Message list, fills the sections contents and handles Delete, Forward and Double click functions
+     * @param mail
+     * @param empty
+     */
     @Override
     protected void updateItem(Mail mail, boolean empty) {
         super.updateItem(mail, empty);

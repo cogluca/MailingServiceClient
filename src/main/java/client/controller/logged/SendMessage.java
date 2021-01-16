@@ -18,6 +18,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Controller of SendMessage screen, contains all the necessary parameters to send a mail to server
+ */
+
 public class SendMessage extends Controller{
 
     @FXML
@@ -40,6 +44,11 @@ public class SendMessage extends Controller{
 
     private User sender;
 
+    /**
+     * Bound to send button on Write Email screen, collects the various parameters of the email to send and communicates the
+     * Mail obj to the server, in case of failure pops a dialog with either server response or error from exception
+     * @param actionEvent
+     */
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
 
@@ -71,7 +80,9 @@ public class SendMessage extends Controller{
 
         }
     }
-
+/**
+ * Routs the screen back to inbox after deleting the mail that was supposedly written
+ */
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
 
@@ -79,7 +90,10 @@ public class SendMessage extends Controller{
 
     }
 
-
+    /**
+     * Initializes the Write Message screen and if previous screen was Read Messages sets this screen's field according to called function
+     * 3 functions : FWD, ANSWER, ANSWERALL
+     */
     @Override
     public void init() {
 

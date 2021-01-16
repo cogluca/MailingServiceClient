@@ -33,16 +33,29 @@ public class LoginController implements Initializable {
     private LoginManager loginManager;
 
     private Navigator navigator;
+
+    /**
+     * Part of starting the login controller
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         navigator = Navigator.getInstance();
     }
 
+    /**
+     * User to set this controller's login manager, function used in LoginManager
+     * @param loginManager
+     */
     public void initManager(final LoginManager loginManager) {
         this.loginManager = loginManager;
     }
 
-
+    /**
+     * Bound to login button in login screen, executes the login logic and in case of failure pops up a dialog with associated error
+     * @param actionEvent
+     */
     public void handleLogin(ActionEvent actionEvent) {
 
         Response loginResult = new Response();

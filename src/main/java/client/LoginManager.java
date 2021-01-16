@@ -70,7 +70,7 @@ public class LoginManager {
     }
 
     /**
-     *
+     *Method used to display login window and set login manager on login controller
      */
     public void showLoginScreen() {
         try {

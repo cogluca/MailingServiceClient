@@ -13,7 +13,10 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// Model
+/**
+ * Mail model implemented using the Java Beans and Properties standard, implements Externalizable in order to be
+ * transmitted correctly to the server and back through sockets
+ */
 public class Mail implements Externalizable {
 
     private static final long serialVersionUID = -4034326865454415426L;
