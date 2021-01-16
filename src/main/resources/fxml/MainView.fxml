@@ -27,7 +27,7 @@
                      <font>
                         <Font size="10.0" />
                      </font></Label>
-                   <ToggleButton fx:id="newMail1" layoutY="83.0" mnemonicParsing="false" onAction="#handleNewMail" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="New mail">
+                   <ToggleButton fx:id="newMail" layoutY="83.0" mnemonicParsing="false" onAction="#handleNewMail" prefHeight="70.0" prefWidth="164.0" style="-fx-border-width: 0 0 0 4;" styleClass="li" text="New mail">
                      <toggleGroup>
                         <ToggleGroup fx:id="menu" />
                      </toggleGroup>

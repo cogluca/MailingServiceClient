@@ -23,12 +23,6 @@ public abstract class Controller {
         this.argumentList = argumentList;
     }
 
-    public void init() {
-        dispatch();
-    }
+    public void init() {    }
 
-    //TODO: remove
-    protected void dispatch() {
-
-    }
 }

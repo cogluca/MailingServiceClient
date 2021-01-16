@@ -80,6 +80,10 @@ public class Navigator {
                 controller.setArgumentList(arguments);
                 controller.init();
 
+                if(r.equals(Route.INBOX) || r.equals(Route.SEND)) instance.getMainController().setFire(r);
+
+                System.out.println("sto caricando " + r.name());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -51,6 +51,9 @@ public class MainController extends Controller implements Initializable {
     @FXML
     private ToggleButton readInbox;
 
+    @FXML
+    private ToggleButton newMail;
+
     private User userToBind = new User();
 
 
@@ -123,11 +126,16 @@ public class MainController extends Controller implements Initializable {
         t1.schedule(task, 3000,5000);
 
         readInbox.fire();
-        try {
-            listMailModel.setUpcomingListMail(NetworkUtils.loadOutbox());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
+
+    }
+
+    public void setFire(Navigator.Route r) {
+        if(r.equals(Navigator.Route.INBOX))
+            readInbox.setSelected(true);
+        else if(r.equals(Navigator.Route.SEND))
+            newMail.setSelected(true);
 
     }
 

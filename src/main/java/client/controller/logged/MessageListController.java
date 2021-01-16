@@ -27,17 +27,25 @@ public class MessageListController extends Controller {
 
     @FXML
     private Label fromLabel;
-
+    private boolean first = false;
 
     @Override
     public void init() {
-        super.init();
+        List<Object> arguments = getArgumentList();
+        if (arguments != null && arguments.size() > 0) readType = (String) arguments.get(0);
+
+
         listMailModel = Navigator.getInstance().getMainController().getListMailModel();
 
         if (readType.equals("INBOX")) {
             try {
                 listMailModel.setIncomingListMail(NetworkUtils.loadInbox());
-                mailListView.setItems(listMailModel.getIncomingListMail());
+
+                if(mailListView.getItems() == null) {
+                    mailListView.setItems(listMailModel.getIncomingListMail());
+
+                    first = true;
+                }
 
             } catch (Exception e) {e.printStackTrace();}
         }
@@ -54,14 +62,6 @@ public class MessageListController extends Controller {
         }
 
         mailListView.setCellFactory(listView -> new MailCell());
-    }
-
-
-    @Override
-    public void dispatch() {
-        List<Object> arguments = getArgumentList();
-        if (arguments == null || arguments.size() <= 0) return;
-        readType = (String) arguments.get(0);
     }
 
 }

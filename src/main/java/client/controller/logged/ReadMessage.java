@@ -22,10 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReadMessage extends Controller implements Initializable {
-    @Override
-    protected void dispatch() {
 
-    }
     @FXML
     private Button answerBtn;
 
