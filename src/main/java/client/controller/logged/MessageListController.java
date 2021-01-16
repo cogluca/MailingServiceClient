@@ -39,13 +39,12 @@ public class MessageListController extends Controller {
 
         if (readType.equals("INBOX")) {
             try {
+
                 listMailModel.setIncomingListMail(NetworkUtils.loadInbox());
+                mailListView.setItems(listMailModel.getIncomingListMail());
 
-                if(mailListView.getItems() == null) {
-                    mailListView.setItems(listMailModel.getIncomingListMail());
+                first = true;
 
-                    first = true;
-                }
 
             } catch (Exception e) {e.printStackTrace();}
         }

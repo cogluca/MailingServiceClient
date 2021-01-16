@@ -22,8 +22,6 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/css/style.css");
 
-        ((LoginController)loader.getController()).initManager(new LoginManager(scene));
-
         primaryStage.setScene(scene);
         LoginManager loginManager = new LoginManager(scene);
         loginManager.showLoginScreen();
@@ -40,10 +38,6 @@ public class Main extends Application {
             }
             System.exit(0);
         }));
-    }
-
-    private void initHandler() {
-
     }
 
     public static void main(String[] args) { launch(args); }

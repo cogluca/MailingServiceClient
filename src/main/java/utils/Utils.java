@@ -53,21 +53,7 @@ public class Utils {
 
     }
 
-    public static String trimUsers(String compositeLabel) {
-        if(compositeLabel.contains("To: "))
-            System.out.println("I'm in trimUsers");
-            compositeLabel = compositeLabel.replace("To: ", "");
-        if(compositeLabel.contains("@Parallel.com"))
-            compositeLabel = compositeLabel.replace("@Parallel.com","");
-        if(compositeLabel.contains(";"))
-            compositeLabel = compositeLabel.replace(";","");
-        if(compositeLabel.contains(" "))
-            compositeLabel = compositeLabel.replace(" ", "");
-        return compositeLabel;
-    }
-
-
-    public static String getText(String htmlText) {
+    public static String getTextFromHtml(String htmlText) {
 
         String result = "";
 

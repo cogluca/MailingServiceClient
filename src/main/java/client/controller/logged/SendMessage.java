@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
-import models.ListMailModel;
 import models.Mail;
 import models.Response;
 import models.User;
@@ -16,11 +15,10 @@ import utils.Controller;
 import utils.NetworkUtils;
 import utils.Utils;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SendMessage extends Controller implements Initializable {
+public class SendMessage extends Controller{
 
     @FXML
     private Button sendbtn;
@@ -42,36 +40,20 @@ public class SendMessage extends Controller implements Initializable {
 
     private User sender;
 
-    private String oggettoPassato = "";
-    private String msgView = "";
-    private String receivers = "";
-    private String singleReceiver = "";
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) { }
-
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
 
-        Mail toSend = new Mail();
-        List<User> receiver;
-
-        receiver = Utils.identifyReceivers(destinatario.getText());
+        List<User> receiver = Utils.identifyReceivers(destinatario.getText());
 
         if (receiver.size() < 1) {
             String issuesReceivers = "One or more receivers do not exist";
             Utils.getAlert(issuesReceivers);
+            return;
         }
 
         long timeStamp = System.currentTimeMillis();
 
-        toSend.setReceiver(receiver);
-        toSend.setSender(sender);
-        toSend.setSent(false);
-        toSend.setId(-1);
-        toSend.setTimeSent(timeStamp);
-        toSend.setObject(oggetto.getText());
-        toSend.setMessage(messageEditor.getHtmlText());
+        Mail toSend = new Mail(-1, sender, receiver,oggetto.getText(), messageEditor.getHtmlText(), timeStamp);
 
         Response serverResponse;
 
@@ -82,15 +64,12 @@ public class SendMessage extends Controller implements Initializable {
             e.printStackTrace();
         }
 
-        System.out.println(serverResponse.getResponseText());
         Utils.getAlert(serverResponse.getResponseText());
 
         if(serverResponse.getResponseCode()==0) {
             Navigator.navigate(Navigator.Route.INBOX);
 
         }
-
-
     }
 
     @FXML
@@ -105,7 +84,7 @@ public class SendMessage extends Controller implements Initializable {
     public void init() {
 
         List<Object> arguments = getArgumentList();
-        sender = Navigator.getInstance().getMainController().getUserToBind();
+        sender = Navigator.getInstance().getMainController().getUser();
 
         if( arguments.size() > 1) {
 

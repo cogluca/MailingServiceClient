@@ -54,8 +54,9 @@ public class MainController extends Controller implements Initializable {
     @FXML
     private ToggleButton newMail;
 
-    private User userToBind = new User();
+    private User user = new User();
 
+    private LoginManager loginManager;
 
     private Timer t1;
 
@@ -65,18 +66,22 @@ public class MainController extends Controller implements Initializable {
         return listMailModel;
     }
 
-    public User getUserToBind() {
-        return userToBind;
+    public User getUser() {
+        return user;
     }
 
     public void setUser(String user) {
-        this.userToBind.setUsername(user);
-        userName.textProperty().bind(userToBind.userProperty());
+
+        this.user.setUsername(user);
+        userName.textProperty().bind(this.user.userProperty());
         userEmail.setText(user + "@Parallel.com");
+
     }
 
+    public BorderPane getStackPane() {
+        return stackPane;
+    }
 
-    private LoginManager loginManager;
 
     public void setLoginManager(LoginManager loginManager) {
         this.loginManager = loginManager;
@@ -90,7 +95,6 @@ public class MainController extends Controller implements Initializable {
         listMailModel = new ListMailModel();
         NetworkUtils.setOnline(true);
 
-        Navigator.getInstance().setContentPanel(stackPane);
         Navigator.getInstance().setMainController(this);
         t1 = new Timer();
         TimerTask task = new TimerTask() {
@@ -100,6 +104,7 @@ public class MainController extends Controller implements Initializable {
                     try {
                         if (NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) != 0) {
                             syncButton.setStyle("-fx-border-color: white; -fx-border-width: 3; -fx-border-radius:10; -fx-background-radius: 10");
+                            syncLabel.setVisible(true);
                         }
                     }
                     catch (Exception e) {
@@ -108,9 +113,8 @@ public class MainController extends Controller implements Initializable {
                 }
                 else {
                     try {
-                        User toLog = new User();
-                        toLog.setUsername(userToBind.getUsername());
-                        Response response = NetworkUtils.login(toLog);
+
+                        Response response = NetworkUtils.login(user);
 
                         if(response.getResponseText().equals("Login successfully")) {
                             NetworkUtils.setOnline(true);
@@ -119,15 +123,12 @@ public class MainController extends Controller implements Initializable {
                     }
                     catch (Exception ignored) {}
                 }
-
             }
         };
 
-        t1.schedule(task, 3000,5000);
+        t1.schedule(task, 5000,5000);
 
         readInbox.fire();
-
-
 
     }
 
@@ -142,10 +143,8 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     void handleNewMail(ActionEvent action) {
-        List<Object> arguments = new ArrayList<>();
-        arguments.add(userToBind);
         System.out.println("writing new message");
-        Navigator.navigate(Navigator.Route.SEND, arguments);
+        Navigator.navigate(Navigator.Route.SEND);
     }
 
 
@@ -168,11 +167,10 @@ public class MainController extends Controller implements Initializable {
     }
 
     public void handleLogout(ActionEvent event) {
-        t1.cancel();
-        new Thread(() -> {
 
-            loginManager.logout();
-        }).start();
+        t1.cancel();
+        loginManager.logout();
+
 
     }
 
@@ -184,7 +182,6 @@ public class MainController extends Controller implements Initializable {
 
         syncLabel.setVisible(false);
         syncButton.setStyle("");
-
 
     }
 }

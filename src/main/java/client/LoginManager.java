@@ -82,10 +82,10 @@ public class LoginManager {
             scene.getWindow().setWidth(459);
 
             LoginController controller =
-                    loader.<LoginController>getController();
+                    loader.getController();
             controller.initManager(this);
         } catch (IOException ex) {
-            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "Login transition failed", ex);
         }
     }
 
@@ -97,17 +97,16 @@ public class LoginManager {
     public void showMainView(String user) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/MainView.fxml")//need to replace with the main view
+                    getClass().getResource("/fxml/MainView.fxml")
             );
             scene.setRoot(loader.load());
-            //Stage mainView = new Stage()
             scene.getWindow().setHeight(600);
             scene.getWindow().setWidth(1000);
             MainController controller = loader.getController();
             controller.setUser(user);
             controller.setLoginManager(this);
         } catch (IOException ex) {
-            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "Failed loading main view", ex);
         }
     }
 

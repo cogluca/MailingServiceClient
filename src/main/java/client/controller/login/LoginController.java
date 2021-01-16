@@ -19,6 +19,8 @@ import utils.Utils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginController implements Initializable {
 
@@ -49,38 +51,19 @@ public class LoginController implements Initializable {
         loginManager.generateSessionID();
 
         try {
-            /*loggingUser.userProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-
-                }
-            });
-             */
-
-            //loginButton.defaultButtonProperty().bind(loggingUser.userProperty());
-            /*loginButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    String user = username.getText();
-                    loggingUser.setUsername(user);
-                }
-            });
-
-             */
-
             loggingUser.userProperty().bind(username.textProperty());
-            System.out.println(loggingUser.getUsername());
             loginResult = NetworkUtils.login(loggingUser);
         }
         catch (IOException | ClassNotFoundException e) {
             loginResult.setResponseText("An error occurred during login");
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "Couldn't verify login", e);
         }
         catch (NullPointerException exception) {
             loginResult.setResponseText("Server is offline");
         }
 
-        if (loginResult.getResponseText().equals("Login successfully")) loginManager.showMainView(username.getText());
-        else Utils.getAlert(loginResult.getResponseText());   //qui devo far poppare un popup con login errato
+        if (loginResult.getResponseCode() == 0) loginManager.showMainView(username.getText());
+        else Utils.getAlert(loginResult.getResponseText());
 
     }
 

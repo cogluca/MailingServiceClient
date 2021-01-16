@@ -38,6 +38,7 @@ public class NetworkUtils {
             return new Socket(address, port);
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            setOnline(false);
             return null;
         }
     }
@@ -193,10 +194,9 @@ public class NetworkUtils {
 
     public static Response sendMessage(Mail mailToSend) throws Exception {
 
-        Socket serverConn = null;
-        ObjectOutputStream sendMsg = null;
-        ObjectInputStream receiveState = null;
-        List<User> receiver = new ArrayList<>();
+        Socket serverConn;
+        ObjectOutputStream sendMsg;
+        ObjectInputStream receiveState;
 
         Response serverResponse = null;
 

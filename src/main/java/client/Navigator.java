@@ -11,7 +11,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-//TODO: Save controllers OR save MainController at least
 /**
  * Singleton Class for Navigation across fxml
  */
@@ -104,6 +103,7 @@ public class Navigator {
     }
 
     public void setMainController(MainController mainController) {
+        instance.contentPanel = mainController.getStackPane();
         this.mainController = mainController;
     }
 
