@@ -17,6 +17,7 @@ import utils.Controller;
 import utils.JavaFXUtil;
 import utils.NetworkUtils;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -189,6 +190,11 @@ public class MainController extends Controller implements Initializable {
     public void handleLogout(ActionEvent event) {
 
         t1.cancel();
+        try {
+            NetworkUtils.logout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         loginManager.logout();
 
 
