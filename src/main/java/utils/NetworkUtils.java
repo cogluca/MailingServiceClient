@@ -18,9 +18,7 @@ public class NetworkUtils {
 
     private static final int port = 8189;
 
-
-
-    private static boolean online;
+    private static boolean online = false;
 
     public static boolean isOnline() {
         return online;
@@ -31,7 +29,7 @@ public class NetworkUtils {
     }
 
     /**
-     *@return socket object
+     * @return socket object
      */
 
     public static Socket getSocket() {
@@ -39,21 +37,22 @@ public class NetworkUtils {
             String address = InetAddress.getLocalHost().getHostName();
             return new Socket(address, port);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
             setOnline(false);
             return null;
         }
     }
+
     /**
      * Tries to log the user in through server communication
+     *
      * @param user input the user to check if has an account
-     *@return Response obj forwarded from server
+     * @return Response obj forwarded from server
      */
     public static Response login(User user) throws IOException, ClassNotFoundException {
         Socket serverConn = getSocket();
         ObjectOutputStream sendLoginReq = new ObjectOutputStream(serverConn.getOutputStream());
         ObjectInputStream receiveLogin = new ObjectInputStream(serverConn.getInputStream());
-        Response loginResult = null;
+        Response loginResult;
 
         sendLoginReq.writeUTF("LOGIN");
         sendLoginReq.flush();
@@ -73,55 +72,56 @@ public class NetworkUtils {
 
         return loginResult;
     }
+
     /**
-     *Tries to logout the current user by communicating it to the server
-     *
-     *@return void
+     * Tries to logout the current user by communicating it to the server
      */
     public static void logout() throws IOException {
 
-        if (!isOnline()) return;
+        Socket serverConn = isOnline() ? getSocket() : null;
+        if (serverConn != null) {
 
-        Socket serverConn = getSocket();
-        ObjectOutputStream outputStream = new ObjectOutputStream(serverConn.getOutputStream());
-        ObjectInputStream inputStream = new ObjectInputStream(serverConn.getInputStream());
+            ObjectOutputStream outputStream = new ObjectOutputStream(serverConn.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(serverConn.getInputStream());
 
-        outputStream.writeUTF("LOGOUT");
-        outputStream.flush();
+            outputStream.writeUTF("LOGOUT");
+            outputStream.flush();
 
-        outputStream.writeUTF(LoginManager.sessionId);
-        outputStream.flush();
+            outputStream.writeUTF(LoginManager.sessionId);
+            outputStream.flush();
 
-        outputStream.close();
-        inputStream.close();
-        serverConn.close();
-
+            outputStream.close();
+            inputStream.close();
+            serverConn.close();
+        }
     }
+
     /**
      * Tries to load inbox by requesting current user inbox to the server
      *
-     *@return List<Mail> obj
+     * @return List<Mail> obj
      */
     public static List<Mail> loadInbox() throws Exception {
 
-        if (!isOnline()) return null;
+        List<Mail> retList = null;
+        Socket socket = isOnline() ? NetworkUtils.getSocket() : null;
+        if (socket != null) {
 
-        Socket socket = NetworkUtils.getSocket();
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            outputStream.writeUTF("READ INBOX");
+            outputStream.flush();
 
-        outputStream.writeUTF("READ INBOX");
-        outputStream.flush();
+            outputStream.writeUTF(LoginManager.sessionId);
+            outputStream.flush();
 
-        outputStream.writeUTF(LoginManager.sessionId);
-        outputStream.flush();
+            retList = (List<Mail>) inputStream.readObject();
 
-        List<Mail> retList = (List<Mail>) inputStream.readObject();
-
-        inputStream.close();
-        outputStream.close();
-        socket.close();
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+        }
         return retList;
 
     }
@@ -129,129 +129,134 @@ public class NetworkUtils {
     /**
      * Tries to load outbox by requesting current user inbox to the server
      *
-     *@return List<Mail> obj
+     * @return List<Mail> obj
      */
     public static List<Mail> loadOutbox() throws Exception {
 
-        if (!isOnline()) return null;
+        List<Mail> retList = null;
+        Socket socket = isOnline() ? NetworkUtils.getSocket() : null;
+        if (socket != null) {
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-        Socket socket = NetworkUtils.getSocket();
+            outputStream.writeUTF("READ OUTBOX");
+            outputStream.flush();
 
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            outputStream.writeUTF(LoginManager.sessionId);
+            outputStream.flush();
 
-        outputStream.writeUTF("READ OUTBOX");
-        outputStream.flush();
+            retList = (List<Mail>) inputStream.readObject();
 
-        outputStream.writeUTF(LoginManager.sessionId);
-        outputStream.flush();
-
-        List<Mail> retList = (List<Mail>) inputStream.readObject();
-
-        inputStream.close();
-        outputStream.close();
-        socket.close();
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+        }
         return retList;
 
     }
 
     /**
      * Tries to load inbox by requesting current user inbox to the server
-     * @param clientNumber
-     *@return List<Mail> obj
+     *
+     * @param clientNumber number of mails in client
+     * @return List<Mail> obj
      */
     public static int checkUpdates(int clientNumber) throws Exception {
 
-        if (!isOnline()) return -1;
+        int val = -1;
+        Socket socket = isOnline() ? NetworkUtils.getSocket() : null;
+        if (socket != null) {
 
-        Socket socket = NetworkUtils.getSocket();
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            outputStream.writeUTF("SYNC");
+            outputStream.flush();
 
-        outputStream.writeUTF("SYNC");
-        outputStream.flush();
+            outputStream.writeUTF(LoginManager.sessionId);
+            outputStream.flush();
 
-        outputStream.writeUTF(LoginManager.sessionId);
-        outputStream.flush();
+            outputStream.writeInt(clientNumber);
+            outputStream.flush();
 
-        outputStream.writeInt(clientNumber);
-        outputStream.flush();
+            val = inputStream.readInt();
 
-        int val = inputStream.readInt();
-
-        inputStream.close();
-        outputStream.close();
-        socket.close();
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+        }
         return val;
 
     }
+
     /**
      * Tries to delete chosen mail by requesting deletion to the server that in turn responds with a Response obj
-     * @param mailToDelete
-     *@return Response obj
+     *
+     * @param mailToDelete mail object to be deleted
+     * @return Response obj
      */
 
     public static Response deleteMessage(Mail mailToDelete) throws Exception {
 
-        if (!isOnline()) return new Response(-1, "Server currently offline");
+        Response retResponse = new Response(-1, "Server currently offline");
 
-        Socket socket = NetworkUtils.getSocket();
+        Socket socket = isOnline() ? NetworkUtils.getSocket() : null;
+        if (socket != null) {
 
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-        outputStream.writeUTF("DELETE");
-        outputStream.flush();
+            outputStream.writeUTF("DELETE");
+            outputStream.flush();
 
-        outputStream.writeUTF(LoginManager.sessionId);
-        outputStream.flush();
+            outputStream.writeUTF(LoginManager.sessionId);
+            outputStream.flush();
 
-        System.out.println("il messaggio è " + mailToDelete);
-        outputStream.writeObject(mailToDelete);
-        outputStream.flush();
+            outputStream.writeObject(mailToDelete);
+            outputStream.flush();
 
-        Response status = (Response) inputStream.readObject();
+            retResponse = (Response) inputStream.readObject();
 
-        inputStream.close();
-        outputStream.close();
-        socket.close();
-        return status;
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+        }
+        return retResponse;
 
 
     }
 
     /**
      * Tries to send a message by communicating to server the mail taken in input, in turn server responds with a Response obj
-     * @param mailToSend
-     *@return Response obj
+     *
+     * @param mailToSend mail object to be send
+     * @return Response obj
      */
     public static Response sendMessage(Mail mailToSend) throws Exception {
 
-        Socket serverConn;
-        ObjectOutputStream sendMsg;
-        ObjectInputStream receiveState;
+        Response serverResponse = new Response(-1, "Server currently offline");
 
-        Response serverResponse = null;
+        Socket serverConn = isOnline() ? NetworkUtils.getSocket() : null;
+        if (serverConn != null) {
+            ObjectOutputStream sendMsg;
+            ObjectInputStream receiveState;
 
-        serverConn = NetworkUtils.getSocket();
+            sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
 
-        sendMsg = new ObjectOutputStream(serverConn.getOutputStream());
+            receiveState = new ObjectInputStream(serverConn.getInputStream());
 
-        receiveState = new ObjectInputStream(serverConn.getInputStream());
+            sendMsg.writeUTF("SEND");
+            sendMsg.flush();
 
-        sendMsg.writeUTF("SEND");
-        sendMsg.flush();
+            sendMsg.writeUTF(LoginManager.sessionId);
+            sendMsg.flush();
 
-        sendMsg.writeUTF(LoginManager.sessionId);
-        sendMsg.flush();
-
-        sendMsg.writeObject(mailToSend);
-        sendMsg.flush();
+            sendMsg.writeObject(mailToSend);
+            sendMsg.flush();
 
 
-        serverResponse = (Response) receiveState.readObject();
-
+            serverResponse = (Response) receiveState.readObject();
+        }
 
         return serverResponse;
     }

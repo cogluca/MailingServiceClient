@@ -25,7 +25,6 @@ public class MailCell extends ListCell<Mail> {
     @FXML
     private Label oggetto;
 
-
     @FXML
     private Label datainvio;
 
@@ -38,14 +37,11 @@ public class MailCell extends ListCell<Mail> {
     @FXML
     private Button forward;
 
-
     @FXML
     private AnchorPane pane;
 
     /**
      * Matches one mail to one row of Message list, fills the sections contents and handles Delete, Forward and Double click functions
-     * @param mail
-     * @param empty
      */
     @Override
     protected void updateItem(Mail mail, boolean empty) {
@@ -66,15 +62,11 @@ public class MailCell extends ListCell<Mail> {
                 e.printStackTrace();
             }
 
-
-
             from.setText(mail.isSent()? mail.getReceiver().toString() : mail.getSender().getUsername() );
-
 
             oggetto.setText(mail.getObject() + " - " + Utils.getTextFromHtml(mail.getMessage()));
             String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (mail.getTimeSent()));
             datainvio.setText(date);
-
 
             List<Object> arguments = new ArrayList<>();
 
@@ -86,13 +78,12 @@ public class MailCell extends ListCell<Mail> {
             });
 
             delete.setOnAction(actionEvent -> {
-                Response deletionRes = null;
-                System.out.println(getItem() + "  " + getIndex());
+                Response deletionRes;
                 try {
                     deletionRes = NetworkUtils.deleteMessage(getItem());
                     Utils.getAlert(deletionRes.getResponseText());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
 
                 getListView().getItems().remove(getItem());
@@ -108,7 +99,6 @@ public class MailCell extends ListCell<Mail> {
                 Navigator.navigate(Navigator.Route.SEND, argumentsToSend);
 
             });
-
 
             setText(null);
             setGraphic(pane);

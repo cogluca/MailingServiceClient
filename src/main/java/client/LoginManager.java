@@ -4,14 +4,12 @@ import client.controller.logged.MainController;
 import client.controller.login.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import models.User;
 
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//TODO: Controllare meglio showLoginScreen e showMainView. Passare User a showMainView
 /**
  * Class for handling login / logout transition
  */

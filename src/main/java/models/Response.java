@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * Serializable class that creates Response objects in order to convey status of operations from server to client and in client
- *
  */
 public class Response implements Serializable {
 

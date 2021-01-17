@@ -3,22 +3,20 @@ package client.controller.logged;
 import client.Navigator;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.Label;
-import models.Mail;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.web.WebView;
+import models.Mail;
 import models.Response;
 import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
 import utils.Utils;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Read Message screen's controller contains 4 button handlers and an initialization
@@ -26,11 +24,6 @@ import java.util.ResourceBundle;
 
 public class ReadMessage extends Controller {
 
-    @FXML
-    private Button answerBtn;
-
-    @FXML
-    private Button forwardBtn;
 
     @FXML
     private Label oggetto;
@@ -40,9 +33,6 @@ public class ReadMessage extends Controller {
 
     @FXML
     private Label sender;
-
-    @FXML
-    private Button deletebtn;
 
     @FXML
     private Button answerAllBtn;
@@ -58,7 +48,6 @@ public class ReadMessage extends Controller {
     /**
      * Handles the forward function bound to forward button on screen, communicates to subsequent screen (Write Message)
      * read message and function requested
-     * @param actionEvent
      */
 
     @FXML
@@ -72,12 +61,11 @@ public class ReadMessage extends Controller {
         Navigator.navigate(Navigator.Route.SEND, arguments);
 
     }
+
     /**
      * Handles the answer function bound to answer button on screen, communicates to subsequent screen (Write Message)
      * read message and function requested
-     * @param actionEvent
      */
-
     @FXML
     public void answerHandle(ActionEvent actionEvent) {
 
@@ -90,10 +78,10 @@ public class ReadMessage extends Controller {
         Navigator.navigate(Navigator.Route.SEND, arguments);
 
     }
+
     /**
      * Handles the answer all function bound to answer button on screen, communicates to subsequent screen (Write Message)
      * read message and function requested
-     * @param actionEvent
      */
     @FXML
     public void answerAllHandle(ActionEvent actionEvent) {
@@ -101,7 +89,7 @@ public class ReadMessage extends Controller {
         List<Object> arguments = new ArrayList<>();
 
         User senderUser = Navigator.getInstance().getMainController().getUser();
-        if(!fromMailCell.getReceiver().contains(senderUser))
+        if (!fromMailCell.getReceiver().contains(senderUser))
             fromMailCell.getReceiver().add(senderUser);
 
         arguments.add(fromMailCell);
@@ -113,7 +101,6 @@ public class ReadMessage extends Controller {
 
     /**
      * Handles the delete button on screen, requests email deletion to server and if successful routes to inbox screen and controller
-     * @param actionEvent
      */
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
@@ -125,7 +112,7 @@ public class ReadMessage extends Controller {
             if (serverResponse.getResponseCode() == 0)
                 Navigator.navigate(Navigator.Route.INBOX);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -139,7 +126,7 @@ public class ReadMessage extends Controller {
         List<Object> arguments = getArgumentList();
         fromMailCell = (Mail) arguments.get(0);
 
-        if(fromMailCell.getReceiver().size()<2)
+        if (fromMailCell.getReceiver().size() < 2)
             answerAllBtn.setVisible(false);
 
         oggetto.textProperty().bind(Bindings.concat("Oggetto :", fromMailCell.objectProperty()));
@@ -147,7 +134,7 @@ public class ReadMessage extends Controller {
         sender.textProperty().bind(Bindings.concat("From: ", fromMailCell.getSender().userProperty()));
         receivers.textProperty().bind(Bindings.concat("To: ", fromMailCell.listAddresses()));
 
-        String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date (fromMailCell.getTimeSent()));
+        String dateSent = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date(fromMailCell.getTimeSent()));
         SimpleStringProperty sentDate = new SimpleStringProperty(dateSent);
         dataOraInvio.textProperty().bind(sentDate);
     }

@@ -47,6 +47,28 @@ public class Navigator {
         routes.put(Route.READ, "/fxml/ReadMessage.fxml");
     }
 
+    public MainController getMainController() {
+        return mainController;
+    }
+
+    public void setMainController(MainController mainController) {
+        instance.contentPanel = mainController.getStackPane();
+        this.mainController = mainController;
+    }
+
+    /**
+     * Creates or retrieve a Singleton Navigator instance
+     *
+     * @return the singleton instance
+     */
+    public static Navigator getInstance() {
+        if (instance == null) {
+            instance = new Navigator();
+            instance.initRoutes();
+        }
+        return instance;
+    }
+
 
     /**
      * Load a route inside the contentPanel. navigate across fxml
@@ -81,7 +103,6 @@ public class Navigator {
 
                 if(r.equals(Route.INBOX) || r.equals(Route.SEND)) instance.getMainController().setFire(r);
 
-                System.out.println("sto caricando " + r.name());
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -90,35 +111,6 @@ public class Navigator {
             System.out.println("ERROR:Can't load panel");
     }
 
-    /**
-     * Setter for contentPanel
-     */
-    public void setContentPanel(BorderPane contentPanel) {
-        if (instance == null) getInstance();
-        instance.contentPanel = contentPanel;
-    }
-
-    public MainController getMainController() {
-        return mainController;
-    }
-
-    public void setMainController(MainController mainController) {
-        instance.contentPanel = mainController.getStackPane();
-        this.mainController = mainController;
-    }
-
-    /**
-     * Creates or retrieve a Singleton Navigator instance
-     *
-     * @return the singleton instance
-     */
-    public static Navigator getInstance() {
-        if (instance == null) {
-            instance = new Navigator();
-            instance.initRoutes();
-        }
-        return instance;
-    }
 
 
 }

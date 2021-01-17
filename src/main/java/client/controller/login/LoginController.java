@@ -22,31 +22,16 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LoginController implements Initializable {
+public class LoginController {
 
     @FXML
     private TextField username;
 
-    @FXML
-    private Button loginButton;
-
     private LoginManager loginManager;
-
-    private Navigator navigator;
-
-    /**
-     * Part of starting the login controller
-     * @param url
-     * @param resourceBundle
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        navigator = Navigator.getInstance();
-    }
 
     /**
      * User to set this controller's login manager, function used in LoginManager
-     * @param loginManager
+     * @param loginManager loginManager object
      */
     public void initManager(final LoginManager loginManager) {
         this.loginManager = loginManager;
@@ -54,11 +39,10 @@ public class LoginController implements Initializable {
 
     /**
      * Bound to login button in login screen, executes the login logic and in case of failure pops up a dialog with associated error
-     * @param actionEvent
      */
     public void handleLogin(ActionEvent actionEvent) {
 
-        Response loginResult = new Response();
+        Response loginResult;
         User loggingUser = new User();
 
         loginManager.generateSessionID();
@@ -68,11 +52,11 @@ public class LoginController implements Initializable {
             loginResult = NetworkUtils.login(loggingUser);
         }
         catch (IOException | ClassNotFoundException e) {
-            loginResult.setResponseText("An error occurred during login");
+            loginResult = new Response(-1,"An error occurred during login");
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, "Couldn't verify login", e);
         }
         catch (NullPointerException exception) {
-            loginResult.setResponseText("Server is offline");
+            loginResult = new Response(-2, "Server is offline");
         }
 
         if (loginResult.getResponseCode() == 0) loginManager.showMainView(username.getText());

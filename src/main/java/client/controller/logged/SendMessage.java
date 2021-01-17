@@ -3,9 +3,6 @@ package client.controller.logged;
 import client.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
 import models.Mail;
@@ -14,24 +11,14 @@ import models.User;
 import utils.Controller;
 import utils.NetworkUtils;
 import utils.Utils;
-import java.net.URL;
+
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Controller of SendMessage screen, contains all the necessary parameters to send a mail to server
  */
 
-public class SendMessage extends Controller{
-
-    @FXML
-    private Button sendbtn;
-
-    @FXML
-    private Button deletebtn;
-
-    @FXML
-    private SplitPane dividerPanel;
+public class SendMessage extends Controller {
 
     @FXML
     private HTMLEditor messageEditor;
@@ -47,7 +34,7 @@ public class SendMessage extends Controller{
     /**
      * Bound to send button on Write Email screen, collects the various parameters of the email to send and communicates the
      * Mail obj to the server, in case of failure pops a dialog with either server response or error from exception
-     * @param actionEvent
+     *
      */
     @FXML
     public void sendHandle(ActionEvent actionEvent) {
@@ -62,7 +49,7 @@ public class SendMessage extends Controller{
 
         long timeStamp = System.currentTimeMillis();
 
-        Mail toSend = new Mail(-1, sender, receiver,oggetto.getText(), messageEditor.getHtmlText(), timeStamp);
+        Mail toSend = new Mail(-1, sender, receiver, oggetto.getText(), messageEditor.getHtmlText(), timeStamp);
 
         Response serverResponse;
 
@@ -70,24 +57,23 @@ public class SendMessage extends Controller{
             serverResponse = NetworkUtils.sendMessage(toSend);
         } catch (Exception e) {
             serverResponse = new Response(-2, "Error while sending a mail");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         Utils.getAlert(serverResponse.getResponseText());
 
-        if(serverResponse.getResponseCode()==0) {
+        if (serverResponse.getResponseCode() == 0) {
             Navigator.navigate(Navigator.Route.INBOX);
 
         }
     }
-/**
- * Routs the screen back to inbox after deleting the mail that was supposedly written
- */
+
+    /**
+     * Routs the screen back to inbox after deleting the mail that was supposedly written
+     */
     @FXML
     public void deleteHandle(ActionEvent actionEvent) {
-
         Navigator.navigate(Navigator.Route.INBOX);
-
     }
 
     /**
@@ -100,27 +86,21 @@ public class SendMessage extends Controller{
         List<Object> arguments = getArgumentList();
         sender = Navigator.getInstance().getMainController().getUser();
 
-        if( arguments.size() > 1) {
+        if (arguments.size() > 1) {
 
             Mail fromReadMessage = (Mail) arguments.get(0);
             String function = (String) arguments.get(1);
+            oggetto.setText(fromReadMessage.getObject());
 
-            if (function.equals("FWD")) {
-
-                oggetto.setText(fromReadMessage.getObject());
+            if (function.equals("FWD"))
                 messageEditor.setHtmlText(fromReadMessage.getMessage());
 
-            } else if (function.equals("ANSWER")) {
-
-                oggetto.setText(fromReadMessage.getObject());
+            else if (function.equals("ANSWER"))
                 destinatario.setText(fromReadMessage.getSender().getUsername() + "@Parallel.com");
 
-            } else if (function.equals("ANSWERALL")) {
-
-                oggetto.setText(fromReadMessage.getObject());
+            else if (function.equals("ANSWERALL"))
                 destinatario.setText(fromReadMessage.listAddresses().getValue());
 
-            }
         }
     }
 }

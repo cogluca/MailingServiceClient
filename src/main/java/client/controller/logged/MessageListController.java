@@ -17,17 +17,15 @@ import java.util.List;
  */
 public class MessageListController extends Controller {
 
+    @FXML
+    private ListView<Mail> mailListView;
+
+    @FXML
+    private Label fromLabel;
 
     private ListMailModel listMailModel;
     private String readType = "INBOX";
 
-    @FXML
-    private ListView<Mail> mailListView;
-
-
-    @FXML
-    private Label fromLabel;
-    private boolean first = false;
 
     /**
      * Initializes the message list controller associated with Inbox and Outbox screens, requests server user's mails
@@ -46,20 +44,20 @@ public class MessageListController extends Controller {
                 listMailModel.setIncomingListMail(NetworkUtils.loadInbox());
                 mailListView.setItems(listMailModel.getIncomingListMail());
 
-                first = true;
 
-
-            } catch (Exception e) {e.printStackTrace();}
-        }
-        else if (readType.equals("OUTBOX")) {
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else if (readType.equals("OUTBOX")) {
             try {
                 listMailModel.setUpcomingListMail(NetworkUtils.loadOutbox());
                 mailListView.setItems(listMailModel.getUpcomingListMail());
                 fromLabel.setText("To");
 
-            } catch (Exception e) {e.printStackTrace();}
-        }
-        else {
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
             System.out.println("ERROR: WRONG PARAMETER");
         }
 

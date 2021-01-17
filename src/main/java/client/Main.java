@@ -36,7 +36,7 @@ public class Main extends Application {
                 try {
                     NetworkUtils.logout();
                 } catch (IOException exception) {
-                    exception.printStackTrace();
+                    System.out.println(exception.getMessage());
                 }
             }
             System.exit(0);

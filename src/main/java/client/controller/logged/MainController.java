@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-//TODO: Add thread for Network request
-
 /**
  * Main GUi Controller, before starting off logged user gets set on screen with external call through setUser, contains side
  * bar navigation handles
@@ -61,6 +59,7 @@ public class MainController extends Controller implements Initializable {
 
     private ListMailModel listMailModel;
 
+
     public ListMailModel getListMailModel() {
         return listMailModel;
     }
@@ -81,76 +80,81 @@ public class MainController extends Controller implements Initializable {
         return stackPane;
     }
 
-
     public void setLoginManager(LoginManager loginManager) {
         this.loginManager = loginManager;
     }
 
     /**
-     * Contains synchronization with servers that gets triggered every 5 seconds
-     * @param url
-     * @param resourceBundle
+     * Sets navbar buttons as pressed when on those screens
+     *
+     * @param r Routing parameter
+     */
+    public void setFire(Navigator.Route r) {
+        if (r.equals(Navigator.Route.INBOX))
+            readInbox.setSelected(true);
+        else if (r.equals(Navigator.Route.SEND))
+            newMail.setSelected(true);
+
+    }
+
+    /**
+     * Initialize timer task for server sync and reconnection task
+     * that gets triggered every 5 seconds
+     */
+    private void initTimer() {
+        t1 = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (NetworkUtils.isOnline()) {
+                    try {
+                        if (NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) != 0) {
+                            syncButton.setStyle("-fx-border-color: white; -fx-border-width: 3; -fx-border-radius:10; -fx-background-radius: 10");
+                            syncLabel.setVisible(true);
+                        }
+                    } catch (Exception e) {
+                        NetworkUtils.setOnline(false);
+                    }
+                } else {
+                    try {
+                        Response response = NetworkUtils.login(user);
+
+                        if (response.getResponseCode() == 0)
+                            NetworkUtils.setOnline(true);
+                    } catch (Exception ignored) { }
+                }
+            }
+        };
+        t1.schedule(task, 5000, 5000);
+
+    }
+
+    /**
+     * Initialize GUI and set up navigator instance
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
 
         JavaFXUtil.get().addAlwaysOneSelectedSupport(menu);
         listMailModel = new ListMailModel();
         NetworkUtils.setOnline(true);
 
         Navigator.getInstance().setMainController(this);
-        t1 = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                if(NetworkUtils.isOnline()) {
-                    try {
-                        if (NetworkUtils.checkUpdates(listMailModel.getIncomingListMail().size()) != 0) {
-                            syncButton.setStyle("-fx-border-color: white; -fx-border-width: 3; -fx-border-radius:10; -fx-background-radius: 10");
-                            syncLabel.setVisible(true);
-                        }
-                    }
-                    catch (Exception e) {
-                        NetworkUtils.setOnline(false);
-                    }
-                }
-                else {
-                    try {
 
-                        Response response = NetworkUtils.login(user);
-
-                        if(response.getResponseText().equals("Login successfully")) {
-                            NetworkUtils.setOnline(true);
-
-                        }
-                    }
-                    catch (Exception ignored) {}
-                }
-            }
-        };
-
-        t1.schedule(task, 5000,5000);
+        initTimer();
 
         readInbox.fire();
 
+        try {
+            listMailModel.setUpcomingListMail(NetworkUtils.loadOutbox());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    /**
-     * Sets navbar buttons as pressed when on those screens
-     * @param r Routing parameter
-     */
-    public void setFire(Navigator.Route r) {
-        if(r.equals(Navigator.Route.INBOX))
-            readInbox.setSelected(true);
-        else if(r.equals(Navigator.Route.SEND))
-            newMail.setSelected(true);
-
-    }
 
     /**
      * Routes on Send Message screen
-     * @param action
      */
     @FXML
     void handleNewMail(ActionEvent action) {
@@ -160,7 +164,6 @@ public class MainController extends Controller implements Initializable {
 
     /**
      * Routes to Inbox screen with message list model as argument
-     * @param event
      */
     @FXML
     void handleInbox(ActionEvent event) {
@@ -170,9 +173,9 @@ public class MainController extends Controller implements Initializable {
         Navigator.navigate(Navigator.Route.INBOX, arguments);
 
     }
+
     /**
      * Routes to Outbox screen with message list model as argument
-     * @param event
      */
     @FXML
     void handleOutbox(ActionEvent event) {
@@ -185,7 +188,6 @@ public class MainController extends Controller implements Initializable {
 
     /**
      * Handles logout button on screen by stopping threads and going back to login screen
-     * @param event
      */
     public void handleLogout(ActionEvent event) {
 
@@ -193,7 +195,7 @@ public class MainController extends Controller implements Initializable {
         try {
             NetworkUtils.logout();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         loginManager.logout();
 
@@ -201,8 +203,7 @@ public class MainController extends Controller implements Initializable {
     }
 
     /**
-     * Handles synch button
-     * @param actionEvent
+     * Handles sync button
      */
     public void handleSync(ActionEvent actionEvent) {
 

@@ -6,9 +6,8 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 /**
-*Model of list mails to be linked to Gui components, used as models to contain outbox and inbox messages transmitted from server
-* in example : through client-server synchronization process
-*
+ * Model of list mails to be linked to Gui components, used as models to contain outbox and inbox messages transmitted from server
+ * in example : through client-server synchronization process
  */
 public class ListMailModel {
 
@@ -22,7 +21,7 @@ public class ListMailModel {
     }
 
     public void setIncomingListMail(List<Mail> incomingListMail) {
-        if(incomingListMail!=null) {
+        if (incomingListMail != null) {
             this.incomingListMail.clear();
             this.incomingListMail.addAll(incomingListMail);
         }
@@ -33,7 +32,7 @@ public class ListMailModel {
     }
 
     public void setUpcomingListMail(List<Mail> upcomingListMail) {
-        if(upcomingListMail!=null) {
+        if (upcomingListMail != null) {
             this.upcomingListMail.clear();
             this.upcomingListMail.addAll(upcomingListMail);
         }

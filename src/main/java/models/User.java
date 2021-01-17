@@ -44,7 +44,7 @@ public class User implements Externalizable {
     }
 
     @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    public void readExternal(ObjectInput in) throws IOException {
         init();
         setUsername(in.readUTF());
     }

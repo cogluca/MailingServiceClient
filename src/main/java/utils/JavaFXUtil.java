@@ -8,7 +8,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
 /**
- * Utility for making act GroupToogleButton as RadioButton.
+ * Utility for making act GroupToggleButton as RadioButton.
  * Force a GroupButton to be selected only one per time
  */
 public class JavaFXUtil {
@@ -25,7 +25,7 @@ public class JavaFXUtil {
         return me;
     }
 
-    public EventHandler<MouseEvent> consumeMouseEventfilter = (MouseEvent mouseEvent) -> {
+    public EventHandler<MouseEvent> consumeMouseEventFilter = (MouseEvent mouseEvent) -> {
         if (((Toggle) mouseEvent.getSource()).isSelected()) {
             mouseEvent.consume();
         }
@@ -35,17 +35,17 @@ public class JavaFXUtil {
         toggleGroup.getToggles().addListener((ListChangeListener.Change<? extends Toggle> c) -> {
             while (c.next()) {
                 for (final Toggle addedToggle : c.getAddedSubList()) {
-                    addConsumeMouseEventfilter(addedToggle);
+                    addConsumeMouseEventFilter(addedToggle);
                 }
             }
         });
-        toggleGroup.getToggles().forEach(this::addConsumeMouseEventfilter);
+        toggleGroup.getToggles().forEach(this::addConsumeMouseEventFilter);
     }
 
-    private void addConsumeMouseEventfilter(Toggle toggle) {
-        ((ToggleButton) toggle).addEventFilter(MouseEvent.MOUSE_PRESSED, consumeMouseEventfilter);
-        ((ToggleButton) toggle).addEventFilter(MouseEvent.MOUSE_RELEASED, consumeMouseEventfilter);
-        ((ToggleButton) toggle).addEventFilter(MouseEvent.MOUSE_CLICKED, consumeMouseEventfilter);
+    private void addConsumeMouseEventFilter(Toggle toggle) {
+        ((ToggleButton) toggle).addEventFilter(MouseEvent.MOUSE_PRESSED, consumeMouseEventFilter);
+        ((ToggleButton) toggle).addEventFilter(MouseEvent.MOUSE_RELEASED, consumeMouseEventFilter);
+        ((ToggleButton) toggle).addEventFilter(MouseEvent.MOUSE_CLICKED, consumeMouseEventFilter);
     }
 
 }
