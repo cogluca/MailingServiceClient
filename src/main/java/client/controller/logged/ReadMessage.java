@@ -129,7 +129,7 @@ public class ReadMessage extends Controller {
         if (fromMailCell.getReceiver().size() < 2)
             answerAllBtn.setVisible(false);
 
-        oggetto.textProperty().bind(Bindings.concat("Oggetto :", fromMailCell.objectProperty()));
+        oggetto.textProperty().bind(Bindings.concat("Object: ", fromMailCell.objectProperty()));
         htmlView.getEngine().loadContent("<body style='background-color:rgba(47,47,47, 1); color:white;' contenteditable='false'>" + fromMailCell.getMessage() + "</body>");
         sender.textProperty().bind(Bindings.concat("From: ", fromMailCell.getSender().userProperty()));
         receivers.textProperty().bind(Bindings.concat("To: ", fromMailCell.listAddresses()));

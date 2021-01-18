@@ -7,22 +7,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="389.0" prefWidth="404.0" style="-fx-background-color: rgba(47,47,47, 1);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.ReadMessage">
+<AnchorPane prefHeight="389.0" prefWidth="414.0" style="-fx-background-color: rgba(47,47,47, 1);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.logged.ReadMessage">
    <children>
-      <Label fx:id="dataOraInvio" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="194.0" layoutY="44.0" prefHeight="20.0" prefWidth="173.0" text="Data e ora di invio" AnchorPane.rightAnchor="14.0">
+      <Label fx:id="dataOraInvio" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" layoutX="-1.0" layoutY="44.0" prefHeight="20.0" prefWidth="146.0" text="Data e ora di invio" AnchorPane.rightAnchor="28.0">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label fx:id="receivers" layoutX="21.0" layoutY="71.0" prefHeight="18.0" prefWidth="371.0" text="a Lista destinatari, ">
+      <Label fx:id="receivers" layoutX="13.0" layoutY="71.0" prefHeight="18.0" prefWidth="387.0" text="a Lista destinatari, " AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="14.0">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label fx:id="sender" layoutX="20.0" layoutY="14.0" prefHeight="17.0" prefWidth="167.0" text="da Mittente">
+      <Label fx:id="sender" layoutX="4.0" layoutY="14.0" prefHeight="17.0" prefWidth="167.0" text="da Mittente" AnchorPane.leftAnchor="13.0">
          <font>
             <Font size="14.0" />
          </font></Label>
       <WebView fx:id="htmlView" layoutY="110.0" prefHeight="222.0" prefWidth="404.0" style="-fx-background-color: rgb(47,47,47);" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="110.0" />
-      <Label fx:id="oggetto" layoutX="20.0" layoutY="44.0" prefHeight="20.0" prefWidth="184.0" text="Oggetto">
+      <Label fx:id="oggetto" layoutX="20.0" layoutY="44.0" prefHeight="20.0" prefWidth="233.0" text="Oggetto: " AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="168.0">
          <font>
             <Font size="14.0" />
          </font></Label>

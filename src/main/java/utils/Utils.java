@@ -58,7 +58,7 @@ public class Utils {
         a.setTitle("Alert");
         a.setResizable(true);
 
-        a.showAndWait();
+        a.show();
 
     }
 
