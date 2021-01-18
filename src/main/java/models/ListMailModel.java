@@ -33,8 +33,14 @@ public class ListMailModel {
 
     public void setUpcomingListMail(List<Mail> upcomingListMail) {
         if (upcomingListMail != null) {
+
             this.upcomingListMail.clear();
             this.upcomingListMail.addAll(upcomingListMail);
         }
+    }
+
+    public void addToUpcomingList(Mail toAppend){
+        if(upcomingListMail != null)
+            this.upcomingListMail.add(toAppend);
     }
 }

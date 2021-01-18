@@ -63,6 +63,7 @@ public class SendMessage extends Controller {
         Utils.getAlert(serverResponse.getResponseText());
 
         if (serverResponse.getResponseCode() == 0) {
+            Navigator.getInstance().getMainController().getListMailModel().addToUpcomingList(toSend);
             Navigator.navigate(Navigator.Route.INBOX);
 
         }
