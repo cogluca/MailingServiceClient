@@ -15,6 +15,9 @@ With some shame, I have to say that the persistence level is implemented through
 ## Functionality
 
 Allows sending mail simultaneously to multiple intraservice accounts
+
 Allows multiple replies
+
 Allows forwarding
+
 Allows mail deletion
