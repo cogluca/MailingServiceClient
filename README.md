@@ -1,5 +1,8 @@
 # Parallel.com
 
+https://www.youtube.com/watch?v=mOpnnpwQ7YU
+
+
 ## Description
 
 The client portion utlizes a basic socket connection to interact with a multithreaded server, supports simultaneously multi clients and excessive load on server causes a graceful degradation instead of an abrupt stop to services.
